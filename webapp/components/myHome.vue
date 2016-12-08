@@ -87,7 +87,7 @@ export default {
   components:{ myHeader },
   data(){
     return{
-      title:'八戒宝',
+      title:'WebApp',
       show:false,
       count:10
     }
