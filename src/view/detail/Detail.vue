@@ -1,5 +1,6 @@
 <template>
     <div class="detail">
+        <iscroll-lite class="scroll-view">
         <div class="detail-wrap scroll">
             <div class="intro">
                 <p class="intro-title">今日认购总额（元）</p>
@@ -69,13 +70,15 @@
                 </div>
             </div>
         </div>
+        </iscroll-lite>
     </div>
 </template>
 
 <script>
+import IscrollLite from 'vue-iscroll-lite';
 export default {
     name: "myForm",
-    components: { },
+    components: { IscrollLite },
     data() {
         return {
             title: '产品详情',

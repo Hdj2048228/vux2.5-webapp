@@ -1,6 +1,7 @@
 <template>
   <div class="product">
-    <div class="product-wrap scroll">
+    <iscroll-lite class="scroll-view">
+    <div class="product-wrap">
       <div class="items">
 
         <div class="item" v-for="index in 15">
@@ -13,13 +14,15 @@
 
       </div>
     </div>
+    </iscroll-lite>
   </div>
 </template>
 
 <script>
+import IscrollLite from 'vue-iscroll-lite';
 export default {
   name:"product",
-  components:{  },
+  components:{ IscrollLite },
   data(){
     return{
         title:'产品列表',
@@ -34,5 +37,5 @@ export default {
 
 <style scoped>
   @import 'product.css';
-  .product-wrap{}
+
 </style>

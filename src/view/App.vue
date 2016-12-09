@@ -2,9 +2,9 @@
   <div id="app">
     <my-header :title="title"></my-header>
     <transition name="bounce" mode="out-in">
-      <router-view class="app-view" v-scroll="onScroll"></router-view>
+      <router-view class="app-view"></router-view>
     </transition>
-    <my-menu :pos="pos"></my-menu>
+    <my-menu></my-menu>
   </div>
 </template>
 
@@ -16,25 +16,12 @@
     name:"app",
     components: { myFooter, myMenu, myHeader },
     data(){
-      var max = 50,
-          msgs = [],
-          msg = 'Order';
-      while( max -- > 0 ){
-          msgs.push(msg);
-      }
       return {
-          title:'',
-          msgs : msgs,
-          pos: {
-            scrollTop: 0, 
-            scrollLeft: 0
-          }
+          title:''
       }
     },
     methods:{
-      onScroll:function(e, position){
-        this.pos = position;
-      }
+      
     }
   }
 </script>

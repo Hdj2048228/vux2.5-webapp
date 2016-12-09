@@ -1,14 +1,14 @@
 <template>
   <div class="user">
     <div class="user-wrap">
-      <button @click="show = !show">toggle</button>
+      <button class="btn" @click="show = !show">toggle</button>
       <transition 
           name="custom-classes-transition"
           enter-active-class="animated bounceInRight"
           leave-active-class="animated bounceOutLeft"
           mode="out-in"
       >
-          <p v-if="show">点击按钮后我将被隐藏/显示哦</p>
+          <p class="box" v-if="show">animate.css</p>
       </transition>
     </div>
   </div>
@@ -35,5 +35,12 @@ export default {
   @import 'user.css';
   .user-wrap{
     padding: 20px;
+  }
+  .btn{
+    padding: 10px 20px;
+  }
+  .box{
+    margin-top: 20px;
+    font-size: 30px;
   }
 </style>

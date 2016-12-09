@@ -5,7 +5,6 @@
       <li><router-link to="/product"><i class="iconfont icon-jushoucang"></i> <em>产品</em></router-link></li>
       <li><router-link to="/detail"><i class="iconfont icon-wodedingdan"></i> <em>详情</em></router-link></li>
       <li><router-link to="/user"><i class="iconfont icon-wodejuhuasuan"></i> <em>我的</em></router-link></li>
-      <li><router-link to="/"><em>{{pos.scrollTop}}</em></router-link></li>
     </ul>
   </div>
 </template>
@@ -13,7 +12,6 @@
 <script>
 export default {
   name:"myMenu",
-  props:['pos'],
   data(){
     return{
         show:true

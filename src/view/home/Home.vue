@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <iscroll-lite class="scroll-view">
     <div class="home-wrap scroll">
       <div class="notice">
         <i class="icon-shengyin"></i>
@@ -52,7 +53,7 @@
         <div push="list2"  class="menu-item bg-lightgreen">
           <i class="iconfont icon-shezhi"></i>
           <div class="item-in">
-            <h2>八戒通宝</h2>
+            <h2>加息秘籍</h2>
             <p>智能理财,存取灵活</p>
           </div>
         </div>
@@ -78,16 +79,17 @@
         <p><a href="javascript:;" class="reg-submit">立即加入</a></p>
       </div>
     </div>
+    </iscroll-lite>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
+import IscrollLite from 'vue-iscroll-lite';
 import mySlide from '../common/mySlide.vue';
-
 export default {
   name: 'home',
-  components:{ mySlide },
+  components:{ mySlide, IscrollLite },
   data(){
     return{
       title:'WebApp',
