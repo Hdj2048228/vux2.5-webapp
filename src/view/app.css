@@ -1,7 +1,7 @@
 html{
     height: 100%;
 }
-body,h1,h2,h3,h4,h5,h6,ul,ol,dl{
+body,p,h1,h2,h3,h4,h5,h6,ul,ol,dl{
     margin: 0;
     padding: 0;
 }
@@ -37,6 +37,7 @@ i,em{
 .bg-teal{background-color: #009688}
 .bg-purple{background-color:#9c27b0}
 .icon-notificationfill{background-color:#9c27b0}
+
 /*
     public style
 */
@@ -51,38 +52,46 @@ i,em{
   margin-left: 20px;
 }
 
-.wrap{
+/*
+    transition style
+*/
+
+
+/*
+    title style
+*/
+.g-tit{
     height:44px;
     position: relative;
 }
-.wrap .l,
-.wrap .c,
-.wrap .r{
+.g-tit .l,
+.g-tit .c,
+.g-tit .r{
     top:0;
     position: absolute;
 }
-.wrap .l{
+.g-tit .l{
     left:0;
     z-index: 5;
 }
-.wrap .c{
+.g-tit .c{
     width: 100%;
     height: 100%;
     left:0;
     z-index: 0;
     text-align: center;
 }
-.wrap .r{
+.g-tit .r{
     right:0;
     z-index: 5;
 }
-.wrap .c em{
+.g-tit .c em{
     display: block;
     height: 44px;
     line-height: 44px;
     color: #fff;
 }
-.wrap .iconfont{
+.g-tit .iconfont{
     display: inline-block;
     color: #fff;
     font-size: 17.5px;
@@ -94,24 +103,7 @@ i,em{
     text-align: center;
     line-height: 1;
 }
-.scroll{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right:0;
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-.scroll-box{
-  width: 100%;
-  height: auto;
-  padding-bottom: 50px;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  overflow-scrolling: touch;
-}
-.scroll-box-xxx{
-    -webkit-transform: translate3d(0px, 0px, 0px);
-    transform: translate3d(0px, 0px, 0px);
-  }
+
+/*
+    scroll style
+*/

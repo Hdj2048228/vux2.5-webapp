@@ -1,10 +1,11 @@
 <template>
   <div class="myMenu on">
     <ul class="nav">
-      <li><router-link to="/"><i class="iconfont icon-shouye"></i> <em>首页</em></router-link></li>
-      <li><router-link to="/myList"><i class="iconfont icon-jushoucang"></i> <em>产品</em></router-link></li>
-      <li><router-link to="/myDetail"><i class="iconfont icon-wodedingdan"></i> <em>详情</em></router-link></li>
-      <li><router-link to="/myCenter"><i class="iconfont icon-wodejuhuasuan"></i> <em>我的</em></router-link></li>
+      <li><router-link to="/home"><i class="iconfont icon-shouye"></i> <em>首页</em></router-link></li>
+      <li><router-link to="/product"><i class="iconfont icon-jushoucang"></i> <em>产品</em></router-link></li>
+      <li><router-link to="/detail"><i class="iconfont icon-wodedingdan"></i> <em>详情</em></router-link></li>
+      <li><router-link to="/user"><i class="iconfont icon-wodejuhuasuan"></i> <em>我的</em></router-link></li>
+      <li><router-link to="/"><em>{{pos.scrollTop}}</em></router-link></li>
     </ul>
   </div>
 </template>
@@ -12,6 +13,7 @@
 <script>
 export default {
   name:"myMenu",
+  props:['pos'],
   data(){
     return{
         show:true
@@ -20,8 +22,6 @@ export default {
 }
 </script>
 
-<style src="../assets/common.css"></style>
-<style src="../assets/font/i.css"></style>
 <style scoped>
   .myMenu{
     background-color: #fff;

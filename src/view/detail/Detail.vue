@@ -1,7 +1,6 @@
 <template>
-    <div class="detail-wrap">
-        <my-header :title="title"></my-header>
-        <div class="detail scroll-box">
+    <div class="detail">
+        <div class="detail-wrap scroll">
             <div class="intro">
                 <p class="intro-title">今日认购总额（元）</p>
                 <h2 class="intro-title">￥20,000</h2>
@@ -72,116 +71,23 @@
         </div>
     </div>
 </template>
+
 <script>
-import myHeader from './myHeader.vue';
 export default {
     name: "myForm",
-    components: {
-        myHeader
-    },
+    components: { },
     data() {
         return {
             title: '产品详情',
             msg: 'msg'
         }
     },
-    methods: {
-        onSubmit() {
-            this.title = this.msg
-        }
+    mounted(){
+        this.$parent.title=this.title;
     }
 }
 </script>
+
 <style scoped>
-.detail-wrap {}
-
-.intro {
-    min-height: 180px;
-    padding-top: 10px;
-    color: #fff;
-    background-color: #f90;
-    position: relative;
-}
-
-.intro-title {
-    line-height: 44px;
-    text-align: center;
-}
-
-.intro-total {
-    margin-top: 20px;
-    overflow: hidden;
-}
-
-.intro-total li {
-    float: left;
-    width: 25%;
-    text-align: center;
-}
-
-.intro-total .btn {
-    display: block;
-    z-index: 1;
-    cursor: pointer;
-    position: relative;
-}
-
-.intro-total em {
-    display: block;
-    border-right: 1px solid #fff;
-}
-
-.intro-total b {
-    display: block;
-    font-weight: 600;
-    margin-top: 5px;
-    font-size: 16px;
-}
-
-.product {
-  margin-top: 10px;
-  background-color: #fff;
-}
-
-.product-title {
-    padding: 10px;
-}
-.product-title .iconfont{
-  padding-right: 5px;
-}
-.product-title h3 {
-    font-size: 16px;
-    font-weight: 500;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.product-info {
-    padding: 10px;
-}
-
-.product-info p {
-    color: #999;
-    font-size: 12px;
-    text-indent: 2em;
-    line-height: 20px;
-    margin-bottom: 20px;
-}
-
-.product-info span {
-    color: #f90;
-}
-.tab-wrap{
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-}
-.tab-wrap th,
-.tab-wrap td{
-  color: #666;
-  font-size: 12px;
-  line-height: 20px;
-  text-align: center;
-  border-collapse: collapse;
-  border-top: 1px solid #ccc;
-  border-right: 1px solid #ccc;
-}
+    @import 'detail.css';
 </style>
