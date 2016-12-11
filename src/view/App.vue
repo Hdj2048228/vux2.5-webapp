@@ -40,21 +40,10 @@
   .app-view{
       position: absolute;
       top: 44px;
-      bottom: 0;
+      bottom: 50px;
       left: 0;
       right:0;
-      overflow-x: hidden;
-      overflow-y: scroll;
   }
-  .scroll{
-    width: 100%;
-    height: auto;
-    padding-bottom: 50px;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    overflow-scrolling: touch;
-  }
-
   .bounce-enter-active {
     animation: bounce-in .3s;
   }

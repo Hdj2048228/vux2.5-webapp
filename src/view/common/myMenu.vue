@@ -75,6 +75,7 @@ export default {
     -webkit-flex: 1;
     -ms-flex: 1;
     flex: 1;
+    height: 50px;
     text-align: center;
   }
   .nav i[class^="icon"]{

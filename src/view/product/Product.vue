@@ -1,6 +1,5 @@
 <template>
-  <div class="product">
-    <iscroll-lite class="scroll-view">
+  <div class="product" id="product">
     <div class="product-wrap">
       <div class="items">
 
@@ -14,15 +13,14 @@
 
       </div>
     </div>
-    </iscroll-lite>
   </div>
 </template>
 
 <script>
-import IscrollLite from 'vue-iscroll-lite';
+import BScroll from 'better-scroll';
 export default {
   name:"product",
-  components:{ IscrollLite },
+  components:{  },
   data(){
     return{
         title:'产品列表',
@@ -31,6 +29,12 @@ export default {
   },
   mounted(){
     this.$parent.title=this.title;
+    this.initScroll();
+  },
+  methods:{
+      initScroll(){
+        new BScroll(document.getElementById('product'),{});
+      }
   }
 }
 </script>

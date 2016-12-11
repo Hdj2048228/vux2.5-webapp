@@ -1,7 +1,6 @@
 <template>
-  <div class="home">
-    <iscroll-lite class="scroll-view">
-    <div class="home-wrap scroll">
+  <div class="home" id="home">
+    <div class="home-wrap">
       <div class="notice">
         <i class="icon-shengyin"></i>
         <em>新手专享</em>
@@ -79,17 +78,16 @@
         <p><a href="javascript:;" class="reg-submit">立即加入</a></p>
       </div>
     </div>
-    </iscroll-lite>
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
-import IscrollLite from 'vue-iscroll-lite';
 import mySlide from '../common/mySlide.vue';
+import BScroll from 'better-scroll';
 export default {
   name: 'home',
-  components:{ mySlide, IscrollLite },
+  components:{ mySlide, BScroll },
   data(){
     return{
       title:'WebApp',
@@ -114,6 +112,7 @@ export default {
   },
   mounted(){
     this.$parent.title=this.title;
+    this.initScroll();
   },
   computed: {
     ...mapState(['count'])
@@ -135,6 +134,9 @@ export default {
               swipe.turnTo(index)
           }
       })
+    },
+    initScroll(){
+      new BScroll(document.getElementById('home'),{});
     }
   }
 }

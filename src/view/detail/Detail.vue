@@ -1,7 +1,6 @@
 <template>
-    <div class="detail">
-        <iscroll-lite class="scroll-view">
-        <div class="detail-wrap scroll">
+    <div class="detail" id="detail">
+        <div class="detail-wrap">
             <div class="intro">
                 <p class="intro-title">今日认购总额（元）</p>
                 <h2 class="intro-title">￥20,000</h2>
@@ -70,15 +69,14 @@
                 </div>
             </div>
         </div>
-        </iscroll-lite>
     </div>
 </template>
 
 <script>
-import IscrollLite from 'vue-iscroll-lite';
+import BScroll from 'better-scroll';
 export default {
     name: "myForm",
-    components: { IscrollLite },
+    components: {  },
     data() {
         return {
             title: '产品详情',
@@ -87,6 +85,12 @@ export default {
     },
     mounted(){
         this.$parent.title=this.title;
+        this.initScroll();
+    },
+    methods:{
+        initScroll(){
+          new BScroll(document.getElementById('detail'),{});
+        }
     }
 }
 </script>
