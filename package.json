@@ -8,11 +8,11 @@
   },
   "dependencies": {
     "animate": "^1.0.0",
+    "better-scroll": "^0.1.8",
     "vue": "^2.1.0",
     "vue-resource": "^1.0.3",
     "vue-router": "^2.1.1",
     "vue-slide": "^1.1.1",
-    "better-scroll": "^0.1.8",
     "vuex": "^2.0.0"
   },
   "devDependencies": {
@@ -23,6 +23,8 @@
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
+    "node-sass": "^4.0.0",
+    "sass-loader": "^4.1.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "vue-loader": "^10.0.0",

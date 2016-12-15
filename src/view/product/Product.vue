@@ -20,7 +20,7 @@
 import BScroll from 'better-scroll';
 export default {
   name:"product",
-  components:{  },
+  components:{ BScroll },
   data(){
     return{
         title:'产品列表',
@@ -39,7 +39,45 @@ export default {
 }
 </script>
 
-<style scoped>
-  @import 'product.css';
-
+<style lang="sass" scoped>
+  /* @import 'product.css'; */
+  .item {
+      min-height: 65px;
+      padding: 10px 15px;
+      background-color: #fff;
+      position: relative;
+      &:before {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -1px;
+        border-top: 1px solid #f1f1f1;
+        content: "";
+    }
+    .prop {
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        overflow: hidden;
+    }
+    .media {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        margin-right: .8rem;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        float: left;
+        margin-right: 10px;
+        img {
+            width: 100%;
+            max-height: 100%;
+            border-radius: inherit;
+        }
+    }
+    .content {
+        overflow: hidden;
+    }
+  }
 </style>

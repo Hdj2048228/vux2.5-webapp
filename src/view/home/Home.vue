@@ -2,7 +2,7 @@
   <div class="home" id="home">
     <div class="home-wrap">
       <div class="notice">
-        <i class="icon-shengyin"></i>
+        <i class="iconfont">&#xe64c;</i>
         <em>新手专享</em>
       </div>
       <div class="banner">
@@ -73,9 +73,9 @@
       </div>
 
       <div class="reg-wrap">
-        <p><input type="text" placeholder="请输入姓名"></p>
-        <p><input type="number" placeholder="请输入手机号"></p>
-        <p><a href="javascript:;" class="reg-submit">立即加入</a></p>
+        <p><input class="inp" type="text" placeholder="请输入姓名"></p>
+        <p><input class="inp" type="number" placeholder="请输入手机号"></p>
+        <p><a href="javascript:;" class="sub">立即加入</a></p>
       </div>
     </div>
   </div>
@@ -142,7 +142,125 @@ export default {
 }
 </script>
 
-<style scoped>
-  @import 'home.css';
-  .home-wrap{}
+<style lang="sass" scoped>
+  /* @import 'home.css'; */
+
+.home-wrap{
+  background-color: #fff;
+}
+.menu-wrap{
+  overflow: hidden;
+}
+.notice {
+  height: 30px;
+  line-height: 30px;
+  background-color: #ffc;
+  em {
+    color: #f96;
+  }
+  .iconfont{
+    padding-left: 10px;
+    display: inline-block;
+    position: relative;
+    z-index: 11;
+    font-family: "iconfont";
+    color: #f99;
+    background-color: inherit;
+    width: 25px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    float: left;
+  }
+}
+.banner{
+  img {
+    display: block;
+    width: 100%;
+    max-height: 100%;
+  }
+}
+.menu-item {
+  float: left;
+  width: 47%;
+  height: 90px;
+  margin-left: 2%;
+  margin-top: 2%;
+  color: #fff;
+  .iconfont,
+  .item-in {
+      float:left;
+  }
+  .iconfont{
+    width: 30%;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    font-size: 40px;
+  }
+  .item-in {
+    margin-top: 25px;
+    h2 {
+        font-size: 18px;
+    }
+    p {
+        font-size: 12px;
+    }
+  }
+  &.item-max {
+    height: 189px;
+    float:right;
+    margin-right: 2%;
+    text-align: center;
+    .icon,
+    .item-in {
+        width: 100%;
+    }
+    .item-in{
+      margin: 0;
+    }
+    .icon {
+        font-size: 70px;
+    }
+  }
+}
+.brand {
+  width: 96%;
+  height: 60px;
+  line-height: 60px;
+  margin: 10px auto;
+  color: #fff;
+  overflow: hidden;
+  .iconfont{
+    width: 50px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 40px;
+  }
+}
+.reg-wrap {
+  text-align: center;
+  .inp,
+  .sub {
+    display: block;
+    margin: 10px auto;
+    width: 70%;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 3px;
+    padding: 5px 10px;
+  }
+  .inp {
+      border: 1px solid #F47F16;
+      outline: none;
+  }
+  .inp:focus {
+      border: 1px solid #F23030;
+  }
+  .sub {
+      color: #fff;
+      background-color: #F47F16;
+  }
+}
 </style>

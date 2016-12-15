@@ -1,10 +1,10 @@
 <template>
   <div class="myHeader">
-  	<ul class="g-tit">
-        <li class="l"></li>
-        <li class="c"><em>{{title}}</em></li>
-        <li class="r"><a href="javascript:;" class="iconfont icon-gouwuche"></a></li>
-    </ul>
+  	<div class="g-tit">
+        <a class="l"></a>
+        <a class="c"><em>{{title}}</em></a>
+        <a class="r" href="javascript:;"><i class="iconfont icon-gouwuche"></i></a>
+    </div>
   </div>
 </template>
 

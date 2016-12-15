@@ -28,15 +28,33 @@ i,em{
 /*
     public color
 */
-.bg-red{background-color: #F23030}
-.bg-deeporange{background-color: #ff5722}
-.bg-deeppurple{background-color: #673ab7}
-.bg-blue{background-color: #2196f3}
-.bg-green{background-color: #63CB58}
-.bg-lightgreen{background-color: #0BD075}
-.bg-teal{background-color: #009688}
-.bg-purple{background-color:#9c27b0}
-.icon-notificationfill{background-color:#9c27b0}
+.bg-notice{background-color:#9c27b0 !important}
+
+.bg-red{background-color: #F23030 !important}
+.bg-lightyellow{background-color: #FFC324 !important}
+.bg-deeporange{background-color: #ff5722 !important}
+.bg-deeppurple{background-color: #673ab7 !important}
+.bg-blue{background-color: #2196f3 !important}
+.bg-lightblue{background-color: #25B3FF !important}
+.bg-green{background-color: #63CB58 !important}
+.bg-lightgreen{background-color: #0BD075 !important}
+.bg-teal{background-color: #009688 !important}
+.bg-purple{background-color:#9c27b0 !important}
+.bg-pink{background-color:#FF3797 !important}
+.bg-indigo{background-color:#3f51b5 !important}
+
+.t-red{color: #F23030 !important}
+.t-lightyellow{color: #FFC324 !important}
+.t-deeporange{color: #ff5722 !important}
+.t-deeppurple{color: #673ab7 !important}
+.t-blue{color: #2196f3 !important}
+.t-lightblue{color: #25B3FF !important}
+.t-green{color: #63CB58 !important}
+.t-lightgreen{color: #0BD075 !important}
+.t-teal{color: #009688 !important}
+.t-purple{color:#9c27b0 !important}
+.t-pink{color:#FF3797 !important}
+.t-indigo{color:#3f51b5 !important}
 
 /*
     public style
@@ -70,9 +88,17 @@ i,em{
     top:0;
     position: absolute;
 }
-.g-tit .l{
-    left:0;
+
+.g-tit .l,
+.g-tit .r{
+    width: 44px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
     z-index: 5;
+}
+.g-tit .l{
+    left:10px;
 }
 .g-tit .c{
     width: 100%;
@@ -82,8 +108,7 @@ i,em{
     text-align: center;
 }
 .g-tit .r{
-    right:0;
-    z-index: 5;
+    right:10px;
 }
 .g-tit .c em{
     display: block;
@@ -92,16 +117,10 @@ i,em{
     color: #fff;
 }
 .g-tit .iconfont{
-    display: inline-block;
     color: #fff;
-    font-size: 17.5px;
-    position: relative;
+    font-size: 20px;
     -webkit-transition: opacity .15s;
     transition: opacity .15s;
-    border: 0;
-    padding: 13.5px;
-    text-align: center;
-    line-height: 1;
 }
 
 /*
