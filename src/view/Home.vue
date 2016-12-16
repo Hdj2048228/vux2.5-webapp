@@ -83,7 +83,7 @@
 
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
-import mySlide from '../common/mySlide.vue';
+import mySlide from './components/mySlide.vue';
 import BScroll from 'better-scroll';
 export default {
   name: 'home',

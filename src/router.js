@@ -2,10 +2,10 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
-import Home from './view/home/Home.vue';
-import Product from './view/product/Product.vue';
-import Detail from './view/detail/Detail.vue';
-import User from './view/user/User.vue';
+import Home from './view/Home.vue';
+import Product from './view/Product.vue';
+import Detail from './view/Detail.vue';
+import User from './view/User.vue';
 
 export default new VueRouter({
     // mode: 'history',

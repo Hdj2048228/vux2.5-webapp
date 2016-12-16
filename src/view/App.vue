@@ -9,9 +9,9 @@
 </template>
 
 <script>
-  import myHeader from './common/myHeader.vue';
-  import myFooter from './common/myFooter.vue';
-  import myMenu from './common/myMenu.vue';
+  import myHeader from './components/myHeader.vue';
+  import myFooter from './components/myFooter.vue';
+  import myMenu from './components/myMenu.vue';
   export default {
     name:"app",
     components: { myFooter, myMenu, myHeader },
@@ -27,8 +27,8 @@
 </script>
 
 <style>
-  @import '../assets/font/i.css';
-  @import 'app.css';
+  @import './style/font/i.css';
+  @import './style/app.css';
   #app{
     height: 100%;
     position: relative;
