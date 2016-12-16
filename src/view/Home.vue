@@ -12,32 +12,32 @@
         </my-slide>
       </div>
       <div class="menu-wrap">
-        <div class="menu-item bg-red">
+        <div class="menu-item bg-red" @click="addPlus({num:10})">
           <i class="iconfont icon-wodedingdan"></i>
           <div class="item-in">
             <h2>累计交易量</h2>
-            <p>602,130,619元</p>
+            <p>1000000{{count}}元</p>
           </div>
         </div>
-        <div class="menu-item bg-deeporange">
+        <div class="menu-item bg-deeporange" @click="add({num:10})">
           <i class="iconfont icon-wodejuhuasuan"></i>
           <div class="item-in">
             <h2>投资人次</h2>
-            <p>110,545人</p>
+            <p>1000{{count}}人</p>
           </div>
         </div>
-        <div class="menu-item bg-deeppurple">
+        <div class="menu-item bg-deeppurple" @click="reduce()">
           <i class="iconfont icon-liwu"></i>
           <div class="item-in">
             <h2>新手专享</h2>
-            <p>注册送99元红包</p>
+            <p>注册送{{count}}元红包</p>
           </div>
         </div>
-        <div class="menu-item bg-blue">
+        <div class="menu-item bg-blue" @click="reducePlus()">
           <i class="iconfont icon-wodejuhuasuan"></i>
           <div class="item-in">
             <h2>注册用户</h2>
-            <p>268,603人</p>
+            <p>1000{{count}}人</p>
           </div>
         </div>
       </div>
@@ -92,7 +92,7 @@ export default {
     return{
       title:'WebApp',
       show:false,
-      count:10,
+      count:100,
       swipe: {
         activeIndex: 0
       },

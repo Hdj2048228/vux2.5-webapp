@@ -1,15 +1,15 @@
-import { add, addPlus, reduce, redecePlus } from '../types';
+import { add, addPlus, reduce, reducePlus } from '../types';
 
 export default{
     [addPlus] (context) {
-        context.commit(add,{num:4});
+        context.commit(add,{num:10});
 
         //只有Action允许异步
         setTimeout(()=>{
             context.commit(reduce);
         },1000);
     },
-    [redecePlus] ({ commit }) {
+    [reducePlus] ({ commit }) {
         commit(reduce);
     }
 };
