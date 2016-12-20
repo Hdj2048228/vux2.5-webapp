@@ -16,7 +16,7 @@
               <a class="btn l" href="javascript:;"><i class="iconfont icon-wodedingdan"></i><em>项目详情</em></a>
               <a class="btn r" href="javascript:;"><i class="iconfont">&#xe65f;</i></a>
             </div>
-            <div class="pro-info active">
+            <div class="pro-info" v-show="show">
                 <p><span>融资方：</span>融资方为八戒宝战略合作机构：中汇银和融资租赁有限公司，注册资本3000万美元。业务涉及融资租赁业务、租赁业务、向国内外购买租赁财产、租赁财产的残值处理及维修、租赁交易的咨询。中汇银和融资租赁有限公司拥有高效的经营管理架构、完善的财务治理结构以及较强的风险管控能力，努力实现组织系统化、决策科学化、管理规范化和作业标准化。中汇银和融资租赁有限公司将全程监控企业资金流向，并实地勘验该企业真实运营情况，保障资金安全，并将回款优先偿还项目本息。</p>
                 <p><span>借款方：</span>借款企业成立于2005年，注册资本1100万元。主营业务：交通安全设施销售与安装；公路工程施工、园林绿化工程设计及施工。企业经营近10年，产品遍布全省十多个地、市、区，是全省较早的专业性厂家，业绩在同行中位属前列。</p>
                 <p><span>资金托管：</span>投资资金由第三方机构托管，资金账户与八戒宝公司账户风险隔离。</p>
@@ -26,11 +26,11 @@
             </div>
         </div>
         <div class="product">
-            <div class="pro-tit g-tit" @click="toggle">
+            <div class="pro-tit g-tit">
               <a class="btn l" href="javascript:;"><i class="iconfont icon-wodejuhuasuan"></i><em>认购记录</em></a>
               <a class="btn r" href="javascript:;"><i class="iconfont">&#xe65f;</i></a>
             </div>
-            <div class="pro-info active">
+            <div class="pro-info">
                 <table class="tab-wrap" width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <th>用户</th>
@@ -91,10 +91,16 @@ export default {
     },
     methods: {
         initScroll() {
-            new BScroll(document.getElementById('detail'), {});
+            new BScroll(document.getElementById('detail'), {
+                preventDefault:true,
+                click:true
+            });
         },
         toggle(){
-          this.show =! this.show;
+            this.show =! this.show;
+            this.$nextTick(function(){
+                this.initScroll();
+            });
         }
     }
 }
@@ -170,7 +176,7 @@ export default {
   }
 }
 .pro-info {
-    height:0;
+    padding: 10px;
     overflow:hidden;
     p {
         color: #999;
@@ -181,10 +187,6 @@ export default {
     }
     span {
         color: #f90;
-    }
-    &.active{
-        padding: 10px;
-        height:auto;
     }
 }
 .tab-wrap {

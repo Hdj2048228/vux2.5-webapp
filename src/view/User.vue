@@ -10,7 +10,7 @@
           <a class="btn l" href="javascript:;"><i class="iconfont">&#xe655;</i>功能大全</a>
           <a class="btn r" href="javascript:;"><i class="iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
         </div>
-        <div class="box-con" :class="{active:show}">
+        <div class="box-con" v-show="show">
           <a href="javascript:;">
             <i class="iconfont t-lightblue">&#xe657;</i>
             <em>资金管理</em>
@@ -75,17 +75,20 @@ export default {
   },
   mounted(){
     this.$parent.title=this.title;
-    // this.initScroll();
+    this.initScroll();
   },
   methods:{
     initScroll(){
-      new BScroll(document.getElementById('user'),{});
+      new BScroll(document.getElementById('user'), {
+          preventDefault:true,
+          click:true
+      });
     },
     toggle(){
       this.show =! this.show;
-      // this.$nextTick(function(){
-      //   this.initScroll();
-      // });
+      this.$nextTick(function(){
+          this.initScroll();
+      });
     }
   }
 }
@@ -131,7 +134,6 @@ export default {
       border-bottom: 1px solid #f1f1f1;
     }
     .box-con{
-      height:0;
       -webkit-transition: height.3s;
       transition: height .3s;
       overflow:hidden;
@@ -157,9 +159,6 @@ export default {
         font-size: 40px;
         line-height: 70px;
       }
-    }
-    .box-con.active{
-      height:220px;
     }
   }
   .user-btn{
