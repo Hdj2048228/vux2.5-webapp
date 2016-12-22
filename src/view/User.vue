@@ -6,7 +6,7 @@
         <a class="btn r" href="javascript:;">账户管理<i class="iconfont">&#xe65f;</i></a>
       </div>
       <div class="user-box">
-        <div class="box-tit g-tit" @click="toggle">
+        <div class="box-tit g-tit" @click="_toggle">
           <a class="btn l" href="javascript:;"><i class="iconfont">&#xe655;</i>功能大全</a>
           <a class="btn r" href="javascript:;"><i class="iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
         </div>
@@ -63,32 +63,20 @@
 </template>
 
 <script>
-import BScroll from 'better-scroll';
 export default {
   name:"user",
-  components:{ BScroll },
   data(){
     return{
         title:'用户中心',
-        show:false
+        show:true
     }
   },
   mounted(){
     this.$parent.title=this.title;
-    this.initScroll();
   },
   methods:{
-    initScroll(){
-      new BScroll(document.getElementById('user'), {
-          preventDefault:true,
-          click:true
-      });
-    },
-    toggle(){
+    _toggle(){
       this.show =! this.show;
-      this.$nextTick(function(){
-          this.initScroll();
-      });
     }
   }
 }
