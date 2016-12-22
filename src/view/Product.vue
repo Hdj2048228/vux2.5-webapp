@@ -2,7 +2,7 @@
   <div class="product" id="product">
     <div class="items">
       <div class="item" v-for="index in 15">
-        <div class="media large"><img src="../assets/img/logo.png"></div>
+        <div class="media"><img src="../assets/img/logo.png"></div>
         <div class="content">
           <div class="prop">第{{index}}期日进斗金</div>
           <div class="prop">按日付息,到期还本</div>
@@ -50,7 +50,7 @@ export default {
     width: 60px;
     height: 60px;
     line-height: 60px;
-    margin-right: .8rem;
+    margin-right:10px;
     text-align: center;
     position: relative;
     z-index: 2;

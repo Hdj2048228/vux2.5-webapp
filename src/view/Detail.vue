@@ -11,12 +11,12 @@
           <li><a class="btn"><em>利率</em><b>10%</b></a></li>
         </ul>
       </div>
-      <div class="pro">
-        <div class="pro-tit g-tit" @click="_toggle">
+      <div class="items">
+        <div class="item-tit g-tit" @click="_toggle">
           <a class="btn l" href="javascript:;"><i class="icon iconfont">&#xe655;</i><em>项目详情</em></a>
           <a class="btn r" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
         </div>
-        <div class="pro-info" v-show="show">
+        <div class="item-info" v-show="show">
           <p><span>融资方：</span>融资方为八戒宝战略合作机构：中汇银和融资租赁有限公司，注册资本3000万美元。业务涉及融资租赁业务、租赁业务、向国内外购买租赁财产、租赁财产的残值处理及维修、租赁交易的咨询。中汇银和融资租赁有限公司拥有高效的经营管理架构、完善的财务治理结构以及较强的风险管控能力，努力实现组织系统化、决策科学化、管理规范化和作业标准化。中汇银和融资租赁有限公司将全程监控企业资金流向，并实地勘验该企业真实运营情况，保障资金安全，并将回款优先偿还项目本息。</p>
           <p><span>借款方：</span>借款企业成立于2005年，注册资本1100万元。主营业务：交通安全设施销售与安装；公路工程施工、园林绿化工程设计及施工。企业经营近10年，产品遍布全省十多个地、市、区，是全省较早的专业性厂家，业绩在同行中位属前列。</p>
           <p><span>资金托管：</span>投资资金由第三方机构托管，资金账户与八戒宝公司账户风险隔离。</p>
@@ -25,12 +25,12 @@
           <p><span>相关费用：</span>天天赚产品0加入费，用户只需承担提现所产生的费用。单笔提现金额小于5万元的，每笔收取1元提现手续费；单笔提现金额大于等于5万元，每笔收取5元提现手续费。</p>
         </div>
       </div>
-      <div class="pro">
-        <div class="pro-tit g-tit">
+      <div class="items">
+        <div class="item-tit g-tit">
           <a class="btn l" href="javascript:;"><i class="icon iconfont">&#xe659;</i><em>认购记录</em></a>
           <a class="btn r" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
         </div>
-        <div class="pro-info">
+        <div class="item-info">
           <table class="tab-wrap" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th>用户</th>
@@ -138,12 +138,12 @@ export default {
   }
 }
 
-.pro {
+.items {
   background-color: #fff;
   margin-bottom: 10px;
 }
 
-.pro-tit {
+.item-tit {
   border-bottom: 1px solid #f1f1f1;
   .icon {
     display: inline-block;
@@ -169,7 +169,7 @@ export default {
   }
 }
 
-.pro-info {
+.item-info {
   padding: 10px;
   overflow: hidden;
   p {

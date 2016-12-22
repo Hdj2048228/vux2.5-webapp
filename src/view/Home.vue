@@ -1,72 +1,80 @@
 <template>
   <div class="home" id="home">
     <div class="home-wrap">
-      <div class="notice">
-        <i class="iconfont icon">&#xe64c;</i>
-        <em>新手专享</em>
+      <div class="items notice yellow">
+        <i class="item icon iconfont">&#xe64c;</i>
+        <a class="item" href="javascript:;">新手专享</a>
       </div>
-      <div class="banner">
+      <div class="items slide">
         <my-slide :swipe="swipe">
           <div class="rd-swipe-item" :style="{ 'background-image': `url(${img})` }" v-for="(img, index) in imgs">
           </div>
         </my-slide>
       </div>
-      <div class="menu-wrap">
-        <div class="menu-item bg-red" @click="addPlus({num:10})">
-          <i class="iconfont icon">&#xe655;</i>
-          <div class="item-in">
+      <div class="items">
+        <div class="card red" @click="addPlus({num:10})">
+          <i class="icon iconfont">&#xe655;</i>
+          <div class="text">
             <h2>累计交易量</h2>
             <p>1000000{{count}}元</p>
           </div>
         </div>
-        <div class="menu-item bg-deeporange" @click="add({num:10})">
-          <i class="iconfont icon">&#xe659;</i>
-          <div class="item-in">
+        <div class="card deeporange" @click="add({num:10})">
+          <i class="icon iconfont">&#xe659;</i>
+          <div class="text">
             <h2>投资人次</h2>
             <p>1000{{count}}人</p>
           </div>
         </div>
-        <div class="menu-item bg-deeppurple" @click="reduce()">
-          <i class="iconfont icon">&#xe685;</i>
-          <div class="item-in">
+        <div class="card deeppurple" @click="reduce()">
+          <i class="icon iconfont">&#xe685;</i>
+          <div class="text">
             <h2>新手专享</h2>
             <p>注册送{{count}}元红包</p>
           </div>
         </div>
-        <div class="menu-item bg-blue" @click="reducePlus()">
-          <i class="iconfont icon">&#xe659;</i>
-          <div class="item-in">
+        <div class="card blue" @click="reducePlus()">
+          <i class="icon iconfont">&#xe659;</i>
+          <div class="text">
             <h2>注册用户</h2>
             <p>1000{{count}}人</p>
           </div>
         </div>
       </div>
-      <div class="brand bg-green">
-        <i class="iconfont icon fl">&#xe64e;</i>
-        <h2 class="fl">金融学堂</h2>
-        <p class="fl ml20">理财难题 | 菜鸟必修</p>
+      <div class="items brand green">
+        <i iconfo class="icon iconfont">&#xe64e;</i>
+        <div class="item">
+          <h2 class="gap">金融学堂</h2>
+          <p class="gap">理财难题 | 菜鸟必修</p>
+        </div>
       </div>
-      <div class="menu-wrap">
-        <div push="list2" class="menu-item bg-lightgreen">
-          <i class="iconfont icon">&#xe64b;</i>
-          <div class="item-in">
+      <div class="items">
+        <div class="card lightgreen">
+          <i class="icon iconfont">&#xe64b;</i>
+          <router-link to="/user">
+          <div class="text">
             <h2>加息秘籍</h2>
             <p>智能理财,存取灵活</p>
           </div>
+          </router-link>
         </div>
-        <div class="menu-item bg-purple item-max">
-          <i class="iconfont icon">&#xe63a;</i>
-          <div class="item-in">
+        <div class="card purple max">
+          <i class="icon iconfont">&#xe63a;</i>
+          <router-link to="/user">
+          <div class="text">
             <h2>五大特色</h2>
             <h2>保障收益</h2>
           </div>
+          </router-link>
         </div>
-        <div push="list2" class="menu-item bg-teal">
-          <i class="iconfont icon">&#xe657;</i>
-          <div class="item-in">
+        <div class="card teal">
+          <i class="icon iconfont">&#xe657;</i>
+          <router-link to="/user">
+          <div class="text">
             <h2>投资理财</h2>
             <p>按日付息,到期还本</p>
           </div>
+          </router-link>
         </div>
       </div>
       <div class="reg-wrap">
@@ -147,84 +155,65 @@ export default {
 }
 </script>
 <style lang="sass" scoped>
-/* @import 'home.css'; */
-
 .home-wrap {
   background-color: #fff;
 }
-
-.menu-wrap {
+.items{
   overflow: hidden;
+  .item{
+    line-height: 30px;
+  }
 }
-
-.notice {
+.notice{
+  width: 100%;
   height: 30px;
-  line-height: 30px;
-  background-color: #ffc;
-  em {
+  overflow:hidden;
+  .item{
     color: #f96;
   }
-  .icon {
+  .item.icon{
     padding-left: 10px;
-    display: inline-block;
-    position: relative;
-    z-index: 11;
-    font-family: "iconfont";
-    color: #f99;
-    background-color: inherit;
-    width: 25px;
-    height: 30px;
-    line-height: 30px;
-    vertical-align: middle;
-    float: left;
   }
 }
 
-.banner {
-  img {
-    display: block;
-    width: 100%;
-    max-height: 100%;
-  }
-}
-
-.menu-item {
-  float: left;
+.card {
+  float:left;
   width: 47%;
   height: 90px;
-  margin-left: 2%;
-  margin-top: 2%;
   color: #fff;
-  .icon,
-  .item-in {
-    float: left;
+  margin: 2% 0 0 2%;
+  overflow:hidden;
+  a{
+    color:#fff;
   }
   .icon {
+    float:left;
     width: 30%;
     height: 90px;
     line-height: 90px;
     text-align: center;
     font-size: 40px;
   }
-  .item-in {
+  .text {
     margin-top: 25px;
+    overflow:hidden;
     h2 {
       font-size: 18px;
     }
-    p {
-      font-size: 12px;
+    p{
+      font-size: 13px;
     }
   }
-  &.item-max {
+  &.max {
     height: 189px;
-    float: right;
+    float:right;
     margin-right: 2%;
     text-align: center;
     .icon,
-    .item-in {
+    .text {
       width: 100%;
     }
-    .item-in {
+    .text {
       margin: 0;
     }
     .icon {
@@ -236,16 +225,22 @@ export default {
 .brand {
   width: 96%;
   height: 60px;
-  line-height: 60px;
   margin: 10px auto;
   color: #fff;
   overflow: hidden;
-  .iconfont {
+  .item{
+    margin-top:12px;
+  }
+  .icon{
+    float:left;
     width: 50px;
-    height: 60px;
     line-height: 60px;
     text-align: center;
     font-size: 40px;
+  }
+  .gap{
+    display:inline-block;
+    margin-left:10px;
   }
 }
 

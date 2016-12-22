@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <my-header :title="title"></my-header>
-    <transition name="bounce" mode="in-out">
+    <transition name="slide" mode="in-out">
       <router-view class="app-view"></router-view>
     </transition>
     <my-menu></my-menu>
@@ -25,7 +25,7 @@ export default {
       title: ''
     }
   },
-  mounted(){
+  mounted() {
     this.initScroll();
   },
   methods: {
@@ -38,14 +38,14 @@ export default {
   }
 }
 </script>
-<style>
+<style lang="sass" scoped>
 @import './style/font/i.css';
 @import './style/app.css';
 #app {
   height: 100%;
+  -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
   position: relative;
-  -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
   overflow: hidden;
 }
 
@@ -59,15 +59,17 @@ export default {
   z-index: 999;
 }
 
-.bounce-enter-active {
-  animation: bounce-in .3s;
+.slide-enter-active {
+  -webkit-animation: slide-in .3s;
+  animation: slide-in .3s;
 }
 
-.bounce-leave-active {
-  /* animation: bounce-out 60ms; */
+.slide-leave-active {
+  /* -webkit-animation: slide-out 60ms; */
+  /* animation: slide-out 60ms; */
 }
 
-@keyframes bounce-in {
+@-webkit-keyframes slide-in {
   0% {
     -webkit-transform: translate3d(100%, 0, 0);
     transform: translate3d(100%, 0, 0);
@@ -78,7 +80,29 @@ export default {
   }
 }
 
-@keyframes bounce-out {
+@keyframes slide-in {
+  0% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(100%, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes slide-out {
   0% {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
