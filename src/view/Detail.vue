@@ -12,11 +12,11 @@
         </ul>
       </div>
       <div class="items">
-        <div class="item-tit g-tit" @click="_toggle">
-          <a class="btn l" href="javascript:;"><i class="icon iconfont">&#xe655;</i><em>项目详情</em></a>
-          <a class="btn r" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
+        <div class="item title" @click="_toggle($event)">
+          <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe655;</i>项目详情</a>
+          <a class="grow btn" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
         </div>
-        <div class="item-info" v-show="show">
+        <div class="item info" v-show="show">
           <p><span>融资方：</span>融资方为八戒宝战略合作机构：中汇银和融资租赁有限公司，注册资本3000万美元。业务涉及融资租赁业务、租赁业务、向国内外购买租赁财产、租赁财产的残值处理及维修、租赁交易的咨询。中汇银和融资租赁有限公司拥有高效的经营管理架构、完善的财务治理结构以及较强的风险管控能力，努力实现组织系统化、决策科学化、管理规范化和作业标准化。中汇银和融资租赁有限公司将全程监控企业资金流向，并实地勘验该企业真实运营情况，保障资金安全，并将回款优先偿还项目本息。</p>
           <p><span>借款方：</span>借款企业成立于2005年，注册资本1100万元。主营业务：交通安全设施销售与安装；公路工程施工、园林绿化工程设计及施工。企业经营近10年，产品遍布全省十多个地、市、区，是全省较早的专业性厂家，业绩在同行中位属前列。</p>
           <p><span>资金托管：</span>投资资金由第三方机构托管，资金账户与八戒宝公司账户风险隔离。</p>
@@ -26,11 +26,11 @@
         </div>
       </div>
       <div class="items">
-        <div class="item-tit g-tit">
-          <a class="btn l" href="javascript:;"><i class="icon iconfont">&#xe659;</i><em>认购记录</em></a>
-          <a class="btn r" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
+        <div class="item title">
+          <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe659;</i><em>认购记录</em></a>
+          <a class="grow btn" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
         </div>
-        <div class="item-info">
+        <div class="item info">
           <table class="tab-wrap" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th>用户</th>
@@ -87,9 +87,9 @@ export default {
     this.$parent.title = this.title;
   },
   methods: {
-    _toggle (){
+    _toggle(event) {
+      if (!event._constructed) return;
       this.show = !this.show;
-      console.log(11);
     }
   }
 }
@@ -125,51 +125,56 @@ export default {
     z-index: 1;
     cursor: pointer;
     position: relative;
-  }
-  em {
-    display: block;
-    border-right: 1px solid #fff;
-  }
-  b {
-    display: block;
-    font-weight: 600;
-    margin-top: 5px;
-    font-size: 16px;
+    em {
+      display: block;
+      border-right: 1px solid #fff;
+    }
+    b {
+      display: block;
+      font-weight: 600;
+      margin-top: 5px;
+      font-size: 16px;
+    }
   }
 }
 
 .items {
   background-color: #fff;
-  margin-bottom: 10px;
 }
 
-.item-tit {
-  border-bottom: 1px solid #f1f1f1;
+.item {
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.item.title {
+  display: -webkit-flex;
+  display: flex;
+  .grow {
+    line-height: 40px;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    color: #333;
+  }
+  .tit {
+    -webkit-flex-grow: 9;
+    flex-grow: 9;
+    text-indent: 5px;
+    .icon {
+      padding-right: 5px;
+    }
+  }
+  .btn {
+    text-align: center;
+  }
   .icon {
     display: inline-block;
     text-align: center;
     font-size: 18px;
     color: #333;
   }
-  .r,
-  .l {
-    width: auto;
-    font-size: 14px;
-    color: #333;
-  }
-  .l {
-    .icon {
-      padding-right: 5px;
-    }
-  }
-  .r {
-    .icon {
-      font-size: 14px;
-    }
-  }
 }
 
-.item-info {
+.item.info {
   padding: 10px;
   overflow: hidden;
   p {
