@@ -16,28 +16,28 @@
           <i class="icon iconfont">&#xe655;</i>
           <div class="text">
             <h2>累计交易量</h2>
-            <p>1000000{{count}}元</p>
+            <p>1000000100元</p>
           </div>
         </div>
         <div class="card deeporange" @click="add({num:10})">
           <i class="icon iconfont">&#xe659;</i>
           <div class="text">
             <h2>投资人次</h2>
-            <p>1000{{count}}人</p>
+            <p>1000100人</p>
           </div>
         </div>
         <div class="card deeppurple" @click="reduce()">
           <i class="icon iconfont">&#xe685;</i>
           <div class="text">
             <h2>新手专享</h2>
-            <p>注册送{{count}}元红包</p>
+            <p>注册送100元红包</p>
           </div>
         </div>
         <div class="card blue" @click="reducePlus()">
           <i class="icon iconfont">&#xe659;</i>
           <div class="text">
             <h2>注册用户</h2>
-            <p>1000{{count}}人</p>
+            <p>1000100人</p>
           </div>
         </div>
       </div>
@@ -90,12 +90,6 @@
   </div>
 </template>
 <script>
-import {
-  mapState,
-  mapMutations,
-  mapGetters,
-  mapActions
-} from 'vuex';
 import mySlide from './components/mySlide.vue';
 export default {
   name: 'home',
@@ -131,19 +125,8 @@ export default {
     this.$parent.title = this.title;
   },
   computed: {
-    ...mapState(['count'])
   },
   methods: {
-    ...mapMutations([
-      'add',
-      'reduce'
-    ]),
-    ...mapActions([
-      'addPlus'
-    ]),
-    ...mapActions({
-      reducePlus: 'reducePlus'
-    }),
     turnTo(index) {
       this.$children.map(swipe => {
         if (swipe.turnTo) {
