@@ -22,6 +22,9 @@ export default {
   },
   mounted() {
     this.$parent.title = this.title;
+    this.$nextTick(function () {
+        _scroll.refresh();
+    });
   },
   methods: {}
 }

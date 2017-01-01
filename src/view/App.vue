@@ -11,14 +11,12 @@
 import myHeader from './components/myHeader.vue';
 import myFooter from './components/myFooter.vue';
 import myMenu from './components/myMenu.vue';
-import BScroll from 'better-scroll';
 export default {
   name: "app",
   components: {
     myFooter,
     myMenu,
-    myHeader,
-    BScroll
+    myHeader
   },
   data() {
     return {
@@ -26,15 +24,13 @@ export default {
     }
   },
   mounted() {
-    this.initScroll();
+    window._scroll = new this.BScroll('.app-view', {
+      preventDefault: true,
+      click: true
+    });
   },
   methods: {
-    initScroll() {
-      new BScroll('.app-view', {
-        preventDefault: true,
-        click: true
-      });
-    }
+
   }
 }
 </script>

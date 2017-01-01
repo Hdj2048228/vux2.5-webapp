@@ -12,7 +12,7 @@
         </ul>
       </div>
       <div class="items">
-        <div class="item title" @click="_toggle($event)">
+        <div class="item title" @click="toggle($event)">
           <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe655;</i>项目详情</a>
           <a class="grow btn" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
         </div>
@@ -79,17 +79,22 @@ export default {
   data() {
     return {
       title: '产品详情',
-      msg: 'msg',
-      show: true
+      show: false
     }
   },
   mounted() {
     this.$parent.title = this.title;
+    this.$nextTick(function () {
+        _scroll.refresh();
+    });
   },
   methods: {
-    _toggle(event) {
+    toggle(event) {
       if (!event._constructed) return;
       this.show = !this.show;
+      this.$nextTick(function () {
+          _scroll.refresh();
+      });
     }
   }
 }
@@ -151,9 +156,9 @@ export default {
   display: flex;
   .grow {
     line-height: 40px;
+    color: #333;
     -webkit-flex-grow: 1;
     flex-grow: 1;
-    color: #333;
   }
   .tit {
     -webkit-flex-grow: 9;

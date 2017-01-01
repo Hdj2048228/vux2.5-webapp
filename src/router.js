@@ -13,15 +13,15 @@ export default new VueRouter({
         {
             path: '/home',
             component: Home
-        }, 
+        },
         {
             path: '/product',
             component: Product
-        }, 
+        },
         {
             path: '/detail',
             component: Detail
-        }, 
+        },
         {
             path: '/user',
             component: User
