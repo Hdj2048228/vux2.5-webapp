@@ -73,16 +73,20 @@ export default {
   },
   mounted() {
     this.$parent.title = this.title;
-    this.$nextTick(function() {
-      _scroll.refresh();
-    });
+    this.initScroll();
   },
   methods: {
     toggle(event) {
       if (!event._constructed) return;
       this.show = !this.show;
       this.$nextTick(function() {
-        _scroll.refresh();
+        user_scroll.refresh();
+      });
+    },
+    initScroll(){
+      window.user_scroll = new this.BScroll('#user', {
+        preventDefault: true,
+        click: true
       });
     }
   }
@@ -93,7 +97,9 @@ export default {
 .app-view {
   background-color: #f1f1f1;
 }
-
+.user-wrap{
+  background-color: #fff;
+}
 .item {
   border-bottom: 1px solid #f1f1f1;
 }

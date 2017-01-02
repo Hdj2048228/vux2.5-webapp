@@ -84,16 +84,20 @@ export default {
   },
   mounted() {
     this.$parent.title = this.title;
-    this.$nextTick(function () {
-        _scroll.refresh();
-    });
+    this.initScroll();
   },
   methods: {
     toggle(event) {
       if (!event._constructed) return;
       this.show = !this.show;
       this.$nextTick(function () {
-          _scroll.refresh();
+          detail_scroll.refresh();
+      });
+    },
+    initScroll(){
+      window.detail_scroll = new this.BScroll('#detail', {
+        preventDefault: true,
+        click: true
       });
     }
   }

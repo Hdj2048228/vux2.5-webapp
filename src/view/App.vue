@@ -24,10 +24,6 @@ export default {
     }
   },
   mounted() {
-    window._scroll = new this.BScroll('.app-view', {
-      preventDefault: true,
-      click: true
-    });
   },
   methods: {
 

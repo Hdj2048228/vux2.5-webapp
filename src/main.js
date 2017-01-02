@@ -14,7 +14,7 @@ Vue.use(VueScroll);
 Vue.prototype.BScroll = BScroll;
 
 // debug模式
-Vue.config.debug = true;
+// Vue.config.debug = true;
 
 const app = new Vue({
     store,

@@ -22,8 +22,9 @@ export default {
   },
   mounted() {
     this.$parent.title = this.title;
-    this.$nextTick(function () {
-        _scroll.refresh();
+    new this.BScroll('#product', {
+      preventDefault: true,
+      click: true
     });
   },
   methods: {}

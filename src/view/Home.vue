@@ -12,32 +12,32 @@
         </my-slide>
       </div>
       <div class="items">
-        <div class="card red" @click="addPlus({num:10})">
+        <div class="card red" @click="$store.commit('add')">
           <i class="icon iconfont">&#xe655;</i>
           <div class="text">
             <h2>累计交易量</h2>
-            <p>1000000100元</p>
+            <p>100,000,{{ $store.state.count }}元</p>
           </div>
         </div>
-        <div class="card deeporange" @click="add({num:10})">
+        <div class="card deeporange" @click="$store.commit('reduce')">
           <i class="icon iconfont">&#xe659;</i>
           <div class="text">
             <h2>投资人次</h2>
-            <p>1000100人</p>
+            <p>100,00{{ $store.state.count }}人</p>
           </div>
         </div>
-        <div class="card deeppurple" @click="reduce()">
+        <div class="card deeppurple" @click="add()">
           <i class="icon iconfont">&#xe685;</i>
           <div class="text">
             <h2>新手专享</h2>
-            <p>注册送100元红包</p>
+            <p>注册送{{ count }}元红包</p>
           </div>
         </div>
-        <div class="card blue" @click="reducePlus()">
+        <div class="card blue" @click="reduce()">
           <i class="icon iconfont">&#xe659;</i>
           <div class="text">
             <h2>注册用户</h2>
-            <p>1000100人</p>
+            <p>100,00{{ count }}人</p>
           </div>
         </div>
       </div>
@@ -91,6 +91,7 @@
 </template>
 <script>
 import mySlide from './components/mySlide.vue';
+import {mapState,mapMutations,mapActions,mapGetters} from 'vuex';
 export default {
   name: 'home',
   components: {
@@ -99,8 +100,6 @@ export default {
   data() {
     return {
       title: 'WebApp',
-      show: false,
-      count: 100,
       swipe: {
         activeIndex: 0
       },
@@ -121,15 +120,18 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState(['count'])
+  },
   mounted() {
     this.$parent.title = this.title;
-    this.$nextTick(function () {
-        _scroll.refresh();
+    new this.BScroll('#home', {
+      preventDefault: true,
+      click: true
     });
   },
-  computed: {
-  },
   methods: {
+    ...mapMutations(['add','reduce']),
     turnTo(index) {
       this.$children.map(swipe => {
         if (swipe.turnTo) {
@@ -146,6 +148,9 @@ export default {
 }
 .items{
   overflow: hidden;
+  a{
+    color:#fff;
+  }
   .item{
     line-height: 30px;
   }
@@ -169,9 +174,6 @@ export default {
   color: #fff;
   margin: 2% 0 0 2%;
   overflow:hidden;
-  a{
-    color:#fff;
-  }
   .icon {
     float:left;
     width: 30%;
@@ -187,7 +189,7 @@ export default {
       font-size: 18px;
     }
     p{
-      font-size: 13px;
+      font-size: 12px;
     }
   }
   &.max {
@@ -226,7 +228,7 @@ export default {
   }
   .gap{
     display:inline-block;
-    margin-left:10px;
+    font-size: 16px;
   }
 }
 
