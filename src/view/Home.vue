@@ -145,6 +145,7 @@ export default {
 <style lang="sass" scoped>
 .home-wrap {
   background-color: #fff;
+  padding-bottom: 10px;
 }
 .items{
   overflow: hidden;
