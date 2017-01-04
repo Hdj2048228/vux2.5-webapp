@@ -5,39 +5,69 @@
         <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe659;</i>立即登录</a>
         <a class="grow btn" href="javascript:;"><i class="iconfont">&#xe65f;</i></a>
       </div>
-      <div class="box-tit item title" @click="toggle($event)">
-        <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe655;</i>功能大全</a>
-        <a class="grow btn" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
+      <div class="box">
+        <div class="item title" @click="toggle($event)">
+          <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe655;</i>功能大全</a>
+          <a class="grow btn" href="javascript:;"><i class="icon iconfont">{{show ?'&#xe65e;':'&#xe65f;'}}</i></a>
+        </div>
+        <div class="item-wrap" v-show="show">
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightblue">&#xe657;</i>
+            <em class="txt">资金管理</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightgreen">&#xe657;</i>
+            <em class="txt">收支明细</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-indigo">&#xe657;</i>
+            <em class="txt">统计报表</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-red">&#xe657;</i>
+            <em class="txt">财务管理</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightyellow">&#xe657;</i>
+            <em class="txt">系统设置</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-pink">&#xe657;</i>
+            <em class="txt">收益统计</em>
+          </a>
+        </div>
       </div>
-      <div class="box-wrap" v-show="show">
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-lightblue">&#xe657;</i>
-          <em>资金管理</em>
-        </a>
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-lightgreen">&#xe657;</i>
-          <em>收支明细</em>
-        </a>
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-indigo">&#xe657;</i>
-          <em>统计报表</em>
-        </a>
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-red">&#xe657;</i>
-          <em>财务管理</em>
-        </a>
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-lightyellow">&#xe657;</i>
-          <em>系统设置</em>
-        </a>
-        <a class="box-item" href="javascript:;">
-          <i class="icon iconfont t-pink">&#xe657;</i>
-          <em>收益统计</em>
-        </a>
-      </div>
-      <div class="item title">
-        <a class="grow tit" href="javascript:;"><i class="icon iconfont t-red">&#xe63f;</i>购物车</a>
-        <a class="grow btn" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
+      <div class="box">
+        <div class="item title" @click="toggle($event)">
+          <a class="grow tit" href="javascript:;"><i class="icon iconfont t-red">&#xe63f;</i>购物车</a>
+          <a class="grow btn" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
+        </div>
+        <div class="item-wrap" v-show="show">
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightblue">&#xe685;</i>
+            <em class="txt">资金管理</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightgreen">&#xe685;</i>
+            <em class="txt">收支明细</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-indigo">&#xe685;</i>
+            <em class="txt">统计报表</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-red">&#xe685;</i>
+            <em class="txt">财务管理</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-lightyellow">&#xe685;</i>
+            <em class="txt">系统设置</em>
+          </a>
+          <a class="btn" href="javascript:;">
+            <i class="icon iconfont t-pink">&#xe685;</i>
+            <em class="txt">收益统计</em>
+          </a>
+        </div>
       </div>
       <div class="item title">
         <a class="grow tit" href="javascript:;"><i class="icon iconfont t-purple">&#xe65a;</i>立即充值</a>
@@ -78,12 +108,18 @@ export default {
   methods: {
     toggle(event) {
       if (!event._constructed) return;
-      this.show = !this.show;
+      // this.show = !this.show;
+      var info = event.currentTarget.parentNode.children[1];
+      if (info.style.display == 'none') {
+        info.style.display = 'block'
+      } else {
+        info.style.display = 'none'
+      }
       this.$nextTick(function() {
         user_scroll.refresh();
       });
     },
-    initScroll(){
+    initScroll() {
       window.user_scroll = new this.BScroll('#user', {
         preventDefault: true,
         click: true
@@ -97,9 +133,11 @@ export default {
 .app-view {
   background-color: #f1f1f1;
 }
-.user-wrap{
+
+.user-wrap {
   background-color: #fff;
 }
+
 .item {
   border-bottom: 1px solid #f1f1f1;
 }
@@ -136,39 +174,30 @@ export default {
   background-color: #fff;
 }
 
-
-.box-wrap {
-  -webkit-transition: height.3s;
-  transition: height .3s;
-
-  display: -webkit-flex;
-  display: flex;
-
-  flex-wrap:-webkit-wrap;
-  flex-wrap:wrap;
-  .box-item{
+.item-wrap {
+  width: 100%;
+  border-bottom: 1px solid #f1f1f1;
+  overflow: hidden;
+  .btn {
+    float: left;
     width: 33%;
-    padding-top: 10px;
+    padding: 10px 0;
     text-align: center;
-    color: #f90;
-
-    -webkit-flex-grow: 1;
-    flex-grow: 1;
   }
-  em {
-    display: block;
-    font-size: 13px;
-    color: #666;
-    height: 30px;
-    line-height: 30px;
+  .icon,
+  .txt {
+    display: inline-block;
   }
   .icon {
-    height: 70px;
     width: 70px;
-    display: block;
-    margin: 0 auto;
-    font-size: 40px;
     line-height: 70px;
+    font-size: 40px;
+  }
+  .txt {
+    width: 100%;
+    line-height: 30px;
+    font-size: 13px;
+    color: #666;
   }
 }
 </style>

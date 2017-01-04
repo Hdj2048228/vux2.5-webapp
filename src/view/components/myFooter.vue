@@ -11,7 +11,7 @@
 </script>
 <style scoped>
 .myfooter {
-    line-height: 50px;
+    line-height: 60px;
     text-align: center;
     color: #fff;
     background: #666;

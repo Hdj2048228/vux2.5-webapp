@@ -18,16 +18,13 @@ export default {
     myMenu,
     myHeader
   },
-  data() {
+  data(){
     return {
       title: ''
     }
   },
-  mounted() {
-  },
-  methods: {
-
-  }
+  mounted(){},
+  methods:{}
 }
 </script>
 <style lang="sass" scoped>
@@ -43,8 +40,8 @@ export default {
 
 .app-view {
   position: absolute;
-  top: 44px;
-  bottom: 50px;
+  top: 42px;
+  bottom: 56px;
   left: 0;
   right: 0;
   background-color: #fff;

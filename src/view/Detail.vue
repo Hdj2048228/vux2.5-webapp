@@ -2,15 +2,15 @@
   <div class="detail" id="detail">
     <div class="detail-wrap">
       <div class="intro">
-        <p class="intro-tit">今日认购总额（元）</p>
-        <h2 class="intro-tit">￥20,000</h2>
-        <ul class="intro-total">
-          <li><a class="btn"><em>借款金额</em><b>￥200,000</b></a></li>
-          <li><a class="btn"><em>起投金额</em><b>￥100</b></a></li>
-          <li><a class="btn"><em>借款期限</em><b>30天</b></a></li>
-          <li><a class="btn"><em>利率</em><b>10%</b></a></li>
-        </ul>
+        <p>今日认购总额（元）</p>
+        <p class="sum">￥20,000</p>
       </div>
+      <ul class="total">
+        <li class="btn"><em>借款金额</em><b>￥200,000</b></li>
+        <li class="btn"><em>起投金额</em><b>￥1000</b></li>
+        <li class="btn"><em>借款期限</em><b>30天</b></li>
+        <li class="btn"><em>利率</em><b>10%</b></li>
+      </ul>
       <div class="items">
         <div class="item title" @click="toggle($event)">
           <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe655;</i>项目详情</a>
@@ -26,11 +26,11 @@
         </div>
       </div>
       <div class="items">
-        <div class="item title">
+        <div class="item title" @click="toggle($event)">
           <a class="grow tit" href="javascript:;"><i class="icon iconfont">&#xe659;</i><em>认购记录</em></a>
           <a class="grow btn" href="javascript:;"><i class="icon iconfont">&#xe65f;</i></a>
         </div>
-        <div class="item info">
+        <div class="item info" v-show="show">
           <table class="tab-wrap" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>
               <th>用户</th>
@@ -89,7 +89,13 @@ export default {
   methods: {
     toggle(event) {
       if (!event._constructed) return;
-      this.show = !this.show;
+      // this.show = !this.show;
+      var info = event.currentTarget.parentNode.children[1];
+      if(info.style.display=='none'){
+        info.style.display='block'
+      }else{
+        info.style.display='none'
+      }
       this.$nextTick(function () {
           detail_scroll.refresh();
       });
@@ -109,28 +115,35 @@ export default {
 }
 
 .intro {
-  min-height: 180px;
-  padding-top: 10px;
   color: #fff;
   background-color: #f90;
-  position: relative;
-}
-
-.intro-tit {
-  line-height: 44px;
-  text-align: center;
-}
-
-.intro-total {
-  margin-top: 20px;
-  overflow: hidden;
-  li {
-    float: left;
-    width: 25%;
+  p{
+    line-height: 40px;
     text-align: center;
   }
+  .sum{
+    font-weight: bold;
+  }
+}
+.total {
+  padding:20px 0;
+  color: #fff;
+  background-color: #f90;
+    display: -webkit-flex;
+    display: flex;
+  li {
+    text-align: center;
+    -webkit-flex: 2;
+    flex: 2;
+  }
+  li:last-child{
+    -webkit-flex: 1;
+    flex: 1;
+    em{
+      border-right:0;
+    }
+  }
   .btn {
-    display: block;
     z-index: 1;
     cursor: pointer;
     position: relative;
