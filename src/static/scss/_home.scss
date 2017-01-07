@@ -1,0 +1,114 @@
+.home-wrap {
+  background-color: #fff;
+  padding-bottom: 10px;
+}
+.home-items{
+  overflow: hidden;
+  a{
+    color:#fff;
+  }
+  .home-item{
+    line-height: 30px;
+  }
+}
+.notice{
+  width: 100%;
+  height: 30px;
+  overflow:hidden;
+  .home-item{
+    color: #f96;
+  }
+  .home-item.icon{
+    padding-left: 10px;
+  }
+}
+
+.card {
+  float:left;
+  width: 47%;
+  height: 90px;
+  color: #fff;
+  margin: 2% 0 0 2%;
+  overflow:hidden;
+  .icon {
+    float:left;
+    width: 30%;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    font-size: 40px;
+  }
+  .text {
+    margin-top: 25px;
+    overflow:hidden;
+    h2 {
+      font-size: 18px;
+    }
+    p{
+      font-size: 12px;
+    }
+  }
+  &.max {
+    height: 189px;
+    float:right;
+    margin-right: 2%;
+    text-align: center;
+    .icon,
+    .text {
+      width: 100%;
+    }
+    .text {
+      margin: 0;
+    }
+    .icon {
+      font-size: 70px;
+    }
+  }
+}
+
+.brand {
+  width: 96%;
+  height: 60px;
+  margin: 10px auto;
+  color: #fff;
+  overflow: hidden;
+  .home-item{
+    margin-top:12px;
+  }
+  .icon{
+    float:left;
+    width: 50px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 40px;
+  }
+  .gap{
+    display:inline-block;
+    font-size: 16px;
+  }
+}
+
+.reg-wrap {
+  text-align: center;
+  .inp,
+  .sub {
+    display: block;
+    margin: 10px auto;
+    width: 70%;
+    height: 18px;
+    line-height: 18px;
+    border-radius: 3px;
+    padding: 5px 10px;
+  }
+  .inp {
+    border: 1px solid #F47F16;
+    outline: none;
+  }
+  .inp:focus {
+    border: 1px solid #F23030;
+  }
+  .sub {
+    color: #fff;
+    background-color: #F47F16;
+  }
+}

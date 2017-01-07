@@ -1,0 +1,24 @@
+
+@media (min-width: 840px) {
+  .my-tabs {
+    .my-box-cell {
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 839px) and (min-width: 480px) {
+  .my-tabs {
+    .my-box-cell {
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 479px) {
+  .my-tabs {
+    .my-box-cell {
+      margin: 0;
+    }
+  }
+}
