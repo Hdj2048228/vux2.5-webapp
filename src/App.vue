@@ -9,21 +9,21 @@
 </template>
 
 <script>
-import myHeader from './components/myHeader/myHeader.vue';
-import myFooter from './components/myFooter/myFooter.vue';
-import myMenu from './components/myMenu/myMenu.vue';
+  import myHeader from './components/myHeader/myHeader.vue';
+  import myFooter from './components/myFooter/myFooter.vue';
+  import myMenu from './components/myMenu/myMenu.vue';
 
-export default {
-  name: "app",
-  components: {
-    myFooter,
-    myMenu,
-    myHeader
-  },
-  data(){
-    return{
-      title:''
+  export default {
+    name: "app",
+    data(){
+      return{
+        title:''
+      }
+    },
+    components: {
+      myFooter,
+      myMenu,
+      myHeader
     }
   }
-}
 </script>
