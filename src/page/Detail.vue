@@ -1,5 +1,6 @@
 <template>
-  <div class="detail">
+  <view-box class="detail" bodyPaddingBottom="60px" bodyPaddingTop="0">
+
     <x-header title="商品详情"
               :right-options="{showMore: true,link:'/home'}"
               @on-click-more="showMenus = true">
@@ -7,10 +8,11 @@
     </x-header>
 
     <swiper :aspect-ratio="272/375" v-model="swiper_index" @on-index-change="swiperChange">
-      <swiper-item class="swiper-img" v-for="(item, index) in detail_swiper.pics" :key="index"><img :src="item.url"></swiper-item>
+      <swiper-item class="swiper-img" v-for="(item, index) in detail_swiper.pics" :key="index"><img :src="item.url">
+      </swiper-item>
     </swiper>
 
-    <group>
+    <group class="vux-group">
       <cell :title="detail_swiper.title" :inlineDesc="detail_swiper.desc | subString(22)" value="￥1024"></cell>
       <cell-form-preview :list="detail_params"></cell-form-preview>
     </group>
@@ -33,13 +35,14 @@
     <div transfer-dom>
       <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
     </div>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
-    XHeader,Swiper,SwiperItem,CellFormPreview,Group,Cell,Panel,Card,
-    TransferDom,Actionsheet,Scroller,Tab,TabItem,Tabbar,TabbarItem
+    ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel, Card,
+    TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
   } from 'vux';
 
   import {
@@ -48,9 +51,9 @@
 
   export default {
     name: 'detail',
-    components:{
-      XHeader,Swiper,SwiperItem,CellFormPreview,Group,Cell,Panel,Card,
-      TransferDom,Actionsheet,Scroller,Tab,TabItem,Tabbar,TabbarItem
+    components: {
+      ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel, Card,
+      TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
     },
     data () {
       return {
@@ -80,7 +83,7 @@
       }
     },
     created(){
-      this.$store.dispatch('getGoodsDetail',123);
+      this.$store.dispatch('getGoodsDetail', 123);
     },
     mounted(){
 
@@ -90,53 +93,29 @@
         console.log("swiperChange");
       },
       addCar(){
-        this.badgeNum=(Number(this.badgeNum)+1)+'';
+        this.badgeNum = (Number(this.badgeNum) + 1) + '';
       }
     }
   }
 </script>
 
 <style lang="less">
-  li{
-    list-style: none;
-  }
-  .weui-tab{
-    .detail{
-      padding-bottom: 20px;
-      position: relative;
-      .weui-tabbar{
-        background-color: #fff;
+  .detail {
+    .weui-tab__panel {
+      background-color: #f0f0f0;
+    }
+
+    .vux-card-content {
+      padding: 10px 15px;
+      color: #999999;
+      font-size: 13px;
+      .card-padding {
+        line-height: 22px;
       }
     }
-  }
-  .weui-tab__panel{
-    background-color: #f0f0f0;
-  }
-  .vux-card-content{
-    padding: 10px 15px;
-    color: #999999;
-    font-size: 13px;
-    .card-padding{
-      line-height: 22px;
+
+    .swiper-img img {
+      max-width: 100%;
     }
-  }
-  .weui-form-preview__item{
-    position: relative;
-    /*&::before{
-      content: " ";
-      width: 100%;
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border-top: 1px solid #D9D9D9;
-      -webkit-transform-origin: 0 0;
-      transform-origin: 0 0;
-      -webkit-transform: scaleY(0.5);
-      transform: scaleY(0.5);
-    }*/
-  }
-  .swiper-img img{
-    max-width: 100%;
   }
 </style>

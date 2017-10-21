@@ -17,6 +17,16 @@ export default[
     component: App.components.User
   },
   {
+    path: '/list',
+    name: 'list',
+    component: App.components.List
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: App.components.Search
+  },
+  {
     path: '/car',
     name: 'car',
     component: App.components.Car

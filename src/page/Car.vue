@@ -1,13 +1,13 @@
 <template>
-  <div class="car">
+  <view-box class="car" bodyPaddingBottom="50px" bodyPaddingTop="0">
+
     <x-header title="购物车"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
               @on-click-more="showMenus = true">
     </x-header>
 
-    <grid>
-      <div class="list" v-for="(item,index) in panel_list" @on-item-click="onItemClick(item.id)" :key="index">
+    <grid class="vux-grid-list" v-for="(item,index) in panel_list" @on-item-click="onItemClick(item.id)" :key="index">
         <a href="javascript:;" class="weui-grid" style="width: 50%;">
           <img class="grid-pic" src="http://183.134.74.90/group1/M00/00/04/wKgBCVljaDSASUb0AAQas3XpTfw354.png">
         </a>
@@ -22,7 +22,6 @@
             </inline-x-number>
           </div>
         </a>
-      </div>
     </grid>
 
     <div transfer-dom>
@@ -38,17 +37,19 @@
 
     <tabbar>
       <tabbar-item selected>
-        <span slot="label">合计：{{totalMoney |currency}}</span>
+        <span slot="label">合计：{{totalMoney | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="go('book',{src:'car'})">
         <span slot="label">结算</span>
       </tabbar-item>
     </tabbar>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
+    ViewBox,
     XHeader,
     Grid,
     GridItem,
@@ -66,7 +67,18 @@
   export default {
     name: 'car',
     components: {
-      XHeader, Grid, GridItem, GroupTitle, Group, Confirm, TransferDom,Actionsheet, InlineXNumber, Tabbar, TabbarItem
+      ViewBox,
+      XHeader,
+      Grid,
+      GridItem,
+      GroupTitle,
+      Group,
+      Confirm,
+      TransferDom,
+      Actionsheet,
+      InlineXNumber,
+      Tabbar,
+      TabbarItem
     },
     data () {
       return {
@@ -174,12 +186,7 @@
 </script>
 
 <style lang="less">
-  li {
-    list-style: none;
-  }
-
   .car {
-    position: relative;
     .weui-grids {
       padding-bottom: 20px;
       &:after,
@@ -191,14 +198,14 @@
       background-color: #fff;
       .weui-tabbar__item {
         &:last-child {
-          background-color: cornflowerblue;
+          background-color: #32beff;
           span {
             color: #fff;
           }
         }
       }
     }
-    .list {
+    .vux-grid-list {
       background-color: #fff;
       overflow: hidden;
       position: relative;
@@ -266,8 +273,8 @@
       &:after {
         border-bottom: none;
       }
-      &:before{
-        content:normal;
+      &:before {
+        content: normal;
       }
       .grid-pic {
         width: 100%;

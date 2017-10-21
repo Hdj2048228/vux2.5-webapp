@@ -1,29 +1,11 @@
 <template>
-  <view-box class="home" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
+  <view-box class="list" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
 
-    <div class="top-header">
-      <div class="logo">
-        <img src="/static/img/logo.png" alt="logo">
-      </div>
-      <search
-        v-model="value"
-        @on-focus="onFocus"
-        @on-cancel="onCancel"
-        @on-submit="onSubmit"
-        ref="search">
-      </search>
-      <div class="search" @click="onSubmit">搜索</div>
-    </div>
-
-    <swiper loop auto
-            :list="swiper_list"
-            v-model="swiper_index"
-            @on-index-change="swiperChange">
-    </swiper>
-
-    <marquee :interval="3000">
-      <marquee-item v-for="(item,index) in marquee_list" :key="index">{{item.title}}</marquee-item>
-    </marquee>
+    <x-header title="商品列表"
+              :left-options="{showBack:true,backText:'返回'}"
+              :right-options="{showMore: true}"
+              @on-click-more="showMenus = true">
+    </x-header>
 
     <grid :rows="2">
       <group-title>
@@ -63,25 +45,23 @@
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Tabbar,
-    TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, XHeader, Search, Tabbar, TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
   } from 'vux';
   import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
 
   export default {
-    name: 'home',
+    name: 'list',
     components: {
       ViewBox,
+      XHeader,
       Search,
-      Swiper,
-      Marquee,
-      MarqueeItem,
       Tabbar,
       TabbarItem,
       Grid,
       GridItem,
       GroupTitle,
-      Group, Cell
+      Group,
+      Cell
     },
     data () {
       return {
@@ -148,7 +128,7 @@
 </script>
 
 <style lang="less">
-  .home {
+  .list {
     .top-header{
       padding: 0 40px;
       .logo,

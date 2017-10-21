@@ -1,5 +1,6 @@
 <template>
-  <div class="sort">
+  <view-box class="book" bodyPaddingBottom="60px" bodyPaddingTop="0">
+
     <x-header title="订单详情"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
@@ -33,7 +34,8 @@
         :title="'支付配送'"
         :border-intent="false"
         :arrow-direction="showContent001 ? 'up' : 'down'"
-        @click.native="showContent001 = !showContent001"></cell>
+        @click.native="showContent001 = !showContent001">
+      </cell>
 
       <template v-if="showContent001">
         <cell :title="'支付方式'" :value="'在线支付'" :border-intent="false"></cell>
@@ -47,17 +49,19 @@
 
     <tabbar v-if="showTabbar">
       <tabbar-item selected>
-        <span slot="label">合计：{{totalMoney |currency}}</span>
+        <span slot="label">合计：{{totalMoney | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="go('payList')">
         <span slot="label">提交订单</span>
       </tabbar-item>
     </tabbar>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
+    ViewBox,
     XHeader,
     FormPreview,
     TransferDom,
@@ -76,6 +80,7 @@
   export default {
     name: 'book',
     components: {
+      ViewBox,
       XHeader,
       FormPreview,
       TransferDom,
@@ -128,57 +133,52 @@
     },
     mounted(){
       // 默认的
-      this.status='待支付';
+      this.status = '待支付';
 
       // 购物车->过来的
-      (this.$route.query.src==='car') && (this.status='待提交');
+      (this.$route.query.src === 'car') && (this.status = '待提交');
 
       // 订单列表->过来的
-      (this.$route.query.src==='books') && (this.status='已支付');
+      (this.$route.query.src === 'books') && (this.status = '已支付');
 
-      (this.status==='待支付') && (this.showTabbar = true);
-      (this.status==='待提交') && (this.showTabbar = true);
-      (this.status==='已支付') && (this.showTabbar = false);
+      (this.status === '待支付') && (this.showTabbar = true);
+      (this.status === '待提交') && (this.showTabbar = true);
+      (this.status === '已支付') && (this.showTabbar = false);
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 
 <style lang="less">
-  .sort {
-    background-color: #EFEFF4;
+  .book {
     .vux-form-preview {
       margin-top: 10px;
     }
-    .weui-cells__title{
+    .weui-cells__title {
       font-size: 12px;
-    }
-    .weui-grids{
-      background-color: #fff;
     }
     .status {
       .weui-cells {
         margin-top: 0;
       }
-      .vux-label{
+      .vux-label {
         color: #888;
         font-size: 13px;
       }
-      .weui-cell__ft{
+      .weui-cell__ft {
         color: red;
         font-size: 13px;
       }
     }
-    .dispatch{
-      .vux-tap-active{
-        .vux-label{
+    .dispatch {
+      .vux-tap-active {
+        .vux-label {
           color: #333;
           font-size: 14px;
         }
       }
       .vux-label,
-      .weui-cell__ft{
+      .weui-cell__ft {
         color: #888;
         font-size: 13px;
       }
@@ -187,7 +187,7 @@
       background-color: #fff;
       .weui-tabbar__item {
         &:last-child {
-          background-color: cornflowerblue;
+          background-color: #32beff;
           span {
             color: #fff;
           }

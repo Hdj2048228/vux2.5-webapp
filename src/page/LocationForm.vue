@@ -1,25 +1,27 @@
 <template>
-  <div class="locationForm">
+  <view-box class="locationForm" bodyPaddingTop="0" bodyPaddingBottom="0">
     <x-header :title="gTitle"
               :left-options="{'showBack':true,'backText':'返回'}">
       <x-icon slot="right" @click="onSave" type="android-checkbox-outline" size="24" style="fill:#fff;position:relative;top:-3px;"></x-icon>
     </x-header>
 
-    <group label-width="4.5em" label-margin-right="2em" label-align="right">
+    <group class="vux-group" label-width="4.5em" label-margin-right="2em" label-align="right">
       <x-input title="收货人" v-model="value1"></x-input>
       <x-input title="手机号" v-model="value2"></x-input>
 
       <x-address title="省市区" v-model="addressValue" raw-value :list="addressData" value-text-align="left"
                  label-align="justify"></x-address>
-      <x-textarea title="详细地址" v-model="addressInfo" placeholder="街道/门牌号" :show-counter="false" :rows="3"></x-textarea>
+      <x-textarea title="详细地址" v-model="addressInfo" placeholder="街道/门牌号" :show-counter="false"
+                  :rows="3"></x-textarea>
     </group>
 
     <toast v-model="showToast" @on-hide="onHide">Basic Usage</toast>
-  </div>
+  </view-box>
 </template>
 
 <script>
   import {
+    ViewBox,
     XHeader,
     TransferDom,
     Actionsheet,
@@ -35,6 +37,7 @@
   export default {
     name: 'locationForm',
     components: {
+      ViewBox,
       XHeader,
       TransferDom,
       Actionsheet,
@@ -59,15 +62,15 @@
       }
     },
     mounted(){
-      if(typeof this.$route.query.id!=='undefined'){
-        if(this.$route.query.id.length===32){
-          this.gTitle='修改地址';
+      if (typeof this.$route.query.id !== 'undefined') {
+        if (this.$route.query.id.length === 32) {
+          this.gTitle = '修改地址';
           console.log('修改地址');
         }
       }
-      if(this.$route.query.act!=='undefined'){
-        if(this.$route.query.act==='add'){
-          this.gTitle='添加地址';
+      if (this.$route.query.act !== 'undefined') {
+        if (this.$route.query.act === 'add') {
+          this.gTitle = '添加地址';
           console.log('添加地址');
         }
       }
@@ -89,16 +92,6 @@
 
 <style lang="less">
   .locationForm {
-    background-color: #EFEFF4;
-    .vux-form-preview {
-      margin-top: 10px;
-    }
-    .weui-cells__title {
-      font-size: 12px;
-    }
-    .weui-grids {
-      background-color: #fff;
-    }
     .weui-input,
     .weui-label,
     .vux-popup-picker-value,

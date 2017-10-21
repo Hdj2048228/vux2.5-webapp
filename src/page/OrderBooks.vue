@@ -1,9 +1,10 @@
 <template>
-  <div class="books" ref="books">
-    <x-header title="订单列表"
+  <view-box class="books" bodyPaddingBottom="0px" bodyPaddingTop="0">
+
+    <x-header title="订单详情"
+              :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
               @on-click-more="showMenus = true">
-      <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;"></x-icon>
     </x-header>
 
     <tab bar-active-color="#04BE02" :line-width="1">
@@ -37,11 +38,13 @@
     <div transfer-dom>
       <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
     </div>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
+    ViewBox,
     XHeader,
     FormPreview,
     TransferDom,
@@ -53,6 +56,7 @@
   export default {
     name: 'books',
     components:{
+      ViewBox,
       XHeader,
       FormPreview,
       TransferDom,
@@ -94,7 +98,7 @@
     },
     mounted(){
       //console.log(getComputedStyle(this.$refs.books.parentNode,false)['paddingBottom']);
-      this.$refs.books.parentNode.style.paddingBottom=0;
+      //this.$refs.books.parentNode.style.paddingBottom=0;
     },
     methods: {
     }
@@ -103,7 +107,6 @@
 
 <style lang="less">
   .books{
-    background-color: #EFEFF4;
     .vux-form-preview{
       margin-top: 10px;
     }

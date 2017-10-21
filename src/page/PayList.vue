@@ -1,5 +1,6 @@
 <template>
-  <div class="PayList">
+  <view-box class="PayList" bodyPaddingBottom="0" bodyPaddingTop="0">
+
     <x-header title="支付方式"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
@@ -32,11 +33,13 @@
     <div transfer-dom>
       <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
     </div>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
+    ViewBox,
     XHeader,
     TransferDom,
     Actionsheet,
@@ -45,6 +48,7 @@
   export default {
     name: 'payList',
     components: {
+      ViewBox,
       XHeader,
       TransferDom,
       Actionsheet,

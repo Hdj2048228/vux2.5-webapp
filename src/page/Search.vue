@@ -1,5 +1,5 @@
 <template>
-  <view-box class="home" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
+  <view-box class="search" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
 
     <div class="top-header">
       <div class="logo">
@@ -14,16 +14,6 @@
       </search>
       <div class="search" @click="onSubmit">搜索</div>
     </div>
-
-    <swiper loop auto
-            :list="swiper_list"
-            v-model="swiper_index"
-            @on-index-change="swiperChange">
-    </swiper>
-
-    <marquee :interval="3000">
-      <marquee-item v-for="(item,index) in marquee_list" :key="index">{{item.title}}</marquee-item>
-    </marquee>
 
     <grid :rows="2">
       <group-title>
@@ -63,25 +53,22 @@
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Tabbar,
-    TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, Search, Tabbar, TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
   } from 'vux';
   import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
 
   export default {
-    name: 'home',
+    name: 'search',
     components: {
       ViewBox,
       Search,
-      Swiper,
-      Marquee,
-      MarqueeItem,
       Tabbar,
       TabbarItem,
       Grid,
       GridItem,
       GroupTitle,
-      Group, Cell
+      Group,
+      Cell
     },
     data () {
       return {
@@ -148,7 +135,7 @@
 </script>
 
 <style lang="less">
-  .home {
+  .search {
     .top-header{
       padding: 0 40px;
       .logo,

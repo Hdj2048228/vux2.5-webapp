@@ -1,11 +1,28 @@
 <template>
-  <div class="user">
+  <view-box class="user" bodyPaddingBottom="60px" bodyPaddingTop="0">
 
     <x-header title="个人中心"
               :right-options="{showMore: true}"
               @on-click-more="showMenus = true">
       <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;"></x-icon>
     </x-header>
+
+    <card :header="{title:'我的订单'}">
+      <div slot="content" class="card-demo-flex card-demo-content01">
+        <div class="vux-1px-l vux-1px-r" @click="go('books')">
+          <x-icon slot="overwrite-left" type="card" size="24" style="fill:#666;"></x-icon>
+          <p>待付款</p>
+        </div>
+        <div class="vux-1px-r" @click="go('books')">
+          <x-icon slot="overwrite-left" type="android-plane" size="24" style="fill:#666;"></x-icon>
+          <p>待收货</p>
+        </div>
+        <div @click="go('books')">
+          <x-icon slot="overwrite-left" type="ios-paper-outline" size="24" style="fill:#666;"></x-icon>
+          <p>全部订单</p>
+        </div>
+      </div>
+    </card>
 
     <card :header="{title:'我的钱包'}">
       <div slot="content" class="card-demo-flex card-demo-content01">
@@ -16,10 +33,6 @@
         <div class="vux-1px-r">
           <span>0</span>
           <p>积分</p>
-        </div>
-        <div class="vux-1px-r" @click="go('books')">
-          <span>10</span>
-          <p>订单</p>
         </div>
         <div @click="go('car')">
           <span>12</span>
@@ -73,17 +86,18 @@
     <div transfer-dom>
       <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
     </div>
-  </div>
+
+  </view-box>
 </template>
 
 <script>
   import {
-    TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+    ViewBox, TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
   } from 'vux';
   export default {
     name: 'user',
     components: {
-      TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+      ViewBox, TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
     },
     data () {
       return {
@@ -98,8 +112,7 @@
     },
     mounted(){
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 
@@ -122,7 +135,7 @@
         flex: 1;
         text-align: center;
         font-size: 12px;
-        p{
+        p {
           color: #666;
         }
       }
@@ -130,24 +143,24 @@
         color: #f74c31;
       }
     }
-    .setting{
-      .vux-label{
+    .setting {
+      .vux-label {
         color: #333;
         font-size: 14px;
       }
-      .weui-cell__ft{
+      .weui-cell__ft {
         font-size: 13px;
       }
     }
-    .dispatch{
-      .vux-tap-active{
-        .vux-label{
+    .dispatch {
+      .vux-tap-active {
+        .vux-label {
           color: #333;
           font-size: 14px;
         }
       }
       .vux-label,
-      .weui-cell__ft{
+      .weui-cell__ft {
         color: #888;
         font-size: 13px;
       }
