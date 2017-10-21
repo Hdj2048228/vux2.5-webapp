@@ -1,8 +1,6 @@
 <template>
   <view-box id="app">
-    <transition name="slide" mode="in-out">
-      <router-view class="app-view"></router-view>
-    </transition>
+    <router-view class="app-view"></router-view>
   </view-box>
 </template>
 
@@ -115,69 +113,5 @@
     -moz-transform: translate(-50%, 0) !important;
     -ms-transform: translate(-50%, 0) !important;
     transform: translate(-50%, 0) !important;
-  }
-
-  .app-view {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #fff;
-    z-index: 999;
-  }
-
-  .slide-enter-active {
-    -webkit-animation: slide-in .3s;
-    animation: slide-in .3s;
-  }
-
-  .slide-leave-active {
-    /* -webkit-animation: slide-out 60ms; */
-    /* animation: slide-out 60ms; */
-  }
-
-  @-webkit-keyframes slide-in {
-    0% {
-      -webkit-transform: translate3d(100%, 0, 0);
-      transform: translate3d(100%, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  @keyframes slide-in {
-    0% {
-      -webkit-transform: translate3d(100%, 0, 0);
-      transform: translate3d(100%, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-  }
-
-  @-webkit-keyframes slide-out {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(100%, 0, 0);
-      transform: translate3d(-100%, 0, 0);
-    }
-  }
-
-  @keyframes slide-out {
-    0% {
-      -webkit-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-    }
-    100% {
-      -webkit-transform: translate3d(100%, 0, 0);
-      transform: translate3d(-100%, 0, 0);
-    }
   }
 </style>
