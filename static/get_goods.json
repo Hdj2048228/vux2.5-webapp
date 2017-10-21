@@ -1,0 +1,36 @@
+{
+  "code":200,
+  "data":[{
+    "id":"0b0fa673f4d948d3b3d29cedd764b219",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaDSASUb0AAQas3XpTfw354.png",
+    "salePrice":"1000",
+    "goodsName":"烟雾传感器"
+  },{
+    "id":"a10a693c0277422389255548068c0bc2",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png",
+    "salePrice":"1000",
+    "goodsName":"小黑"
+  },{
+    "id":"0b0fa673f4d948d3b3d29cedd764b219",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaGKAQZ3kAAQas3XpTfw122.png",
+    "salePrice":"1000",
+    "goodsName":"小白"
+  },{
+    "id":"0b0fa673f4d948d3b3d29cedd764b219",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaDSASUb0AAQas3XpTfw354.png",
+    "salePrice":"1000",
+    "goodsName":"烟雾传感器"
+  },{
+    "id":"a10a693c0277422389255548068c0bc2",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaFWAPG-nAAQas3XpTfw725.png",
+    "salePrice":"1000",
+    "goodsName":"小黑"
+  },{
+    "id":"0b0fa673f4d948d3b3d29cedd764b219",
+    "productImg":"http://183.134.74.90/group1/M00/00/04/wKgBCVljaGKAQZ3kAAQas3XpTfw122.png",
+    "salePrice":"1000",
+    "goodsName":"小白"
+  }],
+  "onlyData":false,
+  "success":true
+}
