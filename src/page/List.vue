@@ -22,13 +22,13 @@
     </grid>
 
     <tabbar>
-      <tabbar-item link="/home" selected>
-        <x-icon slot="icon" type="android-home" size="27" style="fill:#09bb07;"></x-icon>
+      <tabbar-item link="/home">
+        <x-icon slot="icon" type="android-home" size="27" style="fill:#999;"></x-icon>
         <span slot="label">首页</span>
       </tabbar-item>
-      <tabbar-item link="/books">
-        <x-icon slot="icon" type="clipboard" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">订单</span>
+      <tabbar-item link="/list" selected>
+        <x-icon slot="icon" type="navicon" size="27" style="fill:#09bb07;"></x-icon>
+        <span slot="label">列表</span>
       </tabbar-item>
       <tabbar-item link="/car">
         <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>

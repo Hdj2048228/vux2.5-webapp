@@ -9,15 +9,15 @@
 
     <card :header="{title:'我的订单'}">
       <div slot="content" class="card-demo-flex card-demo-content01">
-        <div class="vux-1px-l vux-1px-r" @click="go('books')">
+        <div class="vux-1px-l vux-1px-r" @click="go('books',{act:'pay'})">
           <x-icon slot="overwrite-left" type="card" size="24" style="fill:#666;"></x-icon>
           <p>待付款</p>
         </div>
-        <div class="vux-1px-r" @click="go('books')">
+        <div class="vux-1px-r" @click="go('books',{act:'wait'})">
           <x-icon slot="overwrite-left" type="android-plane" size="24" style="fill:#666;"></x-icon>
           <p>待收货</p>
         </div>
-        <div @click="go('books')">
+        <div @click="go('books',{act:'all'})">
           <x-icon slot="overwrite-left" type="ios-paper-outline" size="24" style="fill:#666;"></x-icon>
           <p>全部订单</p>
         </div>
@@ -69,9 +69,9 @@
         <x-icon slot="icon" type="android-home" size="27" style="fill:#999;"></x-icon>
         <span slot="label">首页</span>
       </tabbar-item>
-      <tabbar-item link="/books">
-        <x-icon slot="icon" type="clipboard" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">订单</span>
+      <tabbar-item link="/list">
+        <x-icon slot="icon" type="navicon" size="27" style="fill:#999;"></x-icon>
+        <span slot="label">列表</span>
       </tabbar-item>
       <tabbar-item link="/car">
         <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>

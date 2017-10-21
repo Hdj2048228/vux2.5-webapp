@@ -1,17 +1,17 @@
 <template>
   <view-box class="books" bodyPaddingBottom="0px" bodyPaddingTop="0">
 
-    <x-header title="订单详情"
+    <x-header title="全部订单"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
               @on-click-more="showMenus = true">
     </x-header>
 
     <tab bar-active-color="#04BE02" :line-width="1">
-      <tab-item selected>全部订单</tab-item>
-      <tab-item>待支付</tab-item>
-      <tab-item>待收货</tab-item>
-      <tab-item>已完成</tab-item>
+      <tab-item @on-item-click="itemClick('all')" selected>全部订单</tab-item>
+      <tab-item @on-item-click="itemClick('pay')">待支付</tab-item>
+      <tab-item @on-item-click="itemClick('wait')">待收货</tab-item>
+      <tab-item @on-item-click="itemClick('finish')">已完成</tab-item>
     </tab>
 
     <form-preview
@@ -96,11 +96,40 @@
         }],
       }
     },
+    created(){
+      if(this.$route.query.act!=='undefined'){
+        let act = this.$route.query.act;
+        if(act==='all'){
+          console.log('route all');
+        }
+        if(act==='pay'){
+          console.log('route pay');
+        }
+        if(act==='wait'){
+          console.log('route wait');
+        }
+        if(act==='finish'){
+          console.log('route finish');
+        }
+      }
+    },
     mounted(){
-      //console.log(getComputedStyle(this.$refs.books.parentNode,false)['paddingBottom']);
-      //this.$refs.books.parentNode.style.paddingBottom=0;
     },
     methods: {
+      itemClick(act){
+        if(act==='all'){
+          console.log('tap all');
+        }
+        if(act==='pay'){
+          console.log('tap pay');
+        }
+        if(act==='wait'){
+          console.log('tap wait');
+        }
+        if(act==='finish'){
+          console.log('tap finish');
+        }
+      }
     }
   }
 </script>

@@ -1,10 +1,10 @@
 <template>
   <view-box class="detail" bodyPaddingBottom="60px" bodyPaddingTop="0">
 
-    <x-header title="商品详情"
-              :right-options="{showMore: true,link:'/home'}"
+    <x-header title="订单详情"
+              :left-options="{showBack:true,backText:'返回'}"
+              :right-options="{showMore: true}"
               @on-click-more="showMenus = true">
-      <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;position:relative;top:-4px;left:-3px;"></x-icon>
     </x-header>
 
     <swiper :aspect-ratio="272/375" v-model="swiper_index" @on-index-change="swiperChange">

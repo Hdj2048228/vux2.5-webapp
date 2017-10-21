@@ -18,8 +18,8 @@
 
     <group-title>商品清单</group-title>
     <grid :cols="3">
-      <grid-item :label="'2X'" v-for="i in 6" :key="i">
-        <img slot="icon" src="../assets/logo.png">
+      <grid-item :label="i+'X'" v-for="i in 6" :key="i">
+          <img @click="go('detail',{id:'123456'})" slot="icon" src="../assets/logo.png">
       </grid-item>
     </grid>
 
@@ -156,6 +156,10 @@
     }
     .weui-cells__title {
       font-size: 12px;
+    }
+    .weui-grid__img{
+      width: 100%;
+      height: 100%;
     }
     .status {
       .weui-cells {

@@ -23,7 +23,7 @@ export default[
   },
   {
     path: '/search',
-    name: 'search',
+    name: 'search2',
     component: App.components.Search
   },
   {

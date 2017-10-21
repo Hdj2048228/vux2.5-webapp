@@ -6,13 +6,13 @@
         <img src="/static/img/logo.png" alt="logo">
       </div>
       <search
-        v-model="value"
+        v-model="searchValue"
         @on-focus="onFocus"
         @on-cancel="onCancel"
         @on-submit="onSubmit"
         ref="search">
       </search>
-      <div class="search" @click="onSubmit">搜索</div>
+      <div class="btn-search" @click="onSubmit">搜索</div>
     </div>
 
     <swiper loop auto
@@ -44,9 +44,9 @@
         <x-icon slot="icon" type="android-home" size="27" style="fill:#09bb07;"></x-icon>
         <span slot="label">首页</span>
       </tabbar-item>
-      <tabbar-item link="/books">
-        <x-icon slot="icon" type="clipboard" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">订单</span>
+      <tabbar-item link="/list">
+        <x-icon slot="icon" type="navicon" size="27" style="fill:#999;"></x-icon>
+        <span slot="label">列表</span>
       </tabbar-item>
       <tabbar-item link="/car">
         <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
@@ -87,7 +87,7 @@
       return {
         results: [],
         PaddingTop: 0,
-        value: ''
+        searchValue: ''
       }
     },
     computed: {
@@ -124,13 +124,23 @@
     mounted(){
     },
     methods: {
-      onSubmit () {
+      onSubmit (params) {
         this.$refs.search.setBlur();
+
         this.$vux.toast.show({
           type: 'text',
           position: 'top',
           text: '正在搜索'
-        })
+        });
+
+        this.$router.push({
+          name:'search2',
+          query:{
+            params:params
+          }
+        });
+
+        console.log('home',params);
       },
       onFocus () {
         this.PaddingTop = '44px';
@@ -140,6 +150,8 @@
         this.PaddingTop = '0px';
         console.log('on cancel')
       },
+      setFocus(){},
+      setBlur(){},
       swiperChange(){
         console.log("swiperChange");
       }
@@ -152,7 +164,7 @@
     .top-header{
       padding: 0 40px;
       .logo,
-      .search{
+      .btn-search{
         text-align: center;
         position: absolute;
       }
@@ -166,7 +178,7 @@
           height: 100%;
         }
       }
-      .search{
+      .btn-search{
         width: 40px;
         height: 28px;
         line-height: 28px;

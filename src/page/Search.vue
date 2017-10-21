@@ -2,17 +2,18 @@
   <view-box class="search" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
 
     <div class="top-header">
-      <div class="logo">
+      <div class="logo" @click="go('home')">
         <img src="/static/img/logo.png" alt="logo">
       </div>
       <search
-        v-model="value"
+        v-model="searchValue"
         @on-focus="onFocus"
         @on-cancel="onCancel"
         @on-submit="onSubmit"
         ref="search">
+        <!--一直报错??-->
       </search>
-      <div class="search" @click="onSubmit">搜索</div>
+      <div class="btn-search">搜索</div>
     </div>
 
     <grid :rows="2">
@@ -30,7 +31,7 @@
     </grid>
 
     <tabbar>
-      <tabbar-item link="/home" selected>
+      <tabbar-item link="/home">
         <x-icon slot="icon" type="android-home" size="27" style="fill:#09bb07;"></x-icon>
         <span slot="label">首页</span>
       </tabbar-item>
@@ -53,15 +54,19 @@
 
 <script>
   import {
-    ViewBox, Search, Tabbar, TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, Search, Swiper, Marquee, MarqueeItem, Tabbar,
+    TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
   } from 'vux';
   import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
 
   export default {
-    name: 'search',
+    name: 'search2',
     components: {
       ViewBox,
       Search,
+      Swiper,
+      Marquee,
+      MarqueeItem,
       Tabbar,
       TabbarItem,
       Grid,
@@ -74,50 +79,40 @@
       return {
         results: [],
         PaddingTop: 0,
-        value: ''
+        searchValue: ''
       }
     },
     computed: {
-      swiper_list(){
-        return this.$store.getters.swiper_list;
-      },
-      swiper_index: {
-        get(){
-          return this.$store.getters.swiper_index;
-        },
-        set(newValue){
-          // computed 双向数据需要set，否则报错
-          return this.$store.getters.swiper_index = newValue;
-        }
-      },
-      marquee_list(){
-        return this.$store.getters.marquee_list;
-      },
       panel_list(){
         return this.$store.getters.panel_list;
-      },
-      panel_type(){
-        return this.$store.getters.panel_type;
       },
       detail_params(){
         return this.$store.getters.detail_params;
       }
     },
     created(){
-      this.$store.dispatch('getHomeFocus');
-      this.$store.dispatch('getHomeMarquee');
       this.$store.dispatch('getHomeList');
     },
     mounted(){
     },
     methods: {
-      onSubmit () {
+      onSubmit (params) {
         this.$refs.search.setBlur();
+
         this.$vux.toast.show({
           type: 'text',
           position: 'top',
           text: '正在搜索'
-        })
+        });
+
+        this.$router.push({
+          name: 'search2',
+          query: {
+            params: params
+          }
+        });
+
+        console.log('search',params);
       },
       onFocus () {
         this.PaddingTop = '44px';
@@ -126,9 +121,6 @@
       onCancel () {
         this.PaddingTop = '0px';
         console.log('on cancel')
-      },
-      swiperChange(){
-        console.log("swiperChange");
       }
     }
   }
@@ -139,7 +131,7 @@
     .top-header{
       padding: 0 40px;
       .logo,
-      .search{
+      .btn-search{
         text-align: center;
         position: absolute;
       }
@@ -153,7 +145,7 @@
           height: 100%;
         }
       }
-      .search{
+      .btn-search{
         width: 40px;
         height: 28px;
         line-height: 28px;
