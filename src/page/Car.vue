@@ -4,10 +4,13 @@
     <x-header title="购物车"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
-    <grid class="vux-grid-list" v-for="(item,index) in panel_list" @on-item-click="onItemClick(item.id)" :key="index">
+    <grid class="vux-grid-list"
+          v-for="(item,index) in car_goods_list"
+          @on-item-click="onItemClick(item.id)"
+          :key="index">
         <a href="javascript:;" class="weui-grid" style="width: 50%;">
           <img class="grid-pic" src="http://183.134.74.90/group1/M00/00/04/wKgBCVljaDSASUb0AAQas3XpTfw354.png">
         </a>
@@ -16,30 +19,29 @@
             <p>烟雾传感器</p>
             <p>型号： {{item.type}}</p>
             <p>价格：{{item.price}}</p>
-            <inline-x-number class="weui-num" :min="0" :max="99"
-                             @on-change="change(item,index,$event)"
-                             v-model="item.num">
+            <inline-x-number class="weui-num"
+                             v-model="item.num" :min="0" :max="99"
+                             @on-change="changeNumber(item,index,$event)">
             </inline-x-number>
           </div>
         </a>
     </grid>
 
     <div transfer-dom>
-      <confirm v-model="show"
-               @on-confirm="onConfirm">
-        <p style="text-align:center;">确定删除吗？</p>
-      </confirm>
+      <actionsheet :menus="common_menus" v-model="menusFlag" show-cancel></actionsheet>
     </div>
 
     <div transfer-dom>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+      <confirm v-model="confirmFlag" @on-confirm="onConfirm">
+        <p style="text-align:center;">确定删除吗？</p>
+      </confirm>
     </div>
 
     <tabbar>
       <tabbar-item selected>
         <span slot="label">合计：{{totalMoney | currency}}</span>
       </tabbar-item>
-      <tabbar-item @on-item-click="go('book',{src:'car'})">
+      <tabbar-item @on-item-click="onSubmit">
         <span slot="label">结算</span>
       </tabbar-item>
     </tabbar>
@@ -49,137 +51,103 @@
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    Grid,
-    GridItem,
-    GroupTitle,
-    Group,
-    Confirm,
-    TransferDom,
-    Actionsheet,
-    InlineXNumber,
-    Tabbar,
-    TabbarItem
+    ViewBox,XHeader,Grid,GridItem,GroupTitle,Group,Confirm,
+    TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
   } from 'vux';
-  import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
+  import {
+    mapState,mapMutations,mapGetters,mapActions
+  } from "vuex";
 
   export default {
     name: 'car',
     components: {
-      ViewBox,
-      XHeader,
-      Grid,
-      GridItem,
-      GroupTitle,
-      Group,
-      Confirm,
-      TransferDom,
-      Actionsheet,
-      InlineXNumber,
-      Tabbar,
-      TabbarItem
+      ViewBox,XHeader,Grid,GridItem,GroupTitle,Group,Confirm,
+      TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
     },
-    data () {
-      return {
-        showMenus: false,
-        menus: {
-          menu1: '购物车',
-          menu2: '订单详情'
-        },
+    data(){
+      return{
         totalMoney: 0,
         itemIndex: 0,
         delIndex: 0,
-        show: false,
         panel_type: '5',
-        panel_list: [{
-          title: '测试标题',
-          type: 'RY119',
-          price: 50,
-          num: 1,
-          desc: 'description',
-          src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-          url: {
-            path: '/car',
-            replace: false
-          }
-        }, {
-          title: '测试标题',
-          type: 'RY119',
-          price: 50,
-          num: 1,
-          desc: 'description',
-          src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-          url: {
-            path: '/car',
-            replace: false
-          }
-        }, {
-          title: '测试标题',
-          type: 'RY119',
-          price: 50,
-          num: 1,
-          desc: 'description',
-          src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-          url: {
-            path: '/car',
-            replace: false
-          }
-        }, {
-          title: '测试标题',
-          type: 'RY119',
-          price: 50,
-          num: 1,
-          desc: 'description',
-          src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-          url: {
-            path: '/car',
-            replace: false
-          }
-        }, {
-          title: '测试标题',
-          type: 'RY119',
-          price: 50,
-          num: 1,
-          desc: 'description',
-          src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-          url: {
-            path: '/car',
-            replace: false
-          }
-        }]
+        confirmFlag: false,
+        menusFlag: false
       }
+    },
+    computed:{
+      ...mapGetters([
+        'car_goods_list',
+        'common_menus'
+      ])
+    },
+    created(){
+      this.$store.dispatch('goods_list');
+
+      console.log('car created....');
     },
     mounted(){
 
     },
     methods: {
-      toggle(index){
-        this.curr = index;
+      /**
+       * 删除商品
+       */
+      onConfirm () {
+        this.delGoods(this.delIndex);
       },
-      change(item, index, event){// 商品数改变
+
+      /**
+       * 提交订单
+       */
+      onSubmit(){
+        this.$vux.loading.show({
+          text: '生成订单...'
+        });
+        setTimeout(() => {
+          this.$vux.loading.hide();
+          this.showMenus = false;
+          this.$router.push({
+            name:'book',
+            query:{src:'car'}
+          });
+        }, 1000);
+      },
+
+      /**
+       * 改变商品数
+       * @param item
+       * @param index
+       * @param number
+       */
+      changeNumber(item, index, number){
         this.itemIndex = index;
-        item.num = event;
-        if (event <= 0) {
-          this.show = true;
+        item.num = number;
+        if (number <= 0) {
+          this.confirmFlag = true;
           this.delIndex = index;
         }
         this.gross();
       },
-      delGoods(index){// 删除商品
+
+      /**
+       * 删除商品
+       * @param index
+       */
+      delGoods(index){
         this.itemIndex = index;
-        this.panel_list.splice(this.itemIndex, 1);
+        this.car_goods_list.splice(this.itemIndex, 1);
       },
-      gross(){// 计算总金额
+
+      /**
+       * 计算总金额
+       */
+      gross(){
         this.totalMoney = 0;
-        this.panel_list.forEach(item => {
+        this.car_goods_list.forEach(item => {
           if (item.price >= 1 && item.num >= 1) {
             this.totalMoney += item.price * item.num;
           }
         });
-      },
-      onConfirm () {
-        this.delGoods(this.delIndex);
       }
     }
   }
@@ -211,6 +179,7 @@
       position: relative;
       &:after {
         content: " ";
+        width: 100%;
         position: absolute;
         left: 0;
         bottom: 0;

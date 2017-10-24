@@ -1,5 +1,5 @@
 <template>
-  <view-box class="home" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
+  <view-box class="home" :bodyPaddingTop="0" bodyPaddingBottom="60px">
 
     <div class="top-header">
       <div class="logo">
@@ -15,11 +15,7 @@
       <div class="btn-search" @click="onSubmit">搜索</div>
     </div>
 
-    <swiper loop auto
-            :list="swiper_list"
-            v-model="swiper_index"
-            @on-index-change="swiperChange">
-    </swiper>
+    <swiper loop auto :list="focus_list" v-model="focus_index" @on-index-change="swiperChange"></swiper>
 
     <marquee :interval="3000">
       <marquee-item v-for="(item,index) in marquee_list" :key="index">{{item.title}}</marquee-item>
@@ -29,19 +25,19 @@
       <group-title>
         <span>商品列表</span>
       </group-title>
-      <grid-item v-for="(item,index) in panel_list" @on-item-click="go('detail',{id:item.id})" :key="index">
+      <grid-item v-for="(item,index) in goods_list" @on-item-click="go('detail',{id:item.id})" :key="index">
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
           <p>价格：{{item.price}}</p>
-          <p v-for="item in detail_params">{{item.label}} {{item.value}}</p>
+          <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>
     </grid>
 
     <tabbar>
       <tabbar-item link="/home" selected>
-        <x-icon slot="icon" type="android-home" size="27" style="fill:#09bb07;"></x-icon>
+        <x-icon slot="icon" type="android-home" size="27" style="fill:#32beff;"></x-icon>
         <span slot="label">首页</span>
       </tabbar-item>
       <tabbar-item link="/list">
@@ -63,63 +59,36 @@
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Tabbar,
-    TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,
+    Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
   } from 'vux';
-  import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
 
   export default {
     name: 'home',
     components: {
-      ViewBox,
-      Search,
-      Swiper,
-      Marquee,
-      MarqueeItem,
-      Tabbar,
-      TabbarItem,
-      Grid,
-      GridItem,
-      GroupTitle,
-      Group, Cell
+      ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,
+      Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
     },
     data () {
       return {
-        results: [],
-        PaddingTop: 0,
-        searchValue: ''
+        searchValue: '',
+        focus_index: 0
       }
     },
     computed: {
-      swiper_list(){
-        return this.$store.getters.swiper_list;
-      },
-      swiper_index: {
-        get(){
-          return this.$store.getters.swiper_index;
-        },
-        set(newValue){
-          // computed 双向数据需要set，否则报错
-          return this.$store.getters.swiper_index = newValue;
-        }
-      },
-      marquee_list(){
-        return this.$store.getters.marquee_list;
-      },
-      panel_list(){
-        return this.$store.getters.panel_list;
-      },
-      panel_type(){
-        return this.$store.getters.panel_type;
-      },
-      detail_params(){
-        return this.$store.getters.detail_params;
-      }
+      ...mapGetters([
+        'focus_list',
+        'marquee_list',
+        'goods_list'
+      ])
     },
     created(){
-      this.$store.dispatch('getHomeFocus');
-      this.$store.dispatch('getHomeMarquee');
-      this.$store.dispatch('getHomeList');
+      this.$store.dispatch('home_focus');
+      this.$store.dispatch('home_marquee');
+      this.$store.dispatch('home_goods');
     },
     mounted(){
     },
@@ -134,13 +103,13 @@
         });
 
         this.$router.push({
-          name:'search2',
-          query:{
-            params:params
+          name: 'search2',
+          query: {
+            params: params
           }
         });
 
-        console.log('home',params);
+        console.log('home', params);
       },
       onFocus () {
         this.PaddingTop = '44px';
@@ -150,8 +119,10 @@
         this.PaddingTop = '0px';
         console.log('on cancel')
       },
-      setFocus(){},
-      setBlur(){},
+      setFocus(){
+      },
+      setBlur(){
+      },
       swiperChange(){
         console.log("swiperChange");
       }
@@ -161,29 +132,30 @@
 
 <style lang="less">
   .home {
-    .top-header{
+    .top-header {
       padding: 0 40px;
+      position: relative;
       .logo,
-      .btn-search{
+      .btn-search {
         text-align: center;
         position: absolute;
       }
-      .logo{
+      .logo {
         width: 24px;
         height: 24px;
-        top:10px;
-        left:10px;
-        img{
+        top: 10px;
+        left: 10px;
+        img {
           width: 100%;
           height: 100%;
         }
       }
-      .btn-search{
+      .btn-search {
         width: 40px;
         height: 28px;
         line-height: 28px;
-        top:8px;
-        right:5px;
+        top: 8px;
+        right: 5px;
         font-size: 13px;
       }
     }
@@ -198,7 +170,7 @@
       position: relative;
       span {
         padding-left: 10px;
-        border-left: 3px solid #09bb07;
+        border-left: 3px solid #32beff;
       }
       &::after {
         content: " ";
@@ -237,9 +209,5 @@
       line-height: 40px;
       text-indent: 10px;
     }
-  }
-
-  .loading-layer {
-    /*padding-bottom: 50px;*/
   }
 </style>

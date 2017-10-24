@@ -51,7 +51,7 @@
       <tabbar-item selected>
         <span slot="label">合计：{{totalMoney | currency}}</span>
       </tabbar-item>
-      <tabbar-item @on-item-click="go('payList')">
+      <tabbar-item @on-item-click="onSubmit">
         <span slot="label">提交订单</span>
       </tabbar-item>
     </tabbar>
@@ -61,40 +61,40 @@
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    FormPreview,
-    TransferDom,
-    Actionsheet,
-    Grid,
-    GridItem,
-    Group,
-    GroupTitle,
-    Cell,
-    CellBox,
-    Tab,
-    TabItem,
-    Tabbar,
-    TabbarItem
+    ViewBox,XHeader,
+
+    FormPreview,Toast,
+
+    TransferDom,Actionsheet,
+
+    Group,GroupTitle,
+
+    Cell,CellBox,
+
+    Grid,GridItem,
+
+    Tab,TabItem,
+
+    Tabbar,TabbarItem
   } from 'vux';
   export default {
     name: 'book',
     components: {
-      ViewBox,
-      XHeader,
-      FormPreview,
-      TransferDom,
-      Actionsheet,
-      Cell,
-      Group,
-      GroupTitle,
-      CellBox,
-      Grid,
-      GridItem,
-      Tab,
-      TabItem,
-      Tabbar,
-      TabbarItem
+      ViewBox,XHeader,
+
+      FormPreview,Toast,
+
+      TransferDom,Actionsheet,
+
+      Group,GroupTitle,
+
+      Cell,CellBox,
+
+      Grid,GridItem,
+
+      Tab,TabItem,
+
+      Tabbar,TabbarItem
     },
     data () {
       return {
@@ -145,7 +145,21 @@
       (this.status === '待提交') && (this.showTabbar = true);
       (this.status === '已支付') && (this.showTabbar = false);
     },
-    methods: {}
+    methods: {
+      onSubmit(){
+        this.$vux.toast.show({
+          text: '提交成功！'
+        });
+        setTimeout(() => {
+          this.$vux.toast.hide();
+          this.showMenus = false;
+          this.$router.push({
+            name:'payList',
+            query:{params:'123'}
+          });
+        }, 1000);
+      }
+    }
   }
 </script>
 

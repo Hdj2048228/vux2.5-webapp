@@ -1,58 +1,57 @@
 /**
  * Created by saturn on 2017/8/8.
  */
+
 import * as axios from '../axios/';
 import * as types from '../type/';
 
 // 数据源
 const state = {
-  detail_swiper: {
-    title:'goods-name',
-    desc:'goods-desc',
-    info:'product-info',
+  swiper_data: {
+    title:'swiper_title11',
+    desc:'swiper_desc22',
+    info:'swiper_info33',
+    params:[{
+      label: '宽度：',
+      value: '20cm'
+    }],
     pics:[{
       url: 'https://static.vux.li/demo/1.jpg'
     }]
-  },
-  detail_params: [{
-    label: '宽度：',
-    value: '20cm'
-  }, {
-    label: '高度：',
-    value: '20cm'
-  }, {
-    label: '颜色：',
-    value: '白色'
-  }, {
-    label: '型号：',
-    value: 'RY119'
-  }]
+  }
 };
 
-// 异步获取数据：通过commit传值
+const getters = {
+  detail_swiper: state => state.swiper_data
+};
+
 const actions = {
-  getGoodsDetail({commit},id) {
-    axios.getGoodsDetail(id,res => {
-      commit(types.Get_Goods_Detail, res);
+  detail_goods({commit},id) {
+    axios.getDetailGoods(id,res => {
+      commit(types.Get_Detail_Goods, res);
     })
   }
 };
 
-// 同步修改数据：通过state赋值
 const mutations = {
-  [types.Get_Goods_Detail](state, res){
-    state.detail_swiper = res;
+  [types.Get_Detail_Goods](state, res){
+    state.swiper_data = res;
+    state.swiper_data['params'] = [{
+      label: '宽度：',
+      value: '20cm'
+    }, {
+      label: '高度：',
+      value: '20cm'
+    }, {
+      label: '颜色：',
+      value: '白色'
+    }, {
+      label: '型号：',
+      value: 'RY119'
+    }];
   }
 };
 
-/**
- * getters是store的计算属性
- * getters比state方便多组件重用
- */
-const getters = {
-  detail_swiper: state => state.detail_swiper,
-  detail_params: state => state.detail_params
-};
 
 export default {
   state,

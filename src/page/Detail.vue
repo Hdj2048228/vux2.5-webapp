@@ -4,25 +4,26 @@
     <x-header title="订单详情"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
     <swiper :aspect-ratio="272/375" v-model="swiper_index" @on-index-change="swiperChange">
-      <swiper-item class="swiper-img" v-for="(item, index) in detail_swiper.pics" :key="index"><img :src="item.url">
+      <swiper-item class="swiper-img" v-for="(item, index) in detail_swiper.pics" :key="index">
+        <img :src="item.url">
       </swiper-item>
     </swiper>
 
     <group class="vux-group">
       <cell :title="detail_swiper.title" :inlineDesc="detail_swiper.desc | subString(22)" value="￥1024"></cell>
-      <cell-form-preview :list="detail_params"></cell-form-preview>
+      <cell-form-preview :list="detail_swiper.params"></cell-form-preview>
     </group>
 
     <card :header="{title:'商品详情'}">
-      <div slot="content" class="card-padding">{{detail_swiper.desc}}</div>
+      <div slot="content" class="card-padding" v-html="detail_swiper.info"></div>
     </card>
 
     <tabbar>
-      <tabbar-item :badge="badgeNum" selected @on-item-click="addCar">
+      <tabbar-item :badge="badgeNumber" selected @on-item-click="addCar">
         <span slot="icon"><img src="../assets/icon-car.png" alt="加入购物车"></span>
         <span slot="label">加入购物车</span>
       </tabbar-item>
@@ -33,7 +34,7 @@
     </tabbar>
 
     <div transfer-dom>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+      <actionsheet :menus="common_menus" v-model="menusFlag" show-cancel></actionsheet>
     </div>
 
   </view-box>
@@ -41,8 +42,8 @@
 
 <script>
   import {
-    ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel, Card,
-    TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
+    ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel,
+    Card,TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
   } from 'vux';
 
   import {
@@ -52,38 +53,34 @@
   export default {
     name: 'detail',
     components: {
-      ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel, Card,
-      TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
+      ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel,
+      Card,TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
     },
     data () {
       return {
-        index: 0,
-        badgeNum: '2',
-        showMenus: false,
-        menus: {
-          menu1: '购物车',
-          menu2: '订单详情'
-        }
+        swiperIndex: 0,
+        badgeNumber: '0',
+        menusFlag: false
       }
     },
     computed: {
+      ...mapGetters([
+        'detail_swiper',
+        'common_menus'
+      ]),
       swiper_index: {
         get(){
-          return this.index;
+          return this.swiperIndex;
         },
         set(newValue){
-          return this.index = newValue;
+          return this.swiperIndex = newValue;
         }
-      },
-      detail_swiper(){
-        return this.$store.getters.detail_swiper;
-      },
-      detail_params(){
-        return this.$store.getters.detail_params;
       }
     },
     created(){
-      this.$store.dispatch('getGoodsDetail', 123);
+      this.$store.dispatch('detail_goods', 123);
+
+      console.log('detail created...');
     },
     mounted(){
 
@@ -93,7 +90,15 @@
         console.log("swiperChange");
       },
       addCar(){
-        this.badgeNum = (Number(this.badgeNum) + 1) + '';
+        this.badgeNumber = (Number(this.badgeNumber) + 1) + '';
+
+        this.$vux.toast.show({
+          text: '加入成功！'
+        });
+
+        setTimeout(() => {
+          this.$vux.toast.hide();
+        }, 1000);
       }
     }
   }
@@ -103,6 +108,10 @@
   .detail {
     .weui-tab__panel {
       background-color: #f0f0f0;
+    }
+    .weui-form-preview__bd{
+      font-size: 14px;
+      line-height:1.5;
     }
 
     .vux-card-content {

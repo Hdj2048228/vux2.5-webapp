@@ -1,25 +1,35 @@
 <template>
-  <view-box class="list" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
+  <view-box class="list" bodyPaddingTop="0" bodyPaddingBottom="60px">
 
     <x-header title="商品列表"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
     <grid :rows="2">
       <group-title>
         <span>商品列表</span>
       </group-title>
-      <grid-item v-for="(item,index) in panel_list" @on-item-click="go('detail',{id:item.id})" :key="index">
+      <grid-item v-for="(item,index) in goods_list" @on-item-click="go('detail',{id:item.id})" :key="index">
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
           <p>价格：{{item.price}}</p>
-          <p v-for="item in detail_params">{{item.label}} {{item.value}}</p>
+          <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>
     </grid>
+
+    <div transfer-dom>
+      <actionsheet show-cancel
+                   :menus="common_menus"
+                   v-model="menusFlag"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-mask="false"
+                   :close-on-clicking-menu="false">
+      </actionsheet>
+    </div>
 
     <tabbar>
       <tabbar-item link="/home">
@@ -27,7 +37,7 @@
         <span slot="label">首页</span>
       </tabbar-item>
       <tabbar-item link="/list" selected>
-        <x-icon slot="icon" type="navicon" size="27" style="fill:#09bb07;"></x-icon>
+        <x-icon slot="icon" type="navicon" size="27" style="fill:#32beff;"></x-icon>
         <span slot="label">列表</span>
       </tabbar-item>
       <tabbar-item link="/car">
@@ -45,65 +55,49 @@
 
 <script>
   import {
-    ViewBox, XHeader, Search, Tabbar, TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, XHeader, TransferDom, Actionsheet,
+    Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
   } from 'vux';
-  import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
 
   export default {
     name: 'list',
     components: {
-      ViewBox,
-      XHeader,
-      Search,
-      Tabbar,
-      TabbarItem,
-      Grid,
-      GridItem,
-      GroupTitle,
-      Group,
-      Cell
+      ViewBox, XHeader, TransferDom, Actionsheet,
+      Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
+
     },
     data () {
       return {
-        results: [],
-        PaddingTop: 0,
-        value: ''
+        searchValue: '',
+        focus_index: 0,
+        menusFlag: false
       }
     },
     computed: {
-      swiper_list(){
-        return this.$store.getters.swiper_list;
-      },
-      swiper_index: {
-        get(){
-          return this.$store.getters.swiper_index;
-        },
-        set(newValue){
-          // computed 双向数据需要set，否则报错
-          return this.$store.getters.swiper_index = newValue;
-        }
-      },
-      marquee_list(){
-        return this.$store.getters.marquee_list;
-      },
-      panel_list(){
-        return this.$store.getters.panel_list;
-      },
-      panel_type(){
-        return this.$store.getters.panel_type;
-      },
-      detail_params(){
-        return this.$store.getters.detail_params;
-      }
+      ...mapGetters([
+        'goods_list',
+        'common_menus'
+      ])
     },
     created(){
-      this.$store.dispatch('getHomeFocus');
-      this.$store.dispatch('getHomeMarquee');
-      this.$store.dispatch('getHomeList');
+      this.$store.dispatch('home_goods');
     },
     mounted(){
+
     },
     methods: {
+      onMenusClose () {
+        this.$vux.loading.show({
+          text: '跳转中...'
+        });
+        setTimeout(() => {
+          this.$vux.loading.hide();
+          this.menusFlag = false
+        }, 1000)
+      },
       onSubmit () {
         this.$refs.search.setBlur();
         this.$vux.toast.show({
@@ -111,17 +105,6 @@
           position: 'top',
           text: '正在搜索'
         })
-      },
-      onFocus () {
-        this.PaddingTop = '44px';
-        console.log('on focus')
-      },
-      onCancel () {
-        this.PaddingTop = '0px';
-        console.log('on cancel')
-      },
-      swiperChange(){
-        console.log("swiperChange");
       }
     }
   }
@@ -129,29 +112,29 @@
 
 <style lang="less">
   .list {
-    .top-header{
+    .top-header {
       padding: 0 40px;
       .logo,
-      .search{
+      .search {
         text-align: center;
         position: absolute;
       }
-      .logo{
+      .logo {
         width: 24px;
         height: 24px;
-        top:10px;
-        left:10px;
-        img{
+        top: 10px;
+        left: 10px;
+        img {
           width: 100%;
           height: 100%;
         }
       }
-      .search{
+      .search {
         width: 40px;
         height: 28px;
         line-height: 28px;
-        top:8px;
-        right:5px;
+        top: 8px;
+        right: 5px;
         font-size: 13px;
       }
     }
@@ -166,7 +149,7 @@
       position: relative;
       span {
         padding-left: 10px;
-        border-left: 3px solid #09bb07;
+        border-left: 3px solid #32beff;
       }
       &::after {
         content: " ";

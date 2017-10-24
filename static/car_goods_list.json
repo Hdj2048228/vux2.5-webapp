@@ -1,0 +1,29 @@
+
+{
+  "code":200,
+  "data":[{
+    "title": "测试标题",
+    "type": "RY119",
+    "price": 50,
+    "num": 1,
+    "desc": "description",
+    "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
+    "url": {
+      "path": "/car",
+      "replace": false
+    }
+  },{
+    "title": "测试标题",
+    "type": "RY119",
+    "price": 50,
+    "num": 1,
+    "desc": "description",
+    "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
+    "url": {
+      "path": "/car",
+      "replace": false
+    }
+  }],
+  "onlyData":false,
+  "success":true
+}

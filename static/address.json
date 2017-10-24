@@ -1,0 +1,46 @@
+
+{
+  "code":200,
+  "data":[{
+    "addrDetail":"北京大厦",
+    "addrName":"北京/北京市/昌平区",
+    "contacts":"张三",
+    "createBy":"e01bedc89f0d416fb724411c798670e3",
+    "createDate":"2017-06-12 18:05:23",
+    "id":"12e32cf9a0f14557aa08c2cfc70a7eca",
+    "isUsed":2,
+    "phone":"13811901660",
+    "status":1,
+    "updateBy":"e01bedc89f0d416fb724411c798670e3",
+    "updateDate":"2017-06-12 18:05:23",
+    "userId":"e01bedc89f0d416fb724411c798670e3"
+  },{
+    "addrDetail":"北京大厦",
+    "addrName":"北京/北京市/昌平区",
+    "contacts":"李四",
+    "createBy":"e01bedc89f0d416fb724411c798670e3",
+    "createDate":"2017-06-12 18:05:23",
+    "id":"22e32cf9a0f14557aa08c2cfc70a7eca",
+    "isUsed":2,
+    "phone":"13811901660",
+    "status":1,
+    "updateBy":"e01bedc89f0d416fb724411c798670e3",
+    "updateDate":"2017-06-12 18:05:23",
+    "userId":"e01bedc89f0d416fb724411c798670e3"
+  },{
+    "addrDetail":"北京大厦",
+    "addrName":"北京/北京市/昌平区",
+    "contacts":"王五",
+    "createBy":"e01bedc89f0d416fb724411c798670e3",
+    "createDate":"2017-06-12 18:05:23",
+    "id":"32e32cf9a0f14557aa08c2cfc70a7eca",
+    "isUsed":2,
+    "phone":"13811901660",
+    "status":1,
+    "updateBy":"e01bedc89f0d416fb724411c798670e3",
+    "updateDate":"2017-06-12 18:05:23",
+    "userId":"e01bedc89f0d416fb724411c798670e3"
+  }],
+  "onlyData":false,
+  "success":true
+}

@@ -1,9 +1,9 @@
 <template>
-  <view-box class="search" :bodyPaddingTop="PaddingTop" bodyPaddingBottom="60px">
+  <view-box class="search" :bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <div class="top-header">
       <div class="logo" @click="go('home')">
-        <img src="/static/img/logo.png" alt="logo">
+        <img src="static/img/logo.png" alt="logo">
       </div>
       <search
         v-model="searchValue"
@@ -11,89 +11,57 @@
         @on-cancel="onCancel"
         @on-submit="onSubmit"
         ref="search">
-        <!--一直报错??-->
+        <!--一直报错?页面name不能为search-->
       </search>
       <div class="btn-search">搜索</div>
     </div>
 
     <grid :rows="2">
       <group-title>
-        <span>商品列表</span>
+        <span>搜索结果</span>
       </group-title>
-      <grid-item v-for="(item,index) in panel_list" @on-item-click="go('detail',{id:item.id})" :key="index">
+      <grid-item v-for="(item,index) in goods_list" @on-item-click="go('detail',{id:item.id})" :key="index">
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
           <p>价格：{{item.price}}</p>
-          <p v-for="item in detail_params">{{item.label}} {{item.value}}</p>
+          <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>
     </grid>
-
-    <tabbar>
-      <tabbar-item link="/home">
-        <x-icon slot="icon" type="android-home" size="27" style="fill:#09bb07;"></x-icon>
-        <span slot="label">首页</span>
-      </tabbar-item>
-      <tabbar-item link="/books">
-        <x-icon slot="icon" type="clipboard" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">订单</span>
-      </tabbar-item>
-      <tabbar-item link="/car">
-        <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">购物车</span>
-      </tabbar-item>
-      <tabbar-item link="/user">
-        <x-icon slot="icon" type="person" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">我的</span>
-      </tabbar-item>
-    </tabbar>
 
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Tabbar,
-    TabbarItem, Grid, GridItem, GroupTitle, Group, Cell
+    ViewBox, Search, Grid, GridItem, Group, GroupTitle, Cell
   } from 'vux';
-  import {mapState, mapMutations, mapGetters, mapActions} from "vuex";
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
 
   export default {
     name: 'search2',
     components: {
-      ViewBox,
-      Search,
-      Swiper,
-      Marquee,
-      MarqueeItem,
-      Tabbar,
-      TabbarItem,
-      Grid,
-      GridItem,
-      GroupTitle,
-      Group,
-      Cell
+      ViewBox, Search, Grid, GridItem, Group, GroupTitle, Cell
     },
     data () {
       return {
-        results: [],
-        PaddingTop: 0,
         searchValue: ''
       }
     },
     computed: {
-      panel_list(){
-        return this.$store.getters.panel_list;
-      },
-      detail_params(){
-        return this.$store.getters.detail_params;
-      }
+      ...mapGetters([
+        'goods_list',
+        'common_menus'
+      ])
     },
     created(){
-      this.$store.dispatch('getHomeList');
+      this.$store.dispatch('home_goods');
     },
     mounted(){
+
     },
     methods: {
       onSubmit (params) {
@@ -112,7 +80,7 @@
           }
         });
 
-        console.log('search',params);
+        console.log('search', params);
       },
       onFocus () {
         this.PaddingTop = '44px';
@@ -128,35 +96,31 @@
 
 <style lang="less">
   .search {
-    .top-header{
+    .top-header {
       padding: 0 40px;
+      position: relative;
       .logo,
-      .btn-search{
+      .btn-search {
         text-align: center;
         position: absolute;
       }
-      .logo{
+      .logo {
         width: 24px;
         height: 24px;
-        top:10px;
-        left:10px;
-        img{
+        top: 10px;
+        left: 10px;
+        img {
           width: 100%;
           height: 100%;
         }
       }
-      .btn-search{
+      .btn-search {
         width: 40px;
         height: 28px;
         line-height: 28px;
-        top:8px;
-        right:5px;
+        top: 8px;
+        right: 5px;
         font-size: 13px;
-      }
-    }
-    .vux-marquee-box {
-      li {
-        font-size: 14px;
       }
     }
     .weui-cells__title {
@@ -165,7 +129,7 @@
       position: relative;
       span {
         padding-left: 10px;
-        border-left: 3px solid #09bb07;
+        border-left: 3px solid #32beff;
       }
       &::after {
         content: " ";
@@ -196,17 +160,5 @@
         color: #999;
       }
     }
-  }
-
-  .vux-marquee {
-    li {
-      height: 40px;
-      line-height: 40px;
-      text-indent: 10px;
-    }
-  }
-
-  .loading-layer {
-    /*padding-bottom: 50px;*/
   }
 </style>

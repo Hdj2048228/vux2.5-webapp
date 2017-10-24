@@ -7,19 +7,22 @@
  * */
 export const Comm_GET_INFO = 'Comm_GET_INFO';
 
-
 /*
  * 首页
  * */
-export const Home_Get_Focus = 'Home_Get_Focus';
-export const Home_Get_Marquee = 'Home_Get_Marquee';
-export const Home_Get_List = 'Home_Get_List';
+export const Home_Focus_List = 'Home_Focus_List';
+export const Home_Marquee_List = 'Home_Marquee_List';
+export const Home_Goods_List = 'Home_Goods_List';
 
+/*
+ * 购物车
+ * */
+export const Car_Goods_List = 'Car_Goods_List';
 
 /*
  * 商品详情
  * */
-export const Get_Goods_Detail = 'Get_Goods_Detail';
+export const Get_Detail_Goods = 'Get_Detail_Goods';
 
 
 /*
@@ -28,15 +31,12 @@ export const Get_Goods_Detail = 'Get_Goods_Detail';
 export const Sort_Get_Info = 'Sort_Get_Info';
 
 
-/*
- * 购物车
- * */
-export const Car_Get_Info = 'Car_Get_Info';
-
 
 /*
  * 个人中心
  * */
 export const User_Get_Info = 'User_Get_Info';
+export const User_Get_Address = 'User_Get_Address';
+export const User_Set_Address = 'User_Set_Address';
 
 

@@ -1,16 +1,18 @@
 <template>
   <view-box class="location" bodyPaddingTop="0" bodyPaddingBottom="0">
 
-    <x-header title="设置地址"
-              :left-options="{'showBack':true,'backText':'返回'}">
-      <x-icon slot="right" @click="go('locationForm',{act:'add'})" type="plus" size="24" style="fill:#fff;position:relative;top:-3px;"></x-icon>
+    <x-header title="设置地址">
+      <div slot="overwrite-left" class="left-arrow" @click="go('user')"></div>
+      <x-icon slot="right" @click="go('locationForm',{act:'add'})" type="plus" style="fill:#fff;"></x-icon>
     </x-header>
 
     <group class="vux-group" :title="'收货地址'">
-      <cell :title="'张三 13800138000'" :link="{'path':'/locationForm','query':{'id':'ab123456789012345678901234567890'}}"
-            inline-desc='浙江省杭州市西湖区'></cell>
-      <cell :title="'张三 13800138000'" :link="{'path':'/locationForm','query':{'id':'123456789012345678901234567890ab'}}"
-            inline-desc='浙江省杭州市西湖区'></cell>
+      <cell v-for="(item,index) in common_address"
+            :key="index"
+            :title="item.name+'  '+item.phone"
+            :inline-desc="item.addrName"
+            :link="{'path':'/locationForm','query':{'id':item.id}}">
+      </cell>
     </group>
 
   </view-box>
@@ -18,34 +20,35 @@
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    TransferDom,
-    Actionsheet,
-    Group,
-    Cell,
-    Toast
+    ViewBox, XHeader, TransferDom, Actionsheet, Group, Cell, Toast
   } from 'vux';
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
+
   export default {
     name: 'location',
     components: {
-      ViewBox,
-      XHeader,
-      TransferDom,
-      Actionsheet,
-      Group,
-      Cell,
-      Toast
+      ViewBox, XHeader, TransferDom, Actionsheet, Group, Cell, Toast
     },
     data () {
-      return {}
+      return {
+
+      }
+    },
+    computed:{
+      ...mapGetters([
+        'common_address'
+      ])
+    },
+    created(){
+      this.$store.dispatch('getAddress');
     },
     mounted(){
 
     },
     methods: {
-      onSubmit(){
-
+      onClickBack(){
       }
     }
   }
@@ -56,7 +59,7 @@
     .weui-cells__title {
       font-size: 12px;
     }
-    .vux-cell-bd{
+    .vux-cell-bd {
       .vux-label {
         font-size: 16px;
       }

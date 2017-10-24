@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import VueJsonp from 'vue-jsonp';
 import VueScroller from 'vue-scroller';
-import  {ToastPlugin} from 'vux';
+import  {ToastPlugin, LoadingPlugin} from 'vux';
 import App from './App';
 import routes from './routes/';
 import modules  from './store/';
@@ -15,6 +15,7 @@ Vue.use(VueRouter);
 Vue.use(VueJsonp);
 Vue.use(VueScroller);
 Vue.use(ToastPlugin);
+Vue.use(LoadingPlugin);
 
 // router
 const router = new VueRouter({
@@ -32,18 +33,28 @@ const store = new Vuex.Store({
   modules
 });
 
-// filter
+/**
+ * 追加钱币符
+ */
 Vue.filter('currency', value => {
   return value + '￥';
 });
-Vue.filter('subString',(str, num) =>{
+
+/**
+ * 字符串截取
+ */
+Vue.filter('subString', (str, num) => {
   let newStr = str.split('');
   let number = num || 20;
   let res = '';
-  for (let i = 0; i < number; i++) {
-    res += newStr[i];
+  if (newStr.length < number) {
+    return newStr.join('') + '...';
+  } else {
+    for (let i = 0; i < number; i++) {
+      res += newStr[i];
+    }
+    return res + '...';
   }
-  return res + '...';
 });
 
 Vue.config.productionTip = false;
@@ -54,12 +65,16 @@ window.app = new Vue({
   render: h => h(App)
 }).$mount('#app');
 
-// 全局URL跳转
-Vue.prototype.go=function (name,json) {
+/**
+ * 全局URL跳转
+ * @param name
+ * @param json
+ */
+Vue.prototype.go = function (name, json) {
   json = json || {};
   app.$router.push({
-    name:name,
-    query:json
+    name: name,
+    query: json
   });
   console.log(app.$route);
 };

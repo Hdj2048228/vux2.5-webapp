@@ -17,16 +17,18 @@
 
  */
 
+import Common from './modules/common';
 import Home from './modules/home';
+import Car from './modules/car';
 import Detail from './modules/detail';
 import Sort from './modules/sort';
-import Car from './modules/car';
 import User from './modules/user';
 
 export default {
+  Common,
   Home,
+  Car,
   Detail,
   Sort,
-  Car,
   User
 };

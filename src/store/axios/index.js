@@ -7,15 +7,14 @@ import Vue from 'vue';
 import vueJsonp from 'vue-jsonp'
 Vue.use(vueJsonp);
 
-import * as api from './url';
 
 /**
- * 封装(有参)异步交互
+ * 首页焦点图
  * @param callback
  * @returns null
  */
-function getHomeFocus(callback) {// 幻灯片
-  axios.get(api.get_home_focus).then(res => {
+function getHomeFocus(callback) {
+  axios.get('static/get_home_focus.json').then(res => {
     let data = res.data.data.filter(item => {
       // return item.addata === null && item.picInfo[0];
       return item;
@@ -31,13 +30,13 @@ function getHomeFocus(callback) {// 幻灯片
 }
 
 /**
- * 封装(无参数)异步交互
+ * 首页无缝滚动
  * @param null
- * @returns {Promise}
+ * @returns Promise
  */
-function getHomeMarquee() {// 跑马灯
+function getHomeMarquee() {
   return new Promise((resolve, reject) => {
-    Vue.jsonp(api.get_home).then(data => {
+    Vue.jsonp('http://3g.163.com/touch/jsonp/sy/recommend/0-9.html').then(data => {
       let marquee_list = data.live.filter(item => {
         return item.addata === null && item.picInfo[0];
       }).map(item => {
@@ -51,40 +50,88 @@ function getHomeMarquee() {// 跑马灯
 }
 
 /**
- * 封装(有参)异步交互
+ * 首页商品列表
  * @param callback
  * @returns null
  */
-function getHomeList(callback) { // 商品列表
-  axios.get(api.get_goods).then(res => {
+function getHomeGoods(callback) {
+  axios.get('static/get_goods.json').then(res => {
     let data = res.data.data.filter(item => {
       // return item.addata === null && item.picInfo[0];
       return item;
     }).map(item => {
       return {
-        id:item.id,
-        title:item.goodsName,
-        price:item.salePrice,
-        pic:item.productImg
+        id: item.id,
+        title: item.goodsName,
+        price: item.salePrice,
+        pic: item.productImg
       }
     });
     callback(data);
   });
 }
 
-function getGoodsDetail(uid, callback) { // 商品详情
+/**
+ * 获取 商品详情
+ * @param uid
+ * @param callback
+ */
+function getDetailGoods(uid, callback) {
   axios({
-    url: api.get_goods_detail,
+    url: 'static/get_goods_detail.json',
     method: 'get',
-    params: {id:uid}
+    params: {id: uid}
   }).then(res => {
     let item = res.data.data;
+    //console.log(res.data.data);
     callback({
-      title:item.goodsName,
-      desc:item.goodsDesc,
-      info:item.goodsInfo,
-      pics:item.imgList
+      title: item.goodsName,
+      desc: item.goodsDesc,
+      info: item.goodsInfo,
+      pics: item.imgList
     });
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 获取 收货地址
+ * @param callback
+ */
+function getAddress(callback) {
+  axios({
+    url: 'static/address.json',
+    method: 'get',
+  }).then(res => {
+    let arr = res.data.data.map(item => ({
+      id: item.id,
+      name: item.contacts,
+      phone: item.phone,
+      addrName: item.addrName
+    }));
+    callback(arr);
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 修改 收货地址
+ * @param address
+ * @param callback
+ */
+function setAddress(address, callback) {
+  axios({
+    url: 'static/address.json',
+    method: 'post',
+    data: address,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }).then(res => {
+    let data = res.data.success;
+    callback(data);
   }).catch(err => {
     console.log(err);
   });
@@ -93,7 +140,7 @@ function getGoodsDetail(uid, callback) { // 商品详情
 function axiosDemo(uid = 123, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: api.get_home,
+      url: 'http://3g.163.com/touch/jsonp/sy/recommend/0-9.html',
       method: 'get',
       params: {}
     }).then(res => {
@@ -104,12 +151,12 @@ function axiosDemo(uid = 123, callback) {
   });
 }
 
-function articleSubmit(uid = 123, callback) {
-}
 
 export {
-  getGoodsDetail,
   getHomeFocus,
   getHomeMarquee,
-  getHomeList
+  getHomeGoods,
+  getDetailGoods,
+  getAddress,
+  setAddress
 }

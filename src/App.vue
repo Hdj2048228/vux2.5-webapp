@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition :name="transitionName" mode="in-out">
+      <!--<keep-alive>-->
+        <router-view class="app-view"></router-view>
+      <!--</keep-alive>-->
+    </transition>
   </div>
 </template>
 
@@ -32,7 +36,21 @@
       Location,
       LocationForm
     },
-    methods: {}
+    data(){
+      return {
+        transitionName: 'slide-left'
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        const toDepth = to.path.split('/');
+        const fromDepth = from.path.split('/');
+        //this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+      }
+    },
+    methods: {
+
+    }
   }
 </script>
 
@@ -46,15 +64,16 @@
     background-color: #EFEFF4;
   }
 
-  body{
+  body {
     -webkit-box-shadow: 5px 0 20px -5px rgba(0, 0, 0, 0.5), -5px 0 20px -5px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 5px 0 20px -5px rgba(0, 0, 0, 0.5), -5px 0 20px -5px rgba(0, 0, 0, 0.5);
     box-shadow: 5px 0 20px -5px rgba(0, 0, 0, 0.5), -5px 0 20px -5px rgba(0, 0, 0, 0.5);
   }
 
-  #app{
+  #app {
     height: 100%;;
     overflow: hidden;
+    position: relative;
   }
 
   .weui-tab {
@@ -64,7 +83,7 @@
     -moz-osx-font-smoothing: grayscale;
     position: relative;
 
-    .weui-tab__panel{
+    .weui-tab__panel {
 
     }
     .vux-header {
@@ -82,7 +101,7 @@
       }
     }
 
-    .weui-grids{
+    .weui-grids {
       background-color: #fff;
     }
 
@@ -95,14 +114,19 @@
 
   .weui-tabbar {
     max-width: 414px;
-    background-color: #fff!important;
+    background-color: #fff !important;
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
     -ms-transform: translateX(-50%);
     transform: translateX(-50%);
-    position: fixed!important;
+    position: fixed !important;
     left: 50%;
-    z-index: 99999999!important;
+    z-index: 99999999 !important;
+    .weui-bar__item_on {
+      .weui-tabbar__label {
+        color: #999 !important;
+      }
+    }
   }
 
   // 遮罩
@@ -131,5 +155,48 @@
     -moz-transform: translate(-50%, 0) !important;
     -ms-transform: translate(-50%, 0) !important;
     transform: translate(-50%, 0) !important;
+  }
+
+
+  // transform
+  .app-view {
+    position: absolute !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
+  .slide-left-enter-active {
+    -webkit-animation: slide-in .3s;
+    animation: slide-in .3s;
+  }
+
+  .slide-right-enter-active {
+    -webkit-animation: slide-out .3s;
+    animation: slide-out .3s;
+  }
+
+  @keyframes slide-in {
+    0% {
+      -webkit-transform: translate3d(100%, 0, 0);
+      transform: translate3d(100%, 0, 0);
+    }
+    100% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      -webkit-transform: translate3d(-100%, 0, 0);
+      transform: translate3d(-100%, 0, 0);
+    }
+    100% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0);
+    }
   }
 </style>

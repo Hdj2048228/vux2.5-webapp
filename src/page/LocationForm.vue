@@ -1,65 +1,49 @@
 <template>
   <view-box class="locationForm" bodyPaddingTop="0" bodyPaddingBottom="0">
-    <x-header :title="gTitle"
-              :left-options="{'showBack':true,'backText':'返回'}">
-      <x-icon slot="right" @click="onSave" type="android-checkbox-outline" size="24" style="fill:#fff;position:relative;top:-3px;"></x-icon>
+    <x-header :title="gTitle" :left-options="{'showBack':true,'backText':'返回'}">
+      <x-icon slot="right" @click="onSave" type="android-checkbox-outline" size="24" style="fill:#fff"></x-icon>
     </x-header>
 
     <group class="vux-group" label-width="4.5em" label-margin-right="2em" label-align="right">
-      <x-input title="收货人" v-model="value1"></x-input>
-      <x-input title="手机号" v-model="value2"></x-input>
+      <x-input title="收货人" v-model="address.name"></x-input>
+      <x-input title="手机号" v-model="address.phone"></x-input>
 
-      <x-address title="省市区" v-model="addressValue" raw-value :list="addressData" value-text-align="left"
-                 label-align="justify"></x-address>
-      <x-textarea title="详细地址" v-model="addressInfo" placeholder="街道/门牌号" :show-counter="false"
-                  :rows="3"></x-textarea>
+      <x-address title="省市区" v-model="address.addressValue" :list="addressData" raw-value value-text-align="left"></x-address>
+      <x-textarea title="详细地址" v-model="address.addressInfo" :show-counter="false" :rows="3" placeholder="街道/门牌号"></x-textarea>
     </group>
 
-    <toast v-model="showToast" @on-hide="onHide">Basic Usage</toast>
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    TransferDom,
-    Actionsheet,
-    Group,
-    XInput,
-    XAddress,
-    XSwitch,
-    XTextarea,
-    ChinaAddressData,
-    Cell,
-    Toast
+    ViewBox, XHeader, Group, Cell, XInput, XAddress, XTextarea, ChinaAddressData, Toast
   } from 'vux';
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
+
   export default {
     name: 'locationForm',
     components: {
-      ViewBox,
-      XHeader,
-      TransferDom,
-      Actionsheet,
-      Group,
-      XInput,
-      XAddress,
-      XSwitch,
-      XTextarea,
-      Cell,
-      Toast
+      ViewBox, XHeader, Group, Cell, XInput, XAddress, XTextarea, Toast
     },
     data () {
       return {
         gTitle: '添加地址',
-        showToast: false,
-        showMenus: false,
-        value1: '张三',
-        value2: '13800138000',
         addressData: ChinaAddressData,
-        addressValue: ['浙江省', '杭州市', '西湖区'],
-        addressInfo: '文一西路522号1幢2单元501'
+        address: {
+          name: '张三',
+          phone: '13800138000',
+          addressValue: ['浙江省', '杭州市', '西湖区'],
+          addressInfo: '文一西路522号1幢2单元501'
+        }
       }
+    },
+    computed:{
+
+    },
+    created(){
     },
     mounted(){
       if (typeof this.$route.query.id !== 'undefined') {
@@ -78,13 +62,22 @@
     methods: {
       onSave(){
         if (1) {
-          this.showToast = true;
-          console.log('onSave callback');
+          this.$store.dispatch('setAddress',{
+            name:this.address.name,
+            phone:this.address.phone,
+            addressValue:this.address.addressValue.join('/'),//? 编号对应城市
+            addressInfo:this.address.addressInfo
+          });
+
+          this.$vux.toast.show({
+            text: '保存成功！'
+          });
+
+          setTimeout(() => {
+            this.$vux.toast.hide();
+            this.go('location');
+          }, 1000);
         }
-      },
-      onHide(){
-        this.go('location');
-        console.log('onHide callback');
       }
     }
   }
@@ -102,5 +95,12 @@
     textarea::placeholder {
       font-size: 14px;
     }
+    .vux-header-right{
+      position: absolute;
+      top:10px;
+    }
+  }
+  .vux-popup-dialog{
+    z-index: 1000!important;
   }
 </style>

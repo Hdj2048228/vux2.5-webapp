@@ -44,10 +44,9 @@
     <group class="setting" :title="'设置'">
       <cell is-link link="/location">
         <div slot="title">
-          <span>设置地址</span>
+          <span>收货地址</span>
         </div>
       </cell>
-      <cell :title="'接收通知'" :value="'已开启'"></cell>
     </group>
 
     <group class="dispatch" :title="'配送'">
@@ -78,7 +77,7 @@
         <span slot="label">购物车</span>
       </tabbar-item>
       <tabbar-item link="/user" selected>
-        <x-icon slot="icon" type="person" size="27" style="fill:#09bb07;"></x-icon>
+        <x-icon slot="icon" type="person" size="27" style="fill:#32beff;"></x-icon>
         <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
