@@ -1,21 +1,31 @@
-# vux
+#### 主要依赖
 
-> Web App
++ vue：2.4.2
++ vux：2.5.6
++ vuex：2.3.1
++ vue-router：2.7.0
 
-## Build Setup
+#### 解决痛点(vux)
+
+- 各种布局：Grid、Card、cell、panel、flexbox
+- 省市区联动：x-address 
+- 状态切换：x-switch 
+- 弹出层：x-dialog 
+- 提示框：toast
+- 选项卡：Tab
+- 表单功能：group(自带验证)
+
+
+#### Build Setup
 
 ``` bash
 # install dependencies
 npm install
+yarn
 
 # serve with hot reload at localhost:8080
 npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
 ```
-
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
