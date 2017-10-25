@@ -4,7 +4,7 @@
     <x-header title="订单详情"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
     <Group class="status">
@@ -19,7 +19,7 @@
     <group-title>商品清单</group-title>
     <grid :cols="3">
       <grid-item :label="i+'X'" v-for="i in 6" :key="i">
-          <img @click="go('detail',{id:'123456'})" slot="icon" src="../assets/logo.png">
+        <img @click="go('detail',{id:'123456'})" slot="icon" src="../assets/logo.png">
       </grid-item>
     </grid>
 
@@ -44,7 +44,12 @@
     </group>
 
     <div transfer-dom>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+      <actionsheet show-cancel
+                   v-model="menusFlag"
+                   :menus="common_menus"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-menu="true">
+      </actionsheet>
     </div>
 
     <tabbar v-if="showTabbar">
@@ -61,40 +66,18 @@
 
 <script>
   import {
-    ViewBox,XHeader,
-
-    FormPreview,Toast,
-
-    TransferDom,Actionsheet,
-
-    Group,GroupTitle,
-
-    Cell,CellBox,
-
-    Grid,GridItem,
-
-    Tab,TabItem,
-
-    Tabbar,TabbarItem
+    ViewBox,XHeader,FormPreview,Toast,TransferDom,Actionsheet,
+    Group,GroupTitle,Cell,CellBox,Grid,GridItem,Tab,TabItem,Tabbar,TabbarItem
   } from 'vux';
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
+
   export default {
     name: 'book',
     components: {
-      ViewBox,XHeader,
-
-      FormPreview,Toast,
-
-      TransferDom,Actionsheet,
-
-      Group,GroupTitle,
-
-      Cell,CellBox,
-
-      Grid,GridItem,
-
-      Tab,TabItem,
-
-      Tabbar,TabbarItem
+      ViewBox,XHeader,FormPreview,Toast,TransferDom,Actionsheet,
+      Group,GroupTitle,Cell,CellBox,Grid,GridItem,Tab,TabItem,Tabbar,TabbarItem
     },
     data () {
       return {
@@ -102,11 +85,7 @@
         status: '待支付',
         showTabbar: false,
         showContent001: false,
-        showMenus: false,
-        menus: {
-          menu1: '购物车',
-          menu2: '订单详情'
-        },
+        menusFlag: false,
         list: [{
           label: '订单号',
           value: 'RY17082301727'
@@ -123,20 +102,25 @@
         buttons1: [{
           style: 'default',
           text: '查看订单',
-          link: '/car'
+          link: '/cart'
         }, {
           style: 'primary',
           text: '再次购买',
-          link: '/car'
+          link: '/cart'
         }],
       }
+    },
+    computed: {
+      ...mapGetters([
+        'common_menus'
+      ])
     },
     mounted(){
       // 默认的
       this.status = '待支付';
 
       // 购物车->过来的
-      (this.$route.query.src === 'car') && (this.status = '待提交');
+      (this.$route.query.src === 'cart') && (this.status = '待提交');
 
       // 订单列表->过来的
       (this.$route.query.src === 'books') && (this.status = '已支付');
@@ -146,16 +130,38 @@
       (this.status === '已支付') && (this.showTabbar = false);
     },
     methods: {
+      onMenusClose (key,value) {
+        /*this.$vux.loading.show({
+         text: '跳转中...'
+         });*/
+
+        /*setTimeout(() => {
+         this.$vux.loading.hide();
+         }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
+      },
       onSubmit(){
         this.$vux.toast.show({
           text: '提交成功！'
         });
         setTimeout(() => {
           this.$vux.toast.hide();
-          this.showMenus = false;
+          this.menusFlag = false;
           this.$router.push({
-            name:'payList',
-            query:{params:'123'}
+            name: 'payList',
+            query: {params: '123'}
           });
         }, 1000);
       }
@@ -171,7 +177,7 @@
     .weui-cells__title {
       font-size: 12px;
     }
-    .weui-grid__img{
+    .weui-grid__img {
       width: 100%;
       height: 100%;
     }

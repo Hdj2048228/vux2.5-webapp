@@ -19,7 +19,7 @@
 
 import Common from './modules/common';
 import Home from './modules/home';
-import Car from './modules/car';
+import Cart from './modules/cart';
 import Detail from './modules/detail';
 import Sort from './modules/sort';
 import User from './modules/user';
@@ -27,7 +27,7 @@ import User from './modules/user';
 export default {
   Common,
   Home,
-  Car,
+  Cart,
   Detail,
   Sort,
   User

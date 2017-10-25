@@ -17,7 +17,7 @@ export const Home_Goods_List = 'Home_Goods_List';
 /*
  * 购物车
  * */
-export const Car_Goods_List = 'Car_Goods_List';
+export const Cart_Goods_List = 'Cart_Goods_List';
 
 /*
  * 商品详情
@@ -29,7 +29,6 @@ export const Get_Detail_Goods = 'Get_Detail_Goods';
  * 分类
  * */
 export const Sort_Get_Info = 'Sort_Get_Info';
-
 
 
 /*

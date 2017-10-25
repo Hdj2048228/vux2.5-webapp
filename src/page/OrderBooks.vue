@@ -4,7 +4,7 @@
     <x-header title="全部订单"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
     <tab bar-active-color="#04BE02" :line-width="1">
@@ -36,7 +36,12 @@
     </form-preview>
 
     <div transfer-dom>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+      <actionsheet show-cancel
+                   v-model="menusFlag"
+                   :menus="common_menus"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-menu="true">
+      </actionsheet>
     </div>
 
   </view-box>
@@ -44,38 +49,24 @@
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    FormPreview,
-    TransferDom,
-    Actionsheet,
-    Grid,
-    Tab,
-    TabItem
+    ViewBox, XHeader, FormPreview, TransferDom, Actionsheet, Grid, Tab, TabItem
   } from 'vux';
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
+
   export default {
     name: 'books',
-    components:{
-      ViewBox,
-      XHeader,
-      FormPreview,
-      TransferDom,
-      Actionsheet,
-      Grid,
-      Tab,
-      TabItem
+    components: {
+      ViewBox, XHeader, FormPreview, TransferDom, Actionsheet, Grid, Tab, TabItem
     },
     data () {
       return {
-        showMenus: false,
-        menus: {
-          menu1: '购物车',
-          menu2: '订单详情'
-        },
+        menusFlag: false,
         list: [{
           label: '订单号',
           value: 'RY17082301727'
-        },{
+        }, {
           label: '商品',
           value: '电动打蛋机'
         }, {
@@ -88,45 +79,73 @@
         buttons1: [{
           style: 'default',
           text: '查看订单',
-          link:'/book?src=books'
+          link: '/book?src=books'
         }, {
           style: 'primary',
           text: '再次购买',
-          link: '/car'
+          link: '/cart'
         }],
       }
     },
+    computed: {
+      ...mapGetters([
+        'common_menus'
+      ])
+    },
     created(){
-      if(this.$route.query.act!=='undefined'){
+      if (this.$route.query.act !== 'undefined') {
         let act = this.$route.query.act;
-        if(act==='all'){
+        if (act === 'all') {
           console.log('route all');
         }
-        if(act==='pay'){
+        if (act === 'pay') {
           console.log('route pay');
         }
-        if(act==='wait'){
+        if (act === 'wait') {
           console.log('route wait');
         }
-        if(act==='finish'){
+        if (act === 'finish') {
           console.log('route finish');
         }
       }
     },
     mounted(){
+
     },
     methods: {
+      onMenusClose (key, value) {
+        /*this.$vux.loading.show({
+          text: '跳转中...'
+        });*/
+
+        /*setTimeout(() => {
+          this.$vux.loading.hide();
+        }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
+      },
       itemClick(act){
-        if(act==='all'){
+        if (act === 'all') {
           console.log('tap all');
         }
-        if(act==='pay'){
+        if (act === 'pay') {
           console.log('tap pay');
         }
-        if(act==='wait'){
+        if (act === 'wait') {
           console.log('tap wait');
         }
-        if(act==='finish'){
+        if (act === 'finish') {
           console.log('tap finish');
         }
       }
@@ -135,22 +154,22 @@
 </script>
 
 <style lang="less">
-  .books{
-    .vux-form-preview{
+  .books {
+    .vux-form-preview {
       margin-top: 10px;
     }
-    .weui-form-preview__hd{
-      .weui-form-preview__label{
+    .weui-form-preview__hd {
+      .weui-form-preview__label {
         font-size: 14px;
       }
-      .weui-form-preview__value{
+      .weui-form-preview__value {
         font-size: 16px;
       }
     }
-    .weui-form-preview__btn{
+    .weui-form-preview__btn {
       font-size: 14px;
     }
-    .weui-form-preview__btn_primary{
+    .weui-form-preview__btn_primary {
       color: #999;
     }
   }

@@ -23,11 +23,10 @@
 
     <div transfer-dom>
       <actionsheet show-cancel
-                   :menus="common_menus"
                    v-model="menusFlag"
+                   :menus="common_menus"
                    @on-click-menu="onMenusClose"
-                   :close-on-clicking-mask="false"
-                   :close-on-clicking-menu="false">
+                   :close-on-clicking-menu="true">
       </actionsheet>
     </div>
 
@@ -40,7 +39,7 @@
         <x-icon slot="icon" type="navicon" size="27" style="fill:#32beff;"></x-icon>
         <span slot="label">列表</span>
       </tabbar-item>
-      <tabbar-item link="/car">
+      <tabbar-item link="/cart">
         <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
         <span slot="label">购物车</span>
       </tabbar-item>
@@ -89,14 +88,30 @@
 
     },
     methods: {
-      onMenusClose () {
-        this.$vux.loading.show({
-          text: '跳转中...'
-        });
-        setTimeout(() => {
-          this.$vux.loading.hide();
-          this.menusFlag = false
-        }, 1000)
+      /**
+       * 更多菜单
+       **/
+      onMenusClose (key,value) {
+        /*this.$vux.loading.show({
+         text: '跳转中...'
+         });*/
+
+        /*setTimeout(() => {
+         this.$vux.loading.hide();
+         }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
       },
       onSubmit () {
         this.$refs.search.setBlur();

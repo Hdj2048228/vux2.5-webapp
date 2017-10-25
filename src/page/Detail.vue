@@ -27,14 +27,19 @@
         <span slot="icon"><img src="../assets/icon-car.png" alt="加入购物车"></span>
         <span slot="label">加入购物车</span>
       </tabbar-item>
-      <tabbar-item link="/car">
+      <tabbar-item link="/cart">
         <span slot="icon"><img src="../assets/icon-buy.png" alt="立即购买"></span>
         <span slot="label">立即购买</span>
       </tabbar-item>
     </tabbar>
 
     <div transfer-dom>
-      <actionsheet :menus="common_menus" v-model="menusFlag" show-cancel></actionsheet>
+      <actionsheet show-cancel
+                   v-model="menusFlag"
+                   :menus="common_menus"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-menu="true">
+      </actionsheet>
     </div>
 
   </view-box>
@@ -86,6 +91,28 @@
 
     },
     methods: {
+      onMenusClose (key,value) {
+        /*this.$vux.loading.show({
+         text: '跳转中...'
+         });*/
+
+        /*setTimeout(() => {
+         this.$vux.loading.hide();
+         }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
+      },
       swiperChange(){
         console.log("swiperChange");
       },

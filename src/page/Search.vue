@@ -13,7 +13,7 @@
         ref="search">
         <!--一直报错?页面name不能为search-->
       </search>
-      <div class="btn-search">搜索</div>
+      <div class="btn-search" @click="onLogin">登录</div>
     </div>
 
     <grid :rows="2">
@@ -64,6 +64,11 @@
 
     },
     methods: {
+      onLogin(){
+        this.$router.push({
+          name: 'signUp'
+        });
+      },
       onSubmit (params) {
         this.$refs.search.setBlur();
 

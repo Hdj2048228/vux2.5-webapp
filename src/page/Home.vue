@@ -12,7 +12,7 @@
         @on-submit="onSubmit"
         ref="search">
       </search>
-      <div class="btn-search" @click="onSubmit">搜索</div>
+      <div class="btn-search" @click="onLogin">登录</div>
     </div>
 
     <swiper loop auto :list="focus_list" v-model="focus_index" @on-index-change="swiperChange"></swiper>
@@ -44,7 +44,7 @@
         <x-icon slot="icon" type="navicon" size="27" style="fill:#999;"></x-icon>
         <span slot="label">列表</span>
       </tabbar-item>
-      <tabbar-item link="/car">
+      <tabbar-item link="/cart">
         <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
         <span slot="label">购物车</span>
       </tabbar-item>
@@ -93,6 +93,11 @@
     mounted(){
     },
     methods: {
+      onLogin(){
+        this.$router.push({
+          name: 'signUp'
+        });
+      },
       onSubmit (params) {
         this.$refs.search.setBlur();
 
@@ -108,8 +113,6 @@
             params: params
           }
         });
-
-        console.log('home', params);
       },
       onFocus () {
         this.PaddingTop = '44px';

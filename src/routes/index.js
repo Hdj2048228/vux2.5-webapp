@@ -27,9 +27,9 @@ export default[
     component: App.components.Search
   },
   {
-    path: '/car',
-    name: 'car',
-    component: App.components.Car
+    path: '/cart',
+    name: 'cart',
+    component: App.components.Cart
   },
   {
     path: '/detail',
@@ -60,6 +60,16 @@ export default[
     path: '/locationForm',
     name: 'locationForm',
     component: App.components.LocationForm
+  },
+  {
+    path: '/signIn',
+    name: 'signIn',
+    component: App.components.SignIn
+  },
+  {
+    path: '/signUp',
+    name: 'signUp',
+    component: App.components.SignUp
   },
   {
     path: '*',

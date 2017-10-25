@@ -10,7 +10,7 @@ const state = {
 };
 
 const getters = {
-  car_goods_list: state => state.goods_list
+  cart_goods_list: state => state.goods_list
 };
 
 const actions = {
@@ -42,12 +42,12 @@ const actions = {
         "replace": false
       }
     }];
-    commit(types.Car_Goods_List, data);
+    commit(types.Cart_Goods_List, data);
   }
 };
 
 const mutations = {
-  [types.Car_Goods_List](state,data){
+  [types.Cart_Goods_List](state,data){
     state.goods_list = data;
   }
 };

@@ -4,7 +4,7 @@
     <x-header title="支付方式"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
-              @on-click-more="showMenus = true">
+              @on-click-more="menusFlag = true">
     </x-header>
 
     <panel :list="[]" :type="'1'"></panel>
@@ -31,7 +31,12 @@
     </div>
 
     <div transfer-dom>
-      <actionsheet :menus="menus" v-model="showMenus" show-cancel></actionsheet>
+      <actionsheet show-cancel
+                   v-model="menusFlag"
+                   :menus="common_menus"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-menu="true">
+      </actionsheet>
     </div>
 
   </view-box>
@@ -39,34 +44,53 @@
 
 <script>
   import {
-    ViewBox,
-    XHeader,
-    TransferDom,
-    Actionsheet,
-    Panel
+    ViewBox, XHeader, TransferDom, Actionsheet, Panel
   } from 'vux';
+  import {
+    mapState, mapMutations, mapGetters, mapActions
+  } from "vuex";
+
   export default {
     name: 'payList',
     components: {
-      ViewBox,
-      XHeader,
-      TransferDom,
-      Actionsheet,
-      Panel
+      ViewBox, XHeader, TransferDom, Actionsheet, Panel
     },
     data () {
       return {
-        showMenus: false,
-        menus: {
-          menu1: '购物车',
-          menu2: '订单详情'
-        }
+        menusFlag: false
       }
+    },
+    computed: {
+      ...mapGetters([
+        'common_menus'
+      ])
     },
     mounted(){
 
     },
     methods: {
+      onMenusClose (key,value) {
+        /*this.$vux.loading.show({
+         text: '跳转中...'
+         });*/
+
+        /*setTimeout(() => {
+         this.$vux.loading.hide();
+         }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
+      },
       alipay ($event) {
         console.log($event);
       }

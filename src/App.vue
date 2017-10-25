@@ -12,7 +12,7 @@
   import Home from '@/page/Home';
   import OrderBook from '@/page/OrderBook';
   import OrderBooks from '@/page/OrderBooks';
-  import Car from '@/page/Car';
+  import Cart from '@/page/Cart';
   import User from '@/page/User';
   import List from '@/page/List';
   import Search from '@/page/Search';
@@ -20,6 +20,8 @@
   import PayList from '@/page/PayList';
   import Location from '@/page/Location';
   import LocationForm from '@/page/LocationForm';
+  import SignIn from '@/page/signIn';
+  import SignUp from '@/page/signUp';
 
   export default {
     name: 'app',
@@ -28,13 +30,15 @@
       List,
       Search,
       User,
-      Car,
+      Cart,
       Detail,
       PayList,
       OrderBook,
       OrderBooks,
       Location,
-      LocationForm
+      LocationForm,
+      SignIn,
+      SignUp
     },
     data(){
       return {
@@ -45,7 +49,11 @@
       '$route' (to, from) {
         const toDepth = to.path.split('/');
         const fromDepth = from.path.split('/');
-        //this.transitionName = toDepth < fromDepth ? 'slide-right' : 'slide-left';
+        if(fromDepth[1]==="cart" || fromDepth[1]==="book" || fromDepth[1]==="books" || fromDepth[1]==="payList" || fromDepth[1]==="detail" || fromDepth[1]==="list" || fromDepth[1]==="location" || fromDepth[1]==="locationForm"){
+          this.transitionName = 'slide-right';
+        }else{
+          this.transitionName = 'slide-left';
+        }
       }
     },
     methods: {
@@ -74,6 +82,10 @@
     height: 100%;;
     overflow: hidden;
     position: relative;
+  }
+
+  .vux-search-fixed{
+    position: absolute!important;
   }
 
   .weui-tab {

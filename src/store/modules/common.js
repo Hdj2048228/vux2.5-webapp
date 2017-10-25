@@ -28,7 +28,7 @@ const state = {
     name: '张三',
     phone: '13800138000',
     addressValue: ['浙江省', '杭州市', '西湖区'],
-    addressInfo: '文一西路522号1幢2单元501'
+    addressInfo: '文一西路522号'
   }
 };
 
@@ -39,12 +39,9 @@ const actions = {
       commit(types.User_Get_Address, res);
     });
   },
-  setAddress({commit,state},aaa){
-
-    console.log(1111,aaa);
-
-    state.setAddress.addressValue = state.setAddress.addressValue.join('/');
-    axios.setAddress(state.setAddress,res => {
+  setAddress({commit,state},params){
+    //console.log(1111,params);
+    axios.setAddress(params,res => {
       console.log(2222,res);
     });
   }

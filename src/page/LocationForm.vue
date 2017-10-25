@@ -17,7 +17,7 @@
 
 <script>
   import {
-    ViewBox, XHeader, Group, Cell, XInput, XAddress, XTextarea, ChinaAddressData, Toast
+    ViewBox, XHeader, Group, Cell, XInput, XAddress, XTextarea, Toast, ChinaAddressData, Value2nameFilter
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -44,6 +44,7 @@
 
     },
     created(){
+
     },
     mounted(){
       if (typeof this.$route.query.id !== 'undefined') {
@@ -65,7 +66,7 @@
           this.$store.dispatch('setAddress',{
             name:this.address.name,
             phone:this.address.phone,
-            addressValue:this.address.addressValue.join('/'),//? 编号对应城市
+            addressValue:Value2nameFilter(this.address.addressValue,ChinaAddressData),//? 编号对应城市
             addressInfo:this.address.addressInfo
           });
 

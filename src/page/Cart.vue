@@ -1,5 +1,5 @@
 <template>
-  <view-box class="car" bodyPaddingBottom="50px" bodyPaddingTop="0">
+  <view-box class="cart" bodyPaddingBottom="50px" bodyPaddingTop="0">
 
     <x-header title="购物车"
               :left-options="{showBack:true,backText:'返回'}"
@@ -8,7 +8,7 @@
     </x-header>
 
     <grid class="vux-grid-list"
-          v-for="(item,index) in car_goods_list"
+          v-for="(item,index) in cart_goods_list"
           @on-item-click="onItemClick(item.id)"
           :key="index">
         <a href="javascript:;" class="weui-grid" style="width: 50%;">
@@ -28,7 +28,12 @@
     </grid>
 
     <div transfer-dom>
-      <actionsheet :menus="common_menus" v-model="menusFlag" show-cancel></actionsheet>
+      <actionsheet show-cancel
+                   v-model="menusFlag"
+                   :menus="common_menus"
+                   @on-click-menu="onMenusClose"
+                   :close-on-clicking-menu="true">
+      </actionsheet>
     </div>
 
     <div transfer-dom>
@@ -59,7 +64,7 @@
   } from "vuex";
 
   export default {
-    name: 'car',
+    name: 'cart',
     components: {
       ViewBox,XHeader,Grid,GridItem,GroupTitle,Group,Confirm,
       TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
@@ -76,19 +81,45 @@
     },
     computed:{
       ...mapGetters([
-        'car_goods_list',
+        'cart_goods_list',
         'common_menus'
       ])
     },
     created(){
       this.$store.dispatch('goods_list');
 
-      console.log('car created....');
+      console.log('cart created....');
     },
     mounted(){
 
     },
     methods: {
+      /**
+       * 更多菜单
+       **/
+      onMenusClose (key,value) {
+        /*this.$vux.loading.show({
+         text: '跳转中...'
+         });*/
+
+        /*setTimeout(() => {
+         this.$vux.loading.hide();
+         }, 1000);*/
+
+        if(key==="menu1"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'cart'
+          });
+        }
+        if(key==="menu2"){
+          this.menusFlag = false;
+          this.$router.push({
+            name:'books'
+          });
+        }
+      },
+
       /**
        * 删除商品
        */
@@ -108,7 +139,7 @@
           this.showMenus = false;
           this.$router.push({
             name:'book',
-            query:{src:'car'}
+            query:{src:'cart'}
           });
         }, 1000);
       },
@@ -135,7 +166,7 @@
        */
       delGoods(index){
         this.itemIndex = index;
-        this.car_goods_list.splice(this.itemIndex, 1);
+        this.cart_goods_list.splice(this.itemIndex, 1);
       },
 
       /**
@@ -143,7 +174,7 @@
        */
       gross(){
         this.totalMoney = 0;
-        this.car_goods_list.forEach(item => {
+        this.cart_goods_list.forEach(item => {
           if (item.price >= 1 && item.num >= 1) {
             this.totalMoney += item.price * item.num;
           }
@@ -154,7 +185,7 @@
 </script>
 
 <style lang="less">
-  .car {
+  .cart {
     .weui-grids {
       padding-bottom: 20px;
       &:after,
