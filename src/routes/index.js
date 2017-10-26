@@ -2,19 +2,25 @@ import App from '../App.vue'
 
 export default[
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: App.components.Home
   },
   {
     path: '/home',
     name: 'home',
-    component: App.components.Home
+    component: App.components.Home,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/user',
     name: 'user',
-    component: App.components.User
+    component: App.components.User,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/list',

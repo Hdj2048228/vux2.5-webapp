@@ -49,7 +49,7 @@
       '$route' (to, from) {
         const toDepth = to.path.split('/');
         const fromDepth = from.path.split('/');
-        if(fromDepth[1]==="cart" || fromDepth[1]==="book" || fromDepth[1]==="books" || fromDepth[1]==="payList" || fromDepth[1]==="detail" || fromDepth[1]==="list" || fromDepth[1]==="location" || fromDepth[1]==="locationForm"){
+        if(fromDepth[1]==="book" || fromDepth[1]==="books" || fromDepth[1]==="payList" || fromDepth[1]==="detail" || fromDepth[1]==="list" || fromDepth[1]==="location" || fromDepth[1]==="locationForm"){
           this.transitionName = 'slide-right';
         }else{
           this.transitionName = 'slide-left';

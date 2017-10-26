@@ -1,10 +1,9 @@
 <template>
   <view-box class="user" bodyPaddingBottom="60px" bodyPaddingTop="0">
 
-    <x-header title="个人中心"
-              :right-options="{showMore: true}"
-              @on-click-more="menusFlag = true">
+    <x-header title="个人中心">
       <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;"></x-icon>
+      <x-icon slot="right" @click="logout()" type="log-out" style="fill:#fff;"></x-icon>
     </x-header>
 
     <card :header="{title:'我的订单'}">
@@ -82,21 +81,12 @@
       </tabbar-item>
     </tabbar>
 
-    <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
-                   :close-on-clicking-menu="true">
-      </actionsheet>
-    </div>
-
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox, TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+    ViewBox, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -105,12 +95,11 @@
   export default {
     name: 'user',
     components: {
-      ViewBox, TransferDom, Actionsheet, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+      ViewBox, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
     },
     data () {
       return {
-        showContent001: false,
-        menusFlag: false
+        showContent001: false
       }
     },
     computed: {
@@ -121,27 +110,8 @@
     mounted(){
     },
     methods: {
-      onMenusClose (key,value) {
-        /*this.$vux.loading.show({
-         text: '跳转中...'
-         });*/
+      logout(){
 
-        /*setTimeout(() => {
-         this.$vux.loading.hide();
-         }, 1000);*/
-
-        if(key==="menu1"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'cart'
-          });
-        }
-        if(key==="menu2"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'books'
-          });
-        }
       }
     }
   }

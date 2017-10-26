@@ -5,7 +5,10 @@
 /*
  * 公共
  * */
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 export const Comm_GET_INFO = 'Comm_GET_INFO';
+
 
 /*
  * 首页
@@ -23,6 +26,8 @@ export const Cart_Goods_List = 'Cart_Goods_List';
  * 商品详情
  * */
 export const Get_Detail_Goods = 'Get_Detail_Goods';
+export const Get_Detail_Goods_Add = 'Get_Detail_Goods_Add';
+export const Get_Detail_Goods_Number = 'Get_Detail_Goods_Number';
 
 
 /*
@@ -37,5 +42,6 @@ export const Sort_Get_Info = 'Sort_Get_Info';
 export const User_Get_Info = 'User_Get_Info';
 export const User_Get_Address = 'User_Get_Address';
 export const User_Set_Address = 'User_Set_Address';
+export const User_switch_Address = 'User_switch_Address';
 
 

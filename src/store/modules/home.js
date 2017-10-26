@@ -62,17 +62,8 @@ const mutations = {
   [types.Home_Goods_List](state, res){
     state.goods_list = res;
     state.goods_list['params'] = [{
-      label: '宽度：',
-      value: '20cm'
-    }, {
-      label: '高度：',
-      value: '20cm'
-    }, {
-      label: '颜色：',
-      value: '白色'
-    }, {
-      label: '型号：',
-      value: 'RY119'
+      label: '',
+      value: ''
     }];
   }
 };

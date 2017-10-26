@@ -14,7 +14,8 @@
     </swiper>
 
     <group class="vux-group">
-      <cell :title="detail_swiper.title" :inlineDesc="detail_swiper.desc | subString(22)" value="￥1024"></cell>
+      <cell :title="detail_swiper.title" :inlineDesc="detail_swiper.desc | subString(22)"
+            :value="detail_swiper.price | currency"></cell>
       <cell-form-preview :list="detail_swiper.params"></cell-form-preview>
     </group>
 
@@ -23,13 +24,13 @@
     </card>
 
     <tabbar>
-      <tabbar-item :badge="badgeNumber" selected @on-item-click="addCar">
+      <tabbar-item :badge="detail_cart_number| toString" selected @on-item-click="addCar">
         <span slot="icon"><img src="../assets/icon-car.png" alt="加入购物车"></span>
         <span slot="label">加入购物车</span>
       </tabbar-item>
       <tabbar-item link="/cart">
-        <span slot="icon"><img src="../assets/icon-buy.png" alt="立即购买"></span>
-        <span slot="label">立即购买</span>
+        <span slot="icon"><img src="../assets/icon-buy.png" alt="查看购物车"></span>
+        <span slot="label">查看购物车</span>
       </tabbar-item>
     </tabbar>
 
@@ -48,7 +49,7 @@
 <script>
   import {
     ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel,
-    Card,TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
+    Card, TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
   } from 'vux';
 
   import {
@@ -59,18 +60,18 @@
     name: 'detail',
     components: {
       ViewBox, XHeader, Swiper, SwiperItem, CellFormPreview, Group, Cell, Panel,
-      Card,TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
+      Card, TransferDom, Actionsheet, Scroller, Tab, TabItem, Tabbar, TabbarItem
     },
     data () {
       return {
         swiperIndex: 0,
-        badgeNumber: '0',
         menusFlag: false
       }
     },
     computed: {
       ...mapGetters([
         'detail_swiper',
+        'detail_cart_number',
         'common_menus'
       ]),
       swiper_index: {
@@ -83,15 +84,17 @@
       }
     },
     created(){
-      this.$store.dispatch('detail_goods', 123);
-
-      console.log('detail created...');
+      if (this.$route.query.id !== undefined) {
+        let id = this.$route.query.id;
+        this.$store.dispatch('detail_goods', id);
+        this.$store.dispatch('goods_get_number', id);// 请求购物总数
+      }
     },
     mounted(){
 
     },
     methods: {
-      onMenusClose (key,value) {
+      onMenusClose (key, value) {
         /*this.$vux.loading.show({
          text: '跳转中...'
          });*/
@@ -100,16 +103,16 @@
          this.$vux.loading.hide();
          }, 1000);*/
 
-        if(key==="menu1"){
+        if (key === "menu1") {
           this.menusFlag = false;
           this.$router.push({
-            name:'cart'
+            name: 'cart'
           });
         }
-        if(key==="menu2"){
+        if (key === "menu2") {
           this.menusFlag = false;
           this.$router.push({
-            name:'books'
+            name: 'books'
           });
         }
       },
@@ -117,7 +120,11 @@
         console.log("swiperChange");
       },
       addCar(){
-        this.badgeNumber = (Number(this.badgeNumber) + 1) + '';
+
+        if (this.$route.query.id !== undefined) {
+          let id = this.$route.query.id;
+          this.$store.dispatch('goods_add', id);
+        }
 
         this.$vux.toast.show({
           text: '加入成功！'
@@ -136,9 +143,9 @@
     .weui-tab__panel {
       background-color: #f0f0f0;
     }
-    .weui-form-preview__bd{
+    .weui-form-preview__bd {
       font-size: 14px;
-      line-height:1.5;
+      line-height: 1.5;
     }
 
     .vux-card-content {

@@ -1,4 +1,3 @@
-
 {
   "code":200,
   "data":[{
@@ -21,7 +20,7 @@
     "createBy":"e01bedc89f0d416fb724411c798670e3",
     "createDate":"2017-06-12 18:05:23",
     "id":"22e32cf9a0f14557aa08c2cfc70a7eca",
-    "isUsed":2,
+    "isUsed":1,
     "phone":"13811901660",
     "status":1,
     "updateBy":"e01bedc89f0d416fb724411c798670e3",
@@ -34,7 +33,7 @@
     "createBy":"e01bedc89f0d416fb724411c798670e3",
     "createDate":"2017-06-12 18:05:23",
     "id":"32e32cf9a0f14557aa08c2cfc70a7eca",
-    "isUsed":2,
+    "isUsed":1,
     "phone":"13811901660",
     "status":1,
     "updateBy":"e01bedc89f0d416fb724411c798670e3",

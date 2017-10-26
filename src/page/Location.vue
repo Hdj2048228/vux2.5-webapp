@@ -6,13 +6,12 @@
       <x-icon slot="right" @click="go('locationForm',{act:'add'})" type="plus" style="fill:#fff;"></x-icon>
     </x-header>
 
-    <group class="vux-group" :title="'收货地址'">
-      <cell v-for="(item,index) in common_address"
-            :key="index"
-            :title="item.name+'  '+item.phone"
-            :inline-desc="item.addrName"
-            :link="{'path':'/locationForm','query':{'id':item.id}}">
-      </cell>
+    <group v-for="(item,index) in common_address" :key="index" v-if="item.phone">
+      <x-switch :title="item.name+'  '+item.phone"
+                prevent-default
+                v-model="item.isUsed"
+                @on-click="changeSwitch(item)"></x-switch>
+      <cell :inline-desc="item.addrName" :link="{'path':'/locationForm','query':{'id':item.id}}"></cell>
     </group>
 
   </view-box>
@@ -20,7 +19,7 @@
 
 <script>
   import {
-    ViewBox, XHeader, TransferDom, Actionsheet, Group, Cell, Toast
+    ViewBox, XHeader, XSwitch, TransferDom, Actionsheet, Group, GroupTitle, Cell, Toast
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -29,12 +28,10 @@
   export default {
     name: 'location',
     components: {
-      ViewBox, XHeader, TransferDom, Actionsheet, Group, Cell, Toast
+      ViewBox, XHeader, XSwitch, TransferDom, Actionsheet, Group, GroupTitle, Cell, Toast
     },
     data () {
-      return {
-
-      }
+      return {}
     },
     computed:{
       ...mapGetters([
@@ -44,11 +41,16 @@
     created(){
       this.$store.dispatch('getAddress');
     },
-    mounted(){
-
-    },
+    mounted(){},
     methods: {
-      onClickBack(){
+      changeSwitch (item,newVal, oldVal) {
+        this.$vux.loading.show({
+          text: '设置成功！'
+        });
+        setTimeout(() => {
+          this.$vux.loading.hide();
+          item.isUsed = !item.isUsed;
+        }, 1000)
       }
     }
   }
@@ -58,6 +60,11 @@
   .location {
     .weui-cells__title {
       font-size: 12px;
+    }
+    .weui-cell_switch{
+      .weui-label {
+        font-size: 16px;
+      }
     }
     .vux-cell-bd {
       .vux-label {

@@ -29,7 +29,7 @@
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
-          <p>价格：{{item.price}}</p>
+          <p>价格：{{item.price | currency}}</p>
           <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>

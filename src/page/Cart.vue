@@ -47,7 +47,7 @@
         <span slot="label">合计：{{totalMoney | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="onSubmit">
-        <span slot="label">结算</span>
+        <span slot="label">开始结算</span>
       </tabbar-item>
     </tabbar>
 

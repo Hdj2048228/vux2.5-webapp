@@ -18,10 +18,12 @@ const state = {
     menu1: '购物车',
     menu2: '订单详情'
   },
+  switchFlag:false,
   address: [{
+    id: '1234567890',
+    isUsed:1,
     name: '张三',
     phone: '13800138000',
-    id: '1234567890',
     addrName: '北京/北京市/昌平区'
   }],
   setAddress: {
@@ -30,6 +32,15 @@ const state = {
     addressValue: ['浙江省', '杭州市', '西湖区'],
     addressInfo: '文一西路522号'
   }
+};
+
+/**
+ * getters是store的计算属性
+ * getters比state方便多组件重用
+ */
+const getters = {
+  common_menus: state => state.menus,
+  common_address: state => state.address
 };
 
 // 异步获取数据：通过commit传值
@@ -52,15 +63,6 @@ const mutations = {
   [types.User_Get_Address](state, res){
     state.address = res;
   }
-};
-
-/**
- * getters是store的计算属性
- * getters比state方便多组件重用
- */
-const getters = {
-  common_menus: state => state.menus,
-  common_address: state => state.address
 };
 
 export default {
