@@ -161,16 +161,24 @@
           this.common_goods_list.splice(this.itemIndex, 1);
         }
       },
+
+      /**
+       * 确认删除
+       */
       confirmDel(){
         this.delGoods(this.delIndex);
         this.$store.dispatch('goodsRemove', this.item);
       },
+
+      /**
+       * 取消删除
+       */
       cancelDel(){
         this.item.num = 1;
       },
 
       /**
-       * 计算总金额
+       * 计算总金额(暂时废除)
        */
       gross(){
         this.goodsMoney = 0;
