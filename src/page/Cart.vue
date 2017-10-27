@@ -8,23 +8,24 @@
     </x-header>
 
     <grid class="vux-grid-list"
-          v-for="(item,index) in cart_goods_list"
+          v-for="(item,index) in common_goods_list"
           @on-item-click="onItemClick(item.id)"
           :key="index">
-        <a href="javascript:;" class="weui-grid" style="width: 50%;">
-          <img class="grid-pic" :src="item.src">
-        </a>
-        <a href="javascript:;" class="weui-grid" style="width: 50%;">
-          <div class="grid-padding">
-            <p>烟雾传感器</p>
-            <p>型号： {{item.type}}</p>
-            <p>价格：{{item.price}}</p>
-            <inline-x-number class="weui-num"
-                             v-model="item.num" :min="0" :max="99"
-                             @on-change="changeNumber(item,index,$event)">
-            </inline-x-number>
+      <a href="javascript:;" class="weui-grid" style="width: 50%;">
+        <img class="grid-pic" :src="item.src">
+      </a>
+      <a href="javascript:;" class="weui-grid" style="width: 50%;">
+        <div class="grid-padding">
+          <p>烟雾传感器</p>
+          <p>型号： {{item.type}}</p>
+          <p>价格：{{item.price}}</p>
+          <div class="weui-number-box">
+            <span class="weui-number-remove" @click="removeNumber(item,index,$event)">-</span>
+            <input type="tel" v-model="item.num" class="vux-number-input">
+            <span class="weui-number-add" @click="addNumber(item,index,$event)">+</span>
           </div>
-        </a>
+        </div>
+      </a>
     </grid>
 
     <div transfer-dom>
@@ -35,16 +36,15 @@
                    :close-on-clicking-menu="true">
       </actionsheet>
     </div>
-
     <div transfer-dom>
-      <confirm v-model="confirmFlag" @on-confirm="onConfirm">
+      <confirm v-model="confirmFlag" @on-confirm="confirmDel" @on-cancel="cancelDel">
         <p style="text-align:center;">确定删除吗？</p>
       </confirm>
     </div>
 
     <tabbar>
       <tabbar-item selected>
-        <span slot="label">合计：{{totalMoney | currency}}</span>
+        <span slot="label">合计：{{common_goods_money | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="onSubmit">
         <span slot="label">开始结算</span>
@@ -56,74 +56,59 @@
 
 <script>
   import {
-    ViewBox,XHeader,Grid,GridItem,GroupTitle,Group,Confirm,
-    TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
+    ViewBox, XHeader, Grid, GridItem, GroupTitle, Group, Confirm,
+    TransferDom, Actionsheet, InlineXNumber, Tabbar, TabbarItem
   } from 'vux';
   import {
-    mapState,mapMutations,mapGetters,mapActions
+    mapState, mapMutations, mapGetters, mapActions
   } from "vuex";
 
   export default {
     name: 'cart',
     components: {
-      ViewBox,XHeader,Grid,GridItem,GroupTitle,Group,Confirm,
-      TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
+      ViewBox, XHeader, Grid, GridItem, GroupTitle, Group, Confirm,
+      TransferDom, Actionsheet, InlineXNumber, Tabbar, TabbarItem
     },
     data(){
-      return{
+      return {
         totalMoney: 0,
+        cancelFlag: false,
+        delIndex: -1,
+        item: null,
         itemIndex: 0,
-        delIndex: 0,
-        panel_type: '5',
         confirmFlag: false,
         menusFlag: false
       }
     },
-    computed:{
+    computed: {
       ...mapGetters([
-        'cart_goods_list',
+        'common_goods_list',
+        'common_goods_money',
         'common_menus'
       ])
     },
     created(){
-      this.$store.dispatch('cart_goods_list');
+      this.$store.dispatch('cartGoodsList');
     },
     mounted(){
-      console.log(222,this.$store.state.vue_token);
-      console.log(333,this.$store.state.Cart.goods_list);
     },
     methods: {
       /**
        * 更多菜单
        **/
-      onMenusClose (key,value) {
-        /*this.$vux.loading.show({
-         text: '跳转中...'
-         });*/
-
-        /*setTimeout(() => {
-         this.$vux.loading.hide();
-         }, 1000);*/
-
-        if(key==="menu1"){
+      onMenusClose (key, value) {
+        if (key === "menu1") {
           this.menusFlag = false;
           this.$router.push({
-            name:'cart'
+            name: 'cart'
           });
         }
-        if(key==="menu2"){
+        if (key === "menu2") {
           this.menusFlag = false;
           this.$router.push({
-            name:'books'
+            name: 'books'
           });
         }
-      },
-
-      /**
-       * 删除商品
-       */
-      onConfirm () {
-        this.delGoods(this.delIndex);
       },
 
       /**
@@ -137,8 +122,8 @@
           this.$vux.loading.hide();
           this.showMenus = false;
           this.$router.push({
-            name:'book',
-            query:{src:'cart'}
+            name: 'book',
+            query: {src: 'cart'}
           });
         }, 1000);
       },
@@ -147,35 +132,51 @@
        * 改变商品数
        * @param item
        * @param index
-       * @param number
+       * @param $event
        */
-      changeNumber(item, index, number){
-        this.itemIndex = index;
-        item.num = number;
-        if (number <= 0) {
-          this.confirmFlag = true;
-          this.delIndex = index;
+      addNumber(item, index, $event){
+        if (item.id !== undefined && item.id.length === 32) {
+          item.num++;
+          this.$store.dispatch('goodsAdd', item.id);
         }
-        this.gross();
+      },
+      removeNumber(item, index, $event){
+        if (item.id !== undefined && item.id.length === 32) {
+          if (--item.num < 1) {
+            this.confirmFlag = true;  // 删除对话框
+            this.delIndex = index;    // 删除索引
+            this.item = item;         // 删除项
+          }else{
+            this.$store.dispatch('goodsRemove', item);
+          }
+        }
       },
 
       /**
        * 删除商品
-       * @param index
        */
       delGoods(index){
-        this.itemIndex = index;
-        this.cart_goods_list.splice(this.itemIndex, 1);
+        if (index >= 0) {
+          this.itemIndex = index;
+          this.common_goods_list.splice(this.itemIndex, 1);
+        }
+      },
+      confirmDel(){
+        this.delGoods(this.delIndex);
+        this.$store.dispatch('goodsRemove', this.item);
+      },
+      cancelDel(){
+        this.item.num = 1;
       },
 
       /**
        * 计算总金额
        */
       gross(){
-        this.totalMoney = 0;
-        this.cart_goods_list.forEach(item => {
+        this.goodsMoney = 0;
+        this.common_goods_list.forEach(item => {
           if (item.price >= 1 && item.num >= 1) {
-            this.totalMoney += item.price * item.num;
+            this.goodsMoney += item.price * item.num;
           }
         });
       }
@@ -223,27 +224,30 @@
         transform: scaleY(0.5);
       }
     }
-    .weui-num {
-      padding: 0;
-      &:before {
-        border: none;
+    .weui-number-box {
+      width: 80%;
+      border: 1px solid #ccc;
+      overflow: hidden;
+      .weui-number-add,
+      .weui-number-remove,
+      .vux-number-input {
+        float: left;
+        line-height: 30px;
+        text-align: center;
+        color: #666;
       }
-      .vux-number-selector {
-        height: 18px;
-        font-size: 16px;
-        line-height: 18px;
+      .weui-number-add,
+      .weui-number-remove {
+        width: 30%;
       }
       .vux-number-input {
-        height: 18px;
+        width: 38%;
         font-size: 14px;
+        outline: none;
+        border: none;
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
       }
-      svg {
-        width: 14px;
-        height: 14px;
-      }
-    }
-    .vux-number-input {
-      width: 40px !important;
     }
     .weui-cells__title {
       margin: 0;

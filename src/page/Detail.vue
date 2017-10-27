@@ -24,7 +24,7 @@
     </card>
 
     <tabbar>
-      <tabbar-item :badge="detail_cart_number| toString" selected @on-item-click="addCar">
+      <tabbar-item :badge="common_goods_count| toString" selected @on-item-click="addCart">
         <span slot="icon"><img src="../assets/icon-car.png" alt="加入购物车"></span>
         <span slot="label">加入购物车</span>
       </tabbar-item>
@@ -65,13 +65,14 @@
     data () {
       return {
         swiperIndex: 0,
+        testIndex: 0,
         menusFlag: false
       }
     },
     computed: {
       ...mapGetters([
         'detail_swiper',
-        'detail_cart_number',
+        'common_goods_count',
         'common_menus'
       ]),
       swiper_index: {
@@ -85,9 +86,11 @@
     },
     created(){
       if (this.$route.query.id !== undefined) {
-        let id = this.$route.query.id;
-        this.$store.dispatch('detail_goods', id);
-        this.$store.dispatch('goods_get_number', id);// 请求购物总数
+        if (this.$route.query.id.length === 32) {
+          let id = this.$route.query.id;
+          this.$store.dispatch('getDetailGoods', id); // 商品详情
+          this.$store.dispatch('goodsGetNumber', id); // 请求购物总数
+        }
       }
     },
     mounted(){
@@ -119,20 +122,19 @@
       swiperChange(){
         console.log("swiperChange");
       },
-      addCar(){
-
+      addCart(){
         if (this.$route.query.id !== undefined) {
-          let id = this.$route.query.id;
-          this.$store.dispatch('goods_add', id);
+          this.$vux.toast.show({
+            text: '加入成功！'
+          });
+          if (this.$route.query.id.length === 32) {
+            let id = this.$route.query.id;
+            this.$store.dispatch('goodsAddCart', id);
+          }
+          setTimeout(() => {
+            this.$vux.toast.hide();
+          }, 500);
         }
-
-        this.$vux.toast.show({
-          text: '加入成功！'
-        });
-
-        setTimeout(() => {
-          this.$vux.toast.hide();
-        }, 1000);
       }
     }
   }

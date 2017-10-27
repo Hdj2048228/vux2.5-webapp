@@ -26,13 +26,14 @@ const home_get_carouse = baseUrl + '/a/shop/carousel/getCarouselList';
 const get_detail = baseUrl + '/a/shop/goods/getInfo';
 
 /***********************购物车********************************/
-const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
 
 const goods_get_number = baseUrl + '/a/shop/cart/getCartNum'; // 获取购物车总数量
 
 const cart_goods_list = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
 
 const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
+
+const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
 
 const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked';
 
@@ -123,7 +124,7 @@ function getDetailGoods(id, callback) {
         title: item.goodsName,
         desc: item.goodsDesc !== undefined ? item.goodsDesc : '暂无简介',
         info: item.goodsInfo,
-        price: item.price,
+        price: item.salePrice,
         pics: [{url: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'}, {url: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'}]
         //pics: item.imgList.map(item => item.url.indexOf('http') < 1 ? (imgSrc + item.url) : item.url ) /*补全http*/
       });
@@ -134,27 +135,7 @@ function getDetailGoods(id, callback) {
 }
 
 /**
- * 005加入购物车
- * @param id
- * @param callback
- */
-function goodsAdd(id, callback) {
-  axios({
-    url: goods_add,
-    method: 'post',
-    params: {},
-    data: {goodsId: id}
-  }).then(res => {
-    if (res.data.code === 200) {
-      callback(res.data);
-    }
-  }).catch(err => {
-    console.log(err);
-  });
-}
-
-/**
- * 006获取购物车数量
+ * 005获取购物车数量
  * @param id
  * @param callback
  */
@@ -166,7 +147,6 @@ function goodsGetNumber(id, callback) {
     data: {goodsId: id}
   }).then(res => {
     if (res.data.code === 200) {
-      console.log('goodsGetNumber', res.data.data);
       callback(res.data.data);
     }
   }).catch(err => {
@@ -175,7 +155,7 @@ function goodsGetNumber(id, callback) {
 }
 
 /**
- * 007购物车清单
+ * 006购物车清单
  */
 function cartGoodsList(callback) {
   axios({
@@ -186,7 +166,10 @@ function cartGoodsList(callback) {
   }).then(res => {
     if (res.data.code === 200) {
       let data = res.data.data;
-      let arr = data.map(item => ({
+      let arr = data.filter(item => {
+        return item.goods !== undefined;
+      }).map(item => ({
+        "id": item.goodsId,
         "title": item.goods.goodsName,
         "type": "暂无分类",
         "price": item.goods.salePrice,
@@ -207,9 +190,50 @@ function cartGoodsList(callback) {
   });
 }
 
+/**
+ * 007 增加商品
+ * @param id
+ * @param callback
+ */
+function goodsAdd(id, callback) {
+  axios({
+    url: goods_add,
+    method: 'post',
+    params: {},
+    data: {goodsId: id}
+  }).then(res => {
+    if (res.data.code === 200) {
+      callback(res.data);
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+}
 
 /**
- * 008获取 收货地址
+ * 008 减少商品
+ * @param callback
+ */
+function goodsRemove(item, callback) {
+  axios({
+    url: goods_remove,
+    method: 'post',
+    params: {},
+    data: {
+      goodsId: item.id,
+      num: item.num + 1
+    }
+  }).then(res => {
+    if (res.data.code === 200) {
+      callback(res.data);
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 009获取 收货地址
  * @param callback
  */
 function getAddress(callback) {
@@ -231,7 +255,7 @@ function getAddress(callback) {
 }
 
 /**
- * 009修改 收货地址
+ * 010修改 收货地址
  * @param address
  * @param callback
  */
@@ -278,9 +302,10 @@ export {
   getHomeMarquee,
   getHomeGoods,
   getDetailGoods,
-  goodsAdd,
   goodsGetNumber,
   cartGoodsList,
+  goodsAdd,
+  goodsRemove,
   getAddress,
   setAddress
 }

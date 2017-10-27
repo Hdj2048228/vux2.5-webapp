@@ -7,8 +7,6 @@ import * as types from '../type/';
 
 // 数据源
 const state = {
-  cart_number: 0,
-  cart_goods: [],
   swiper_data: {
     title: 'swiper_title11',
     desc: 'swiper_desc22',
@@ -24,27 +22,13 @@ const state = {
 };
 
 const getters = {
-  detail_swiper: state => state.swiper_data,
-  detail_cart_number: state => state.cart_number
+  detail_swiper: state => state.swiper_data
 };
 
 const actions = {
-  detail_goods({commit}, id) {
+  getDetailGoods({commit}, id) {
     axios.getDetailGoods(id, payload => {
       commit(types.Get_Detail_Goods, payload);
-    })
-  },
-  goods_add({commit,dispatch}, id){
-    axios.goodsAdd(id, payload => {
-      commit(types.Get_Detail_Goods_Add, payload);
-
-      /*这就高级了：新增完成再请求总数*/
-      dispatch('goods_get_number', id);
-    })
-  },
-  goods_get_number({commit}, id){
-    axios.goodsGetNumber(id, payload => {
-      commit(types.Get_Detail_Goods_Number, payload);
     })
   }
 };
@@ -56,12 +40,6 @@ const mutations = {
       label: '',
       value: ''
     }];
-  },
-  [types.Get_Detail_Goods_Add](state, payload){
-    state.cart_goods = payload;
-  },
-  [types.Get_Detail_Goods_Number](state, payload){
-    state.cart_number = payload;
   }
 };
 

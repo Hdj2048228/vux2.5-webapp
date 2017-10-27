@@ -8,6 +8,11 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const Comm_GET_INFO = 'Comm_GET_INFO';
+export const Conn_Goods_List = 'Conn_Goods_List';
+export const Comm_Goods_Count = 'Comm_Goods_Count';
+export const Comm_Goods_Remove = 'Comm_Goods_Remove';
+export const Comm_Goods_Add = 'Comm_Goods_Add';
+export const Conn_Goods_Money = 'Conn_Goods_Money';
 
 
 /*
@@ -20,14 +25,11 @@ export const Home_Goods_List = 'Home_Goods_List';
 /*
  * 购物车
  * */
-export const Cart_Goods_List = 'Cart_Goods_List';
 
 /*
  * 商品详情
  * */
 export const Get_Detail_Goods = 'Get_Detail_Goods';
-export const Get_Detail_Goods_Add = 'Get_Detail_Goods_Add';
-export const Get_Detail_Goods_Number = 'Get_Detail_Goods_Number';
 
 
 /*
