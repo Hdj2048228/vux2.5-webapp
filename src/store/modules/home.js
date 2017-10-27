@@ -13,14 +13,13 @@ const state = {
     img: 'https://static.vux.li/demo/1.jpg'
   }],
   marquee_list: [
-    'hello marquee11',
-    'hello marquee22'
+    '测试标题'
   ],
   goods_list: [{
     title: '测试标题',
-    desc: 'description',
+    desc: '暂无简介',
     src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-    params:[],
+    params: [],
     url: {
       path: '/car',
       replace: false
@@ -36,31 +35,31 @@ const getters = {
 
 const actions = {
   home_focus({commit}) {
-    axios.getHomeFocus(res => {
-      commit(types.Home_Focus_List, res);
+    axios.getHomeFocus(payload => {
+      commit(types.Home_Focus_List, payload);
     })
   },
   home_marquee({commit}){
-    axios.getHomeMarquee().then(res => {
-      commit(types.Home_Marquee_List, res);
+    axios.getHomeMarquee().then(payload => {
+      commit(types.Home_Marquee_List, payload);
     });
   },
   home_goods({commit}){
-    axios.getHomeGoods(res => {
-      commit(types.Home_Goods_List, res);
+    axios.getHomeGoods(payload => {
+      commit(types.Home_Goods_List, payload);
     });
   }
 };
 
 const mutations = {
-  [types.Home_Focus_List](state, res){
-    state.focus_list = res;
+  [types.Home_Focus_List](state, payload){
+    state.focus_list = payload;
   },
-  [types.Home_Marquee_List](state, res){
-    state.marquee_list = res;
+  [types.Home_Marquee_List](state, payload){
+    state.marquee_list = payload;
   },
-  [types.Home_Goods_List](state, res){
-    state.goods_list = res;
+  [types.Home_Goods_List](state, payload){
+    state.goods_list = payload;
     state.goods_list['params'] = [{
       label: '',
       value: ''

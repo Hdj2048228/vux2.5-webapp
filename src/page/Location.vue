@@ -7,10 +7,8 @@
     </x-header>
 
     <group v-for="(item,index) in common_address" :key="index" v-if="item.phone">
-      <x-switch :title="item.name+'  '+item.phone"
-                prevent-default
-                v-model="item.isUsed"
-                @on-click="changeSwitch(item)"></x-switch>
+      <x-switch :title="item.name+'  '+item.phone" prevent-default
+                v-model="item.isUsed" @on-click="changeSwitch(item)"></x-switch>
       <cell :inline-desc="item.addrName" :link="{'path':'/locationForm','query':{'id':item.id}}"></cell>
     </group>
 

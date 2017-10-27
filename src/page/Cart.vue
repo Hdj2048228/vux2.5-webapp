@@ -12,7 +12,7 @@
           @on-item-click="onItemClick(item.id)"
           :key="index">
         <a href="javascript:;" class="weui-grid" style="width: 50%;">
-          <img class="grid-pic" src="http://183.134.74.90/group1/M00/00/04/wKgBCVljaDSASUb0AAQas3XpTfw354.png">
+          <img class="grid-pic" :src="item.src">
         </a>
         <a href="javascript:;" class="weui-grid" style="width: 50%;">
           <div class="grid-padding">
@@ -86,12 +86,11 @@
       ])
     },
     created(){
-      this.$store.dispatch('goods_list');
-
-      console.log('cart created....');
+      this.$store.dispatch('cart_goods_list');
     },
     mounted(){
-
+      console.log(222,this.$store.state.vue_token);
+      console.log(333,this.$store.state.Cart.goods_list);
     },
     methods: {
       /**
@@ -277,7 +276,8 @@
         content: normal;
       }
       .grid-pic {
-        width: 100%;
+        max-width: 120px;
+        max-height: 120px;
         display: block;
       }
       .grid-padding {

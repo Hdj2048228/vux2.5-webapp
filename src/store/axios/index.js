@@ -30,14 +30,14 @@ const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
 
 const goods_get_number = baseUrl + '/a/shop/cart/getCartNum'; // 获取购物车总数量
 
-const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
+const cart_goods_list = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
 
-const cart_apiUrl = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
+const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
 
 const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked';
 
 /**
- * 首页焦点图
+ * 001首页焦点图
  * @param callback
  * @returns null
  */
@@ -61,7 +61,7 @@ function getHomeFocus(callback) {
 }
 
 /**
- * 首页无缝滚动
+ * 002首页无缝滚动
  * @returns Promise
  */
 function getHomeMarquee() {
@@ -80,7 +80,7 @@ function getHomeMarquee() {
 }
 
 /**
- * 首页商品列表
+ * 003首页商品列表
  * @param callback
  * @returns null
  */
@@ -105,7 +105,7 @@ function getHomeGoods(callback) {
 }
 
 /**
- * 获取 商品详情
+ * 004获取 商品详情
  * @param id
  * @param callback
  */
@@ -134,7 +134,7 @@ function getDetailGoods(id, callback) {
 }
 
 /**
- * 加入购物车
+ * 005加入购物车
  * @param id
  * @param callback
  */
@@ -154,7 +154,7 @@ function goodsAdd(id, callback) {
 }
 
 /**
- * 获取购物车数量
+ * 006获取购物车数量
  * @param id
  * @param callback
  */
@@ -174,9 +174,42 @@ function goodsGetNumber(id, callback) {
   });
 }
 
+/**
+ * 007购物车清单
+ */
+function cartGoodsList(callback) {
+  axios({
+    url: cart_goods_list,
+    method: 'post',
+    params: {},
+    data: {}
+  }).then(res => {
+    if (res.data.code === 200) {
+      let data = res.data.data;
+      let arr = data.map(item => ({
+        "title": item.goods.goodsName,
+        "type": "暂无分类",
+        "price": item.goods.salePrice,
+        "num": item.num,
+        "checked": item.checked,
+        "desc": "暂无简介",
+        //"src": item.goods.productImg,
+        "src": item.goods.productImg.indexOf("http") < 1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
+        "url": {
+          "path": "/car",
+          "replace": false
+        }
+      }));
+      callback(arr);
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
 
 /**
- * 获取 收货地址
+ * 008获取 收货地址
  * @param callback
  */
 function getAddress(callback) {
@@ -198,7 +231,7 @@ function getAddress(callback) {
 }
 
 /**
- * 修改 收货地址
+ * 009修改 收货地址
  * @param address
  * @param callback
  */
@@ -218,12 +251,19 @@ function setAddress(address, callback) {
   });
 }
 
+/**
+ * 样板函数
+ * @param uid
+ * @param callback
+ * @returns {Promise}
+ */
 function axiosDemo(uid = 123, callback) {
   return new Promise((resolve, reject) => {
     axios({
       url: 'http://3g.163.com/touch/jsonp/sy/recommend/0-9.html',
       method: 'get',
-      params: {}
+      params: {},    // GET
+      data: {},      // POST
     }).then(res => {
       resolve(res);
     }).catch(err => {
@@ -240,6 +280,7 @@ export {
   getDetailGoods,
   goodsAdd,
   goodsGetNumber,
+  cartGoodsList,
   getAddress,
   setAddress
 }

@@ -6,7 +6,18 @@ import * as axios from '../axios/';
 import * as types from '../type/';
 
 const state = {
-  goods_list: []
+  goods_list: [{
+    "title": "测试标题",
+    "type": "RY119",
+    "price": 50,
+    "num": 1,
+    "desc": "description",
+    "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
+    "url": {
+      "path": "/car",
+      "replace": false
+    }
+  }]
 };
 
 const getters = {
@@ -15,40 +26,19 @@ const getters = {
 
 const actions = {
   /**
-   * [购物车]测试数据
+   * 购物车清单
    * @param commit
    */
-  goods_list({commit}) {
-    let data = [{
-      "title": "测试标题",
-      "type": "RY119",
-      "price": 50,
-      "num": 1,
-      "desc": "description",
-      "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
-      "url": {
-        "path": "/car",
-        "replace": false
-      }
-    }, {
-      "title": "测试标题",
-      "type": "RY119",
-      "price": 50,
-      "num": 1,
-      "desc": "description",
-      "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
-      "url": {
-        "path": "/car",
-        "replace": false
-      }
-    }];
-    commit(types.Cart_Goods_List, data);
+  cart_goods_list({commit}){
+    axios.cartGoodsList(payload => {
+      commit(types.Cart_Goods_List, payload);
+    });
   }
 };
 
 const mutations = {
-  [types.Cart_Goods_List](state,data){
-    state.goods_list = data;
+  [types.Cart_Goods_List](state, payload){
+    state.goods_list = payload;
   }
 };
 
