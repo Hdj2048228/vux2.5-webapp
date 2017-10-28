@@ -55,8 +55,6 @@
       ])
     },
     created(){
-      this.$store.dispatch('goods_list');
-
       console.log('cart created....');
     },
     mounted(){

@@ -22,9 +22,7 @@
     </group>
 
     <box gap="10px 10px">
-      <x-button plain action-type="button" style="background: #fff;border-color:#ccc" @click.native="login">登录
-
-      </x-button>
+      <x-button plain action-type="button" style="background: #fff;border-color:#ccc" @click.native="login">登录</x-button>
     </box>
 
   </view-box>
@@ -58,8 +56,6 @@
       ])
     },
     created(){
-      this.$store.dispatch('goods_list');
-
       console.log('cart created....');
     },
     mounted(){
@@ -68,7 +64,7 @@
     methods: {
       login(){
         if (this.userName) {
-          this.$http.post('http://192.168.50.155:8881/api/v1/user/login', {
+          this.$http.post('http://192.168.50.216:8881/api/v1/user/login', {
             userName: this.userName,
             passwd: this.passwd,
             code: 1234,

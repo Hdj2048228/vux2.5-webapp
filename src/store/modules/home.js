@@ -8,15 +8,15 @@ import * as types from '../type/';
 // 数据源
 const state = {
   focus_list: [{
-    title: '测试标题',
+    title: '智能商城',
     url: 'javascript:;',
     img: 'https://static.vux.li/demo/1.jpg'
   }],
   marquee_list: [
-    '测试标题'
+    '智能商城'
   ],
   goods_list: [{
-    title: '测试标题',
+    title: '智能商城',
     desc: '暂无简介',
     src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
     params: [],

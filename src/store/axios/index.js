@@ -8,7 +8,8 @@ import vueJsonp from 'vue-jsonp'
 Vue.use(vueJsonp);
 
 // 接口服务器地址
-const baseUrl = 'http://192.168.50.155:8881/api';
+const baseUrl = 'http://192.168.50.230:8883/api';
+// const baseUrl = 'http://192.168.50.155:8881/api';
 // const baseUrl = 'http://i.0t.com.cn';
 
 // 图片服务器地址
@@ -26,19 +27,29 @@ const home_get_carouse = baseUrl + '/a/shop/carousel/getCarouselList';
 const get_detail = baseUrl + '/a/shop/goods/getInfo';
 
 /***********************购物车********************************/
-
 const goods_get_number = baseUrl + '/a/shop/cart/getCartNum'; // 获取购物车总数量
-
 const cart_goods_list = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
-
 const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
-
 const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
-
 const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked';
 
+/***********************收货地址********************************/
+const address_list = baseUrl + '/a/shop/receive/address/list'; // 收货地址列表
+const address_save = baseUrl + '/a/shop/receive/address/save'; // 保存收货地址
+const address_update = baseUrl + '/a/shop/receive/address/update'; // 选择收货地址
+const address_remove = baseUrl + '/a/shop/receive/address/remove'; // 删除收货地址
+const address_getDetail = baseUrl + '/a/shop/receive/address/getDetail'; // 修改收货地址详细
+
+/***********************订单********************************/
+const orderForm_save = baseUrl + '/a/shop/order/saveOrder'; // 订单保存
+const order_list = baseUrl + '/a/shop/order/getOrderList'; // 获取订单列表
+const order_info = baseUrl + '/a/shop/order/getOrderDetail'; // 获取订单信息
+const delete_order = baseUrl + '/a/shop/order/delete'; // 删除订单
+const order_receipt = baseUrl + '/a/shop/order/receipt'; // 确认收货
+const order_buyAgain = baseUrl + '/a/shop/order/buyAgain'; // 再次购买
+
 /**
- * 001首页焦点图
+ * 001 首页焦点图
  * @param callback
  * @returns null
  */
@@ -62,7 +73,7 @@ function getHomeFocus(callback) {
 }
 
 /**
- * 002首页无缝滚动
+ * 002 首页无缝滚动
  * @returns Promise
  */
 function getHomeMarquee() {
@@ -81,7 +92,7 @@ function getHomeMarquee() {
 }
 
 /**
- * 003首页商品列表
+ * 003 首页商品列表
  * @param callback
  * @returns null
  */
@@ -106,7 +117,7 @@ function getHomeGoods(callback) {
 }
 
 /**
- * 004获取 商品详情
+ * 004 获取 商品详情
  * @param id
  * @param callback
  */
@@ -135,7 +146,7 @@ function getDetailGoods(id, callback) {
 }
 
 /**
- * 005获取购物车数量
+ * 005 获取购物车数量
  * @param id
  * @param callback
  */
@@ -155,7 +166,7 @@ function goodsGetNumber(id, callback) {
 }
 
 /**
- * 006购物车清单
+ * 006 购物车清单
  */
 function cartGoodsList(callback) {
   axios({
@@ -233,20 +244,22 @@ function goodsRemove(item, callback) {
 }
 
 /**
- * 009获取 收货地址
+ * 009 获取 收货地址
  * @param callback
  */
 function getAddress(callback) {
   axios({
-    url: 'static/address.json',
-    method: 'get',
+    url: address_list,
+    method: 'post',
   }).then(res => {
-    let arr = res.data.data.map(item => ({
+    let arr = res.data.data.filter(item => {
+      return item.contacts !== undefined && item.phone.length === 11;
+    }).map(item => ({
       id: item.id,
       isUsed: item.isUsed == 2,
       name: item.contacts,
       phone: item.phone,
-      addrName: item.addrName
+      addrName: item.addrName.split(' ').join('/')
     }));
     callback(arr);
   }).catch(err => {
@@ -255,17 +268,17 @@ function getAddress(callback) {
 }
 
 /**
- * 010修改 收货地址
+ * 010 新增 收货地址
  * @param address
  * @param callback
  */
 function setAddress(address, callback) {
   axios({
-    url: 'static/address.json',
+    url: address_save,
     method: 'post',
     data: address,
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      //'Content-Type': 'application/x-www-form-urlencoded'
     }
   }).then(res => {
     let data = res.data.success;
@@ -275,6 +288,168 @@ function setAddress(address, callback) {
   });
 }
 
+/**
+ * 011 选择默认 收货地址
+ * @param id
+ * @param callback
+ */
+function selectAddress(id, callback) {
+  axios({
+    url: address_update,
+    method: 'get',
+    params: {id: id},
+    data: {},
+    headers: {
+      //'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  }).then(result => {
+    let data = result.data.success;
+    callback(data);
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 012 修改 详细收货地址
+ * @param data
+ * @param callback
+ */
+function updateAddress(data, callback) {
+  axios({
+    url: address_save,
+    method: 'post',
+    params: {id: data.id},
+    data: data
+  }).then(result => {
+    callback(result.data.data);
+  });
+}
+
+/**
+ * 013 获取 详细收货地址
+ * @param id
+ * @param callback
+ */
+function detailAddress(id, callback) {
+  axios({
+    url: address_getDetail,
+    method: 'get',
+    params: {id: id},
+    data: {}
+  }).then(result => {
+    let data = result.data.data;
+    callback({
+      id: data.id,
+      isUsed: 2,
+      name: data.contacts,
+      phone: data.phone,
+      addrDetail: data.addrDetail,
+      addrName: data.addrName.split('/')
+
+    });
+  });
+}
+
+/**
+ * 014 删除 收货地址
+ * @param id
+ * @param callback
+ */
+function deleteAddress(id, callback) {
+  axios({
+    url: address_remove,
+    method: 'get',
+    params: {id: id},
+    data: {}
+  }).then(result => {
+    callback(result.data.data);
+  });
+}
+
+/**
+ * 015 保存订单
+ * @param data
+ * @param callback
+ */
+function orderFormSave(data, callback) {
+  axios({
+    url: orderForm_save,
+    method: 'post',
+    params: {},
+    data: data
+  }).then(result => {
+    callback(result.data.data);
+  });
+}
+
+/**
+ * 016 获取订单列表
+ * @param data
+ * @param callback
+ */
+function orderFormList(data, callback) {
+  axios({
+    url: order_list,
+    method: 'post',
+    params: {},
+    data: {
+      "status": data.status || null,
+      "payStatus": data.payStatus || null
+    }
+  }).then(result => {
+    let test = [{
+      id: 'bb5d4a2fc687434cab325fb6e4d8870f',
+      orderNum: 'RY17082301731',
+      totalPrice: '200',
+      goodsList: {
+        "goodsName": "烟雾传感器",
+        "productImg": "group1/M00/00/04/wKgBCVljaGKAQZ3kAAQas3XpTfw122.png",
+        "num": 1
+      }
+    }];
+    let arr = [];
+    let arrList = [];
+    let data = result.data.data.forEach((item, index) => {
+      arr.push({
+        id: item.id,
+        orderNum: item.orderNum,
+        totalPrice: item.totalPrice,
+        productImg: item['goodsList'][0].productImg,
+        goodsList: [{
+          label: item['goodsList'][0].goodsName,
+          value: 'x' + item['goodsList'][0].num
+        }],
+        buttonsMeun: [{
+          style: 'default',
+          text: '查看订单',
+          link: '/book?src=books&id=' + item.id
+        }, {
+          style: 'primary',
+          text: '再次购买',
+          link: '/detail?id=' + item.id
+        }]
+      })
+    });
+    callback(arr);
+  });
+}
+
+/**
+ * 获取订单详情
+ * @param data
+ * @param callback
+ */
+function orderFormInfo(data, callback) {
+  axios({
+    url: order_info,
+    method: 'post',
+    params: {},
+    data: data || {}
+  }).then(result => {
+    callback(result.data.data);
+  })
+}
 /**
  * 样板函数
  * @param uid
@@ -296,7 +471,6 @@ function axiosDemo(uid = 123, callback) {
   });
 }
 
-
 export {
   getHomeFocus,
   getHomeMarquee,
@@ -305,7 +479,14 @@ export {
   goodsGetNumber,
   cartGoodsList,
   goodsAdd,
-  goodsRemove,
   getAddress,
-  setAddress
+  setAddress,
+  goodsRemove,
+  selectAddress,
+  updateAddress,
+  detailAddress,
+  deleteAddress,
+  orderFormSave,
+  orderFormList,
+  orderFormInfo
 }

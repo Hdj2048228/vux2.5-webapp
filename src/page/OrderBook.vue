@@ -7,25 +7,26 @@
               @on-click-more="menusFlag = true">
     </x-header>
 
-    <Group class="status">
-      <cell :title="'订单状态'" :value="status"></cell>
-    </Group>
-
-    <group class="dispatch" :title="'订单信息'">
-      <cell :title="'订单号'" :value="'RY17082301728'" :border-intent="false"></cell>
-      <cell :title="'生成时间'" :value="'2017-10-19 17:20:40'"></cell>
+    <group class="status">
+      <cell title="订单状态" :value="status" :border-intent="false"></cell>
     </group>
 
-    <group-title>商品清单</group-title>
+    <group-title v-show="common_address.length > 1">商品清单</group-title>
     <grid :cols="3">
-      <grid-item :label="i+'X'" v-for="i in 6" :key="i">
-        <img @click="go('detail',{id:'123456'})" slot="icon" src="../assets/logo.png">
+      <grid-item :label="item.num+'x'" v-for="(item,index) in common_goods_list" :key="index">
+        <img @click="go('detail',{id:item.id})" slot="icon" :src="item.src">
       </grid-item>
     </grid>
 
-    <group class="dispatch" :title="'商品金额'">
-      <cell :title="'折扣'" :value="'0'" :border-intent="false"></cell>
-      <cell :title="'总金额'" :value="totalMoney | currency"></cell>
+    <group class="dispatch" title="收货地址" v-if="common_address[0].isUsed">
+      <cell v-for="(item,index) in common_address" :key="index"
+            :title="item.name+' '+item.phone"
+            :inline-desc="item.addrName"
+            :link="{path:'/location'}"></cell>
+    </group>
+
+    <group class="dispatch" title="收货地址" v-if="!common_address[0].isUsed">
+      <cell title="选择默认地址" :link="{path:'/location'}"></cell>
     </group>
 
     <group class="dispatch" :title="'配送'">
@@ -54,7 +55,7 @@
 
     <tabbar v-if="showTabbar">
       <tabbar-item selected>
-        <span slot="label">合计：{{totalMoney | currency}}</span>
+        <span slot="label">合计：{{common_goods_money | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="onSubmit">
         <span slot="label">提交订单</span>
@@ -66,8 +67,8 @@
 
 <script>
   import {
-    ViewBox,XHeader,FormPreview,Toast,TransferDom,Actionsheet,
-    Group,GroupTitle,Cell,CellBox,Grid,GridItem,Tab,TabItem,Tabbar,TabbarItem
+    ViewBox, XHeader, XSwitch, FormPreview, Toast, TransferDom, Actionsheet,
+    Group, GroupTitle, Cell, CellBox, Grid, GridItem, Tab, TabItem, Tabbar, TabbarItem
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -76,8 +77,8 @@
   export default {
     name: 'book',
     components: {
-      ViewBox,XHeader,FormPreview,Toast,TransferDom,Actionsheet,
-      Group,GroupTitle,Cell,CellBox,Grid,GridItem,Tab,TabItem,Tabbar,TabbarItem
+      ViewBox, XHeader, XSwitch, FormPreview, Toast, TransferDom, Actionsheet,
+      Group, GroupTitle, Cell, CellBox, Grid, GridItem, Tab, TabItem, Tabbar, TabbarItem
     },
     data () {
       return {
@@ -85,35 +86,22 @@
         status: '待支付',
         showTabbar: false,
         showContent001: false,
-        menusFlag: false,
-        list: [{
-          label: '订单号',
-          value: 'RY17082301727'
-        }, {
-          label: '商品',
-          value: '电动打蛋机'
-        }, {
-          label: '标题标题',
-          value: '名字名字名字'
-        }, {
-          label: '标题标题',
-          value: '很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字'
-        }],
-        buttons1: [{
-          style: 'default',
-          text: '查看订单',
-          link: '/cart'
-        }, {
-          style: 'primary',
-          text: '再次购买',
-          link: '/cart'
-        }],
+        menusFlag: false
       }
     },
     computed: {
       ...mapGetters([
+        'common_goods_list',
+        'common_goods_money',
+        'common_address',
         'common_menus'
       ])
+    },
+    created(){
+      if(this.$route.query.src === 'cart' && typeof this.$route.query.id === undefined){
+        this.$store.dispatch('cartGoodsList');
+        this.$store.dispatch('getAddress');
+      }
     },
     mounted(){
       // 默认的
@@ -128,34 +116,55 @@
       (this.status === '待支付') && (this.showTabbar = true);
       (this.status === '待提交') && (this.showTabbar = true);
       (this.status === '已支付') && (this.showTabbar = false);
+
+      if(this.$route.query.src === 'books' && typeof this.$route.query.id !== undefined){
+        this.$store.dispatch('orderFormInfo',{
+          orderId:this.$route.query.id
+        });
+      }
     },
     methods: {
-      onMenusClose (key,value) {
-        /*this.$vux.loading.show({
-         text: '跳转中...'
-         });*/
-
-        /*setTimeout(() => {
-         this.$vux.loading.hide();
-         }, 1000);*/
-
-        if(key==="menu1"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'cart'
-          });
-        }
-        if(key==="menu2"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'books'
-          });
+      onMenusClose (key, value) {
+        switch (key) {
+          case "menu1":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'cart'
+            });
+            break;
+          case "menu2":
+            this.menusFlag = false;
+            this.$router.push({
+              name:'books',
+              query:{
+                act:'all'
+              }
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'location'
+            });
+            break;
         }
       },
       onSubmit(){
+        this.$store.dispatch('orderFormSave', {
+          "addrId": "470575a8ff124c8785f569356e6a0196",
+          "price": 120,
+          "logisticsPrice": 0,
+          "totalPrice": 120,
+          "orderCartList": [{
+            "goodsId": "dabe58d6232d4887b03d6c06d796f468",
+            "num": 3
+          }]
+        });
+
         this.$vux.toast.show({
           text: '提交成功！'
         });
+
         setTimeout(() => {
           this.$vux.toast.hide();
           this.menusFlag = false;
@@ -182,16 +191,15 @@
       height: 100%;
     }
     .status {
-      .weui-cells {
-        margin-top: 0;
-      }
       .vux-label {
-        color: #888;
-        font-size: 13px;
+        color: #333;
+        font-size: 14px;
       }
-      .weui-cell__ft {
-        color: red;
-        font-size: 13px;
+      .vux-cell-no-border-intent {
+        .weui-cell__ft {
+          color: red !important;
+          font-size: 13px;
+        }
       }
     }
     .dispatch {

@@ -15,24 +15,11 @@
     </tab>
 
     <form-preview
-      :header-value="'2400.00'"
+      v-for="(item,index) in common_order_FormList"
+      :header-value="item.totalPrice | currency"
       :header-label="'付款金额'"
-      :body-items="list"
-      :footer-buttons="buttons1">
-    </form-preview>
-
-    <form-preview
-      :header-value="'2400.00'"
-      :header-label="'付款金额'"
-      :body-items="list"
-      :footer-buttons="buttons1">
-    </form-preview>
-
-    <form-preview
-      :header-value="'2400.00'"
-      :header-label="'付款金额'"
-      :body-items="list"
-      :footer-buttons="buttons1">
+      :body-items="item.goodsList"
+      :footer-buttons="item.buttonsMeun">
     </form-preview>
 
     <div transfer-dom>
@@ -64,17 +51,8 @@
       return {
         menusFlag: false,
         list: [{
-          label: '订单号',
-          value: 'RY17082301727'
-        }, {
-          label: '商品',
-          value: '电动打蛋机'
-        }, {
-          label: '标题标题',
-          value: '名字名字名字'
-        }, {
-          label: '标题标题',
-          value: '很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字'
+          label: '11',
+          value: '22'
         }],
         buttons1: [{
           style: 'default',
@@ -89,6 +67,7 @@
     },
     computed: {
       ...mapGetters([
+        'common_order_FormList',
         'common_menus'
       ])
     },
@@ -96,16 +75,28 @@
       if (this.$route.query.act !== 'undefined') {
         let act = this.$route.query.act;
         if (act === 'all') {
-          console.log('route all');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: null
+          });
         }
         if (act === 'pay') {
-          console.log('route pay');
+          this.$store.dispatch('orderFormList', {
+            payStatus: 1,
+            status: null
+          });
         }
         if (act === 'wait') {
-          console.log('route wait');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: 6
+          });
         }
         if (act === 'finish') {
-          console.log('route finish');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: 7
+          });
         }
       }
     },
@@ -114,39 +105,54 @@
     },
     methods: {
       onMenusClose (key, value) {
-        /*this.$vux.loading.show({
-          text: '跳转中...'
-        });*/
-
-        /*setTimeout(() => {
-          this.$vux.loading.hide();
-        }, 1000);*/
-
-        if(key==="menu1"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'cart'
-          });
-        }
-        if(key==="menu2"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'books'
-          });
+        switch (key) {
+          case "menu1":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'cart'
+            });
+            break;
+          case "menu2":
+            this.menusFlag = false;
+            this.$router.push({
+              name:'books',
+              query:{
+                act:'all'
+              }
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'location'
+            });
+            break;
         }
       },
       itemClick(act){
         if (act === 'all') {
-          console.log('tap all');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: null
+          });
         }
         if (act === 'pay') {
-          console.log('tap pay');
+          this.$store.dispatch('orderFormList', {
+            payStatus: 1,
+            status: null
+          });
         }
         if (act === 'wait') {
-          console.log('tap wait');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: 6
+          });
         }
         if (act === 'finish') {
-          console.log('tap finish');
+          this.$store.dispatch('orderFormList', {
+            payStatus: null,
+            status: 7
+          });
         }
       }
     }

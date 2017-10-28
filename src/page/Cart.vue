@@ -7,7 +7,7 @@
               @on-click-more="menusFlag = true">
     </x-header>
 
-    <grid class="vux-grid-list"
+    <grid class="vux-grid-list" v-if="common_goods_list.length > 0"
           v-for="(item,index) in common_goods_list"
           @on-item-click="onItemClick(item.id)"
           :key="index">
@@ -97,17 +97,28 @@
        * 更多菜单
        **/
       onMenusClose (key, value) {
-        if (key === "menu1") {
-          this.menusFlag = false;
-          this.$router.push({
-            name: 'cart'
-          });
-        }
-        if (key === "menu2") {
-          this.menusFlag = false;
-          this.$router.push({
-            name: 'books'
-          });
+        switch (key){
+          case "menu1":
+            this.menusFlag = false;
+            this.$router.push({
+              name:'cart'
+            });
+            break;
+          case "menu2":
+            this.menusFlag = false;
+            this.$router.push({
+              name:'books',
+              query:{
+                act:'all'
+              }
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name:'location'
+            });
+            break;
         }
       },
 
@@ -115,6 +126,11 @@
        * 提交订单
        */
       onSubmit(){
+        if(this.common_goods_list.length < 1){
+          this.$vux.toast.text('请选择商品！');
+          return;
+        }
+
         this.$vux.loading.show({
           text: '生成订单...'
         });

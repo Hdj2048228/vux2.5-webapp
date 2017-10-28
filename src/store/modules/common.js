@@ -9,19 +9,20 @@
  vue -> this.$store.getters.xx
  **/
 
-import * as axios from '../axios/';
+import * as api from '../axios/';
 import * as types from '../type/';
 
 // 数据源
 const state = {
   menus: {
     menu1: '购物车',
-    menu2: '订单详情'
+    menu2: '订单详情',
+    menu3: '收货地址'
   },
   switchFlag: false,
   address: [{
     id: '1234567890',
-    isUsed: 1,
+    isUsed: false,
     name: '张三',
     phone: '13800138000',
     addrName: '北京/北京市/昌平区'
@@ -32,21 +33,31 @@ const state = {
     addressValue: ['浙江省', '杭州市', '西湖区'],
     addressInfo: '文一西路522号'
   },
+  updateAddress: {},
+  detailAddress: {
+    id: 0,
+    isUsed: false,
+    name: '',
+    phone: '',
+    addrName: ['浙江省', '杭州市', '西湖区'],
+  },
   goods_count: 0,
   goods_money: 0,
   goods_list: [{
-    "id": "123456",
-    "title": "烟雾传感器",
-    "type": "RY119",
+    "id": 0,
+    "title": "",
+    "type": "",
     "price": 0,
     "num": 0,
-    "desc": "description",
+    "desc": "",
     "src": "http://placeholder.qiniudn.com/60x60/3cc51f/ffffff",
     "url": {
       "path": "/car",
       "replace": false
     }
-  }]
+  }],
+  orderFormList: [],
+  orderFormInfo: {}
 };
 
 /**
@@ -56,19 +67,22 @@ const state = {
 const getters = {
   common_menus: state => state.menus,
   common_address: state => state.address,
+  common_detail_address: state => state.detailAddress,
   common_goods_list: state => state.goods_list,
   common_goods_count: state => state.goods_count,
-  common_goods_money: state => state.goods_money
+  common_goods_money: state => state.goods_money,
+  common_order_FormList: state => state.orderFormList,
+  common_order_FormInfo: state => state.orderFormInfo
 };
 
 // 异步获取数据：通过commit传值
 const actions = {
   /**
-   * 获取地址
+   * 获取地址列表
    * @param commit
    */
   getAddress({commit}){
-    axios.getAddress(res => {
+    api.getAddress(res => {
       commit(types.User_Get_Address, res);
     });
   },
@@ -76,12 +90,57 @@ const actions = {
   /**
    * 修改地址
    * @param commit
-   * @param state
    * @param params
    */
-  setAddress({commit, state}, params){
-    axios.setAddress(params, res => {
-      console.log(2222, res);
+  setAddress({commit}, params){
+    api.setAddress(params, result => {
+      console.log('setAddress', result);
+    });
+  },
+
+  /**
+   * 选择地址
+   * @param commit
+   * @param id
+   */
+  selectAddress({commit}, id){
+    api.selectAddress(id, result => {
+      console.log('selectAddress', result);
+    });
+  },
+
+  /**
+   * 更新地址
+   * @param commit
+   * @param data
+   */
+  updateAddress({commit}, data){
+    api.updateAddress(data, result => {
+      commit(types.User_Update_Address, result);
+      console.log('updateAddress', result);
+    });
+  },
+
+  /**
+   * 获取详细地址
+   * @param commit
+   * @param id
+   */
+  detailAddress({commit}, id){
+    api.detailAddress(id, result => {
+      commit(types.User_Detail_Address, result);
+      console.log('detailAddress', result);
+    });
+  },
+
+  /**
+   * 删除收货地址
+   * @param commit
+   * @param id
+   */
+  deleteAddress({commit}, id){
+    api.deleteAddress(id, result => {
+      console.log('deleteAddress', result);
     });
   },
 
@@ -89,8 +148,8 @@ const actions = {
    * 获取购物清单
    * @param commit
    */
-  cartGoodsList({commit, dispatch}){
-    axios.cartGoodsList(payload => {
+  cartGoodsList({commit}){
+    api.cartGoodsList(payload => {
       let money = 0;
       payload.forEach(item => {
         if (item.price >= 1 && item.num >= 1) {
@@ -99,10 +158,21 @@ const actions = {
       });
       commit(types.Conn_Goods_Money, money);
       commit(types.Conn_Goods_List, payload);
+
+      console.log('提交订单', 'goods_list', {
+        id: payload[0].id,
+        num: payload[0].num,
+        src: payload[0].src
+      }, payload);
     });
   },
+
+  /**
+   * 购物车总额
+   * @param commit
+   */
   cartGoodsMoney({commit}){
-    axios.cartGoodsList(payload => {
+    api.cartGoodsList(payload => {
       let money = 0;
       payload.forEach(item => {
         if (item.price >= 1 && item.num >= 1) {
@@ -116,12 +186,11 @@ const actions = {
   /**
    * 详情页 增加商品
    * @param commit
-   * @param state
    * @param dispatch
    * @param id
    */
-  goodsAddCart({commit, state, dispatch}, id){
-    axios.goodsAdd(id, payload => {
+  goodsAddCart({commit, dispatch}, id){
+    api.goodsAdd(id, payload => {
       commit(types.Comm_Goods_Add, payload);
 
       /*这就高级了：新增完成再请求总数*/
@@ -132,12 +201,11 @@ const actions = {
   /**
    * 购物车 增加商品
    * @param commit
-   * @param state
    * @param dispatch
    * @param id
    */
-  goodsAdd({commit, state, dispatch}, id){
-    axios.goodsAdd(id, payload => {
+  goodsAdd({commit, dispatch}, id){
+    api.goodsAdd(id, payload => {
       commit(types.Comm_Goods_Add, payload);
 
       dispatch('cartGoodsMoney');  // 计算总额
@@ -147,10 +215,11 @@ const actions = {
   /**
    * 减少商品
    * @param commit
+   * @param dispatch
    * @param item
    */
-  goodsRemove({commit, state, dispatch}, item){
-    axios.goodsRemove(item, payload => {
+  goodsRemove({commit, dispatch}, item){
+    api.goodsRemove(item, payload => {
       commit(types.Comm_Goods_Remove, payload);
 
       dispatch('cartGoodsMoney');  // 计算总额
@@ -164,21 +233,71 @@ const actions = {
    * @param id
    */
   goodsGetNumber({commit}, id){
-    axios.goodsGetNumber(id, payload => {
+    api.goodsGetNumber(id, payload => {
       commit(types.Comm_Goods_Count, payload);
-    })
+    });
+  },
+
+  /**
+   * 保存订单
+   * @param commit
+   * @param data
+   */
+  orderFormSave({commit}, data){
+    api.orderFormSave(data, payload => {
+      commit(types.Comm_Goods_Count, payload);
+    });
+  },
+
+  /**
+   * 获取订单列表
+   * @param commit
+   * @param data
+   */
+  orderFormList({commit}, data){
+    api.orderFormList(data, payload => {
+      commit(types.Books_Get_List, payload);
+      commit(types.Conn_Goods_List, payload);
+    });
+  },
+
+  /**
+   * 获取订单详情
+   * @param commit
+   * @param data
+   */
+  orderFormInfo({commit}, data){
+    api.orderFormInfo(data, payload => {
+      commit(types.Book_Get_Info, payload);
+    });
   }
 };
 
 // 同步修改数据：通过state赋值
 const mutations = {
   /**
-   * 设置地址
+   * 设置获取地址
    * @param state
-   * @param res
+   * @param payload
    */
-    [types.User_Get_Address](state, res){
-    state.address = res;
+    [types.User_Get_Address](state, payload){
+    state.address = payload;
+  },
+  /**
+   * 设置更新地址
+   * @param state
+   * @param payload
+   */
+    [types.User_Update_Address](state, payload){
+    state.updateAddress = payload;
+  },
+  /**
+   * 设置详细地址
+   * @param state
+   * @param payload
+   */
+    [types.User_Detail_Address](state, payload){
+    state.detailAddress = payload;
   },
 
   /**
@@ -222,6 +341,24 @@ const mutations = {
    */
     [types.Comm_Goods_Count](state, payload){
     state.goods_count = payload;
+  },
+
+  /**
+   * 获取订单列表
+   */
+    [types.Books_Get_List](state, payload){
+    state.orderFormList = payload;
+  },
+
+  /**
+   * 获取订单详情
+   * @param state
+   * @param payload
+   */
+    [types.Book_Get_Info](state, payload){
+    // state.orderFormInfo = payload;
+    state.goods_list = payload;
+    console.log('获取订单详情','Book_Get_Info',payload);
   }
 };
 
