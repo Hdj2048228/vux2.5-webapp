@@ -11,9 +11,16 @@
       <cell title="订单状态" :value="status" :border-intent="false"></cell>
     </group>
 
-    <group-title v-show="common_address.length > 1">商品清单</group-title>
-    <grid :cols="3">
+    <group-title>商品清单</group-title>
+
+    <grid :cols="3" v-if="!isList">
       <grid-item :label="item.num+'x'" v-for="(item,index) in common_goods_list" :key="index">
+        <img @click="go('detail',{id:item.id})" slot="icon" :src="item.src">
+      </grid-item>
+    </grid>
+
+    <grid :cols="3" v-else="isList">
+      <grid-item :label="item.num+'x'" v-for="(item,index) in common_order_FormInfo" :key="index">
         <img @click="go('detail',{id:item.id})" slot="icon" :src="item.src">
       </grid-item>
     </grid>
@@ -82,8 +89,10 @@
     },
     data () {
       return {
-        totalMoney: 350,
+        totalMoney: 0,      //总金额
+        logisticsPrice: 0,  //邮费
         status: '待支付',
+        isList: false,
         showTabbar: false,
         showContent001: false,
         menusFlag: false
@@ -93,14 +102,25 @@
       ...mapGetters([
         'common_goods_list',
         'common_goods_money',
+        'common_order_FormInfo',
         'common_address',
         'common_menus'
       ])
     },
     created(){
-      if(this.$route.query.src === 'cart' && typeof this.$route.query.id === undefined){
-        this.$store.dispatch('cartGoodsList');
-        this.$store.dispatch('getAddress');
+      if (this.$route.query.src === 'books' && typeof this.$route.query.id !== undefined) {
+        if (this.$route.query.id.length === 32) {
+          this.isList = true;
+          this.$store.dispatch('getAddress');    // 默认地址
+          this.$store.dispatch('orderFormInfo', {// 订单详情
+            orderId: this.$route.query.id
+          });
+        }
+      }
+      if (this.$route.query.src === 'cart') {
+        this.isList = false;
+        this.$store.dispatch('cartGoodsList');   // 购物车商品列表
+        this.$store.dispatch('getAddress');      // 默认地址
       }
     },
     mounted(){
@@ -116,12 +136,6 @@
       (this.status === '待支付') && (this.showTabbar = true);
       (this.status === '待提交') && (this.showTabbar = true);
       (this.status === '已支付') && (this.showTabbar = false);
-
-      if(this.$route.query.src === 'books' && typeof this.$route.query.id !== undefined){
-        this.$store.dispatch('orderFormInfo',{
-          orderId:this.$route.query.id
-        });
-      }
     },
     methods: {
       onMenusClose (key, value) {
@@ -129,19 +143,31 @@
           case "menu1":
             this.menusFlag = false;
             this.$router.push({
-              name: 'cart'
+              name: 'home'
             });
             break;
           case "menu2":
             this.menusFlag = false;
             this.$router.push({
-              name:'books',
+              name: 'cart'
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'user'
+            });
+            break;
+          case "menu4":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'books',
               query:{
                 act:'all'
               }
             });
             break;
-          case "menu3":
+          case "menu5":
             this.menusFlag = false;
             this.$router.push({
               name: 'location'
@@ -150,29 +176,41 @@
         }
       },
       onSubmit(){
-        this.$store.dispatch('orderFormSave', {
-          "addrId": "470575a8ff124c8785f569356e6a0196",
-          "price": 120,
-          "logisticsPrice": 0,
-          "totalPrice": 120,
-          "orderCartList": [{
-            "goodsId": "dabe58d6232d4887b03d6c06d796f468",
-            "num": 3
-          }]
-        });
+        if (!this.isList) {
+          let data = {
+            addrId: 0,
+            logisticsPrice: 0,
+            price: 0,
+            totalPrice: 0,
+            orderCartList: []
+          };
 
-        this.$vux.toast.show({
-          text: '提交成功！'
-        });
-
-        setTimeout(() => {
-          this.$vux.toast.hide();
-          this.menusFlag = false;
-          this.$router.push({
-            name: 'payList',
-            query: {params: '123'}
+          this.common_goods_list.forEach(item => {
+            data.addrId = this.common_address[0].id;
+            data.logisticsPrice = this.logisticsPrice;      // 邮费
+            data.price += item.price * item.num;            // 折后金额
+            data.totalPrice += (item.price * item.num + this.logisticsPrice); // 折后金额+邮费
+            data.orderCartList.push({
+              goodsId: item.id,
+              num: item.num
+            });
           });
-        }, 1000);
+
+          this.$store.dispatch('orderFormSave', data); // 提交到服务器
+
+          this.$vux.toast.show({
+            text: '提交成功！'
+          });
+
+          setTimeout(() => {
+            this.$vux.toast.hide();
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'payList',
+              query: {params: '123'}
+            });
+          }, 1000);
+        }
       }
     }
   }

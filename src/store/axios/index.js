@@ -44,7 +44,7 @@ const address_getDetail = baseUrl + '/a/shop/receive/address/getDetail'; // 修�
 const orderForm_save = baseUrl + '/a/shop/order/saveOrder'; // 订单保存
 const order_list = baseUrl + '/a/shop/order/getOrderList'; // 获取订单列表
 const order_info = baseUrl + '/a/shop/order/getOrderDetail'; // 获取订单信息
-const delete_order = baseUrl + '/a/shop/order/delete'; // 删除订单
+const order_delete = baseUrl + '/a/shop/order/delete'; // 删除订单
 const order_receipt = baseUrl + '/a/shop/order/receipt'; // 确认收货
 const order_buyAgain = baseUrl + '/a/shop/order/buyAgain'; // 再次购买
 
@@ -183,12 +183,12 @@ function cartGoodsList(callback) {
         "id": item.goodsId,
         "title": item.goods.goodsName,
         "type": "暂无分类",
-        "price": item.goods.salePrice,
+        "price": item.goods.salePrice, // 折后金额
         "num": item.num,
         "checked": item.checked,
         "desc": "暂无简介",
         //"src": item.goods.productImg,
-        "src": item.goods.productImg.indexOf("http") < 1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
+        "src": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
         "url": {
           "path": "/car",
           "replace": false
@@ -398,45 +398,46 @@ function orderFormList(data, callback) {
       "payStatus": data.payStatus || null
     }
   }).then(result => {
-    let test = [{
-      id: 'bb5d4a2fc687434cab325fb6e4d8870f',
-      orderNum: 'RY17082301731',
-      totalPrice: '200',
-      goodsList: {
-        "goodsName": "烟雾传感器",
-        "productImg": "group1/M00/00/04/wKgBCVljaGKAQZ3kAAQas3XpTfw122.png",
-        "num": 1
-      }
-    }];
-    let arr = [];
     let arrList = [];
-    let data = result.data.data.forEach((item, index) => {
-      arr.push({
-        id: item.id,
-        orderNum: item.orderNum,
-        totalPrice: item.totalPrice,
-        productImg: item['goodsList'][0].productImg,
-        goodsList: [{
-          label: item['goodsList'][0].goodsName,
-          value: 'x' + item['goodsList'][0].num
-        }],
-        buttonsMeun: [{
-          style: 'default',
-          text: '查看订单',
-          link: '/book?src=books&id=' + item.id
-        }, {
-          style: 'primary',
-          text: '再次购买',
-          link: '/detail?id=' + item.id
-        }]
-      })
-    });
-    callback(arr);
+    let data = result.data.data;
+    if (result.data.code === 200) {
+      data.forEach((item, index) => {
+        let goodsList = [];
+        item.goodsList.forEach((arr) => {
+          goodsList.push({
+            label: arr.goodsName,
+            value: 'x' + arr.num
+          });
+        });
+        arrList.push({
+          id: item.id,
+          orderNum: item.orderNum,
+          totalPrice: item.totalPrice,
+          //productImg: item['goodsList'][0].productImg,
+          productImg: item['goodsList'][0].productImg.indexOf("http") === -1 ? (imgSrc + item['goodsList'][0].productImg) : item['goodsList'][0].productImg,
+          goodsList: goodsList,
+          buttonsMeun: [{
+            style: 'default',
+            text: '查看订单',
+            link: '/book?src=books&id=' + item.id
+          }, {
+            style: 'primary',
+            text: '删除订单',
+            link: '/books?src=del&id=' + item.id
+          }, {
+            style: 'primary',
+            text: '再次购买',
+            link: '/detail?id=' + item.id
+          }]
+        })
+      });
+      callback(arrList);
+    }
   });
 }
 
 /**
- * 获取订单详情
+ * 017 获取订单详情
  * @param data
  * @param callback
  */
@@ -447,9 +448,40 @@ function orderFormInfo(data, callback) {
     params: {},
     data: data || {}
   }).then(result => {
-    callback(result.data.data);
+    if (result.data.code === 200) {
+      if (typeof result.data.data.goodsList !== undefined) {
+        let data = result.data.data.goodsList.map(item => ({
+          "goodsName": item.goodsName,
+          "num": item.num,
+          "salePrice": item.salePrice,
+          "goodsDesc": item.goodsDesc,
+          "goodsInfo": item.goodsInfo,
+          "src": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+        }));
+        callback(data);
+      }
+    }
   })
 }
+
+/**
+ * 018 删除订单
+ * @param data
+ * @param callback
+ */
+function orderFormDelete(data, callback) {
+  axios({
+    url: order_delete,
+    method: 'post',
+    params: {},
+    data: data
+  }).then(result => {
+    callback(result.data);
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
 /**
  * 样板函数
  * @param uid
@@ -488,5 +520,6 @@ export {
   deleteAddress,
   orderFormSave,
   orderFormList,
-  orderFormInfo
+  orderFormInfo,
+  orderFormDelete
 }

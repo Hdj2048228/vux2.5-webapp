@@ -92,25 +92,40 @@
        * 更多菜单
        **/
       onMenusClose (key,value) {
-        /*this.$vux.loading.show({
-         text: '跳转中...'
-         });*/
-
-        /*setTimeout(() => {
-         this.$vux.loading.hide();
-         }, 1000);*/
-
-        if(key==="menu1"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'cart'
-          });
-        }
-        if(key==="menu2"){
-          this.menusFlag = false;
-          this.$router.push({
-            name:'books'
-          });
+        switch (key) {
+          case "menu1":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'home'
+            });
+            break;
+          case "menu2":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'cart'
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'user'
+            });
+            break;
+          case "menu4":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'books',
+              query:{
+                act:'all'
+              }
+            });
+            break;
+          case "menu5":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'location'
+            });
+            break;
         }
       },
       onSubmit () {

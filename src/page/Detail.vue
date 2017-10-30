@@ -91,6 +91,9 @@
           this.$store.dispatch('getDetailGoods', id); // 商品详情
           this.$store.dispatch('goodsGetNumber', id); // 请求购物总数
         }
+      }else{
+        this.$vux.toast.text('404！');
+        this.$router.push('home');
       }
     },
     mounted(){
@@ -102,19 +105,31 @@
           case "menu1":
             this.menusFlag = false;
             this.$router.push({
-              name: 'cart'
+              name: 'home'
             });
             break;
           case "menu2":
             this.menusFlag = false;
             this.$router.push({
-              name:'books',
+              name: 'cart'
+            });
+            break;
+          case "menu3":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'user'
+            });
+            break;
+          case "menu4":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'books',
               query:{
                 act:'all'
               }
             });
             break;
-          case "menu3":
+          case "menu5":
             this.menusFlag = false;
             this.$router.push({
               name: 'location'

@@ -101,22 +101,34 @@
           case "menu1":
             this.menusFlag = false;
             this.$router.push({
-              name:'cart'
+              name: 'home'
             });
             break;
           case "menu2":
             this.menusFlag = false;
             this.$router.push({
-              name:'books',
-              query:{
-                act:'all'
-              }
+              name: 'cart'
             });
             break;
           case "menu3":
             this.menusFlag = false;
             this.$router.push({
-              name:'location'
+              name: 'user'
+            });
+            break;
+          case "menu4":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'books',
+              query:{
+                act:'all'
+              }
+            });
+            break;
+          case "menu5":
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'location'
             });
             break;
         }
@@ -128,6 +140,7 @@
       onSubmit(){
         if(this.common_goods_list.length < 1){
           this.$vux.toast.text('请选择商品！');
+          this.$router.push('home');
           return;
         }
 

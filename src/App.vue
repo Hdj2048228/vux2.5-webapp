@@ -10,14 +10,15 @@
 
 <script>
   import Home from '@/page/Home';
-  import OrderBook from '@/page/OrderBook';
-  import OrderBooks from '@/page/OrderBooks';
-  import Cart from '@/page/Cart';
-  import User from '@/page/User';
   import List from '@/page/List';
   import Search from '@/page/Search';
+  import User from '@/page/User';
+  import Cart from '@/page/Cart';
   import Detail from '@/page/Detail';
   import PayList from '@/page/PayList';
+  import OrderBook from '@/page/OrderBook';
+  import OrderBooks from '@/page/OrderBooks';
+  import OrderBookDelete from '@/page/OrderBookDelete';
   import Location from '@/page/Location';
   import LocationForm from '@/page/LocationForm';
   import SignIn from '@/page/signIn';
@@ -35,6 +36,7 @@
       PayList,
       OrderBook,
       OrderBooks,
+      OrderBookDelete,
       Location,
       LocationForm,
       SignIn,

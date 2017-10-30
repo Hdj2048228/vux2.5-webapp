@@ -14,10 +14,12 @@ import * as types from '../type/';
 
 // 数据源
 const state = {
-  menus: {
-    menu1: '购物车',
-    menu2: '订单详情',
-    menu3: '收货地址'
+  menus: {// books\book\cart\list\
+    menu1: '首页',
+    menu2: '购物车',
+    menu3: '用户中心',
+    menu4: '订单详情',
+    menu5: '收货地址'
   },
   switchFlag: false,
   address: [{
@@ -158,12 +160,6 @@ const actions = {
       });
       commit(types.Conn_Goods_Money, money);
       commit(types.Conn_Goods_List, payload);
-
-      console.log('提交订单', 'goods_list', {
-        id: payload[0].id,
-        num: payload[0].num,
-        src: payload[0].src
-      }, payload);
     });
   },
 
@@ -257,7 +253,6 @@ const actions = {
   orderFormList({commit}, data){
     api.orderFormList(data, payload => {
       commit(types.Books_Get_List, payload);
-      commit(types.Conn_Goods_List, payload);
     });
   },
 
@@ -269,6 +264,12 @@ const actions = {
   orderFormInfo({commit}, data){
     api.orderFormInfo(data, payload => {
       commit(types.Book_Get_Info, payload);
+    });
+  },
+
+  orderFormDelete({commit}, data){
+    api.orderFormDelete(data, payload => {
+      console.log(333,payload);
     });
   }
 };
@@ -356,9 +357,8 @@ const mutations = {
    * @param payload
    */
     [types.Book_Get_Info](state, payload){
-    // state.orderFormInfo = payload;
-    state.goods_list = payload;
-    console.log('获取订单详情','Book_Get_Info',payload);
+    state.orderFormInfo = payload;
+    console.log('获取订单详情', 'Book_Get_Info', payload);
   }
 };
 

@@ -53,6 +53,11 @@ export default[
     component: App.components.OrderBook
   },
   {
+    path: '/bookDel',
+    name: 'bookDel',
+    component: App.components.OrderBookDelete
+  },
+  {
     path: '/payList',
     name: 'payList',
     component: App.components.PayList
