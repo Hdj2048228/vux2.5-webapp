@@ -8,8 +8,8 @@ import vueJsonp from 'vue-jsonp'
 Vue.use(vueJsonp);
 
 // 接口服务器地址
-const baseUrl = 'http://192.168.50.230:8883/api';
-// const baseUrl = 'http://192.168.50.155:8881/api';
+// const baseUrl = 'http://192.168.50.230:8883/api';
+const baseUrl = 'http://192.168.50.155:8881/api';
 // const baseUrl = 'http://i.0t.com.cn';
 
 // 图片服务器地址
@@ -45,8 +45,11 @@ const orderForm_save = baseUrl + '/a/shop/order/saveOrder'; // 订单保存
 const order_list = baseUrl + '/a/shop/order/getOrderList'; // 获取订单列表
 const order_info = baseUrl + '/a/shop/order/getOrderDetail'; // 获取订单信息
 const order_delete = baseUrl + '/a/shop/order/delete'; // 删除订单
-const order_receipt = baseUrl + '/a/shop/order/receipt'; // 确认收货
+const order_confirm = baseUrl + '/a/shop/order/receipt'; // 确认收货
 const order_buyAgain = baseUrl + '/a/shop/order/buyAgain'; // 再次购买
+
+/***********************在线支付接口********************************/
+const payment_api = baseUrl + '/1/WAP/pay';
 
 /**
  * 001 首页焦点图
@@ -187,8 +190,8 @@ function cartGoodsList(callback) {
         "num": item.num,
         "checked": item.checked,
         "desc": "暂无简介",
-        //"src": item.goods.productImg,
-        "src": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
+        //"pic": item.goods.productImg,
+        "pic": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
         "url": {
           "path": "/car",
           "replace": false
@@ -377,14 +380,31 @@ function orderFormSave(data, callback) {
     url: orderForm_save,
     method: 'post',
     params: {},
-    data: data
+    data: data || {}
   }).then(result => {
     callback(result.data.data);
   });
 }
 
 /**
- * 016 获取订单列表
+ * 016 支付
+ * @param data
+ * @param callback
+ */
+function onPayment(data, callback) {
+  axios({
+    url: payment_api,
+    method: 'post',
+    params: {},
+    data: data || {}
+  }).then(result => {
+    callback(result.data);
+  });
+
+}
+
+/**
+ * 017 获取订单列表
  * @param data
  * @param callback
  */
@@ -393,51 +413,58 @@ function orderFormList(data, callback) {
     url: order_list,
     method: 'post',
     params: {},
-    data: {
-      "status": data.status || null,
-      "payStatus": data.payStatus || null
-    }
+    data: data
   }).then(result => {
     let arrList = [];
     let data = result.data.data;
     if (result.data.code === 200) {
       data.forEach((item, index) => {
-        let goodsList = [];
-        item.goodsList.forEach((arr) => {
+        // 默认数据
+        let goodsList = [{
+          label: '订单号',
+          value: item.orderNum
+        }];
+        item.goodsList.forEach((item) => {// 追加数据
           goodsList.push({
-            label: arr.goodsName,
-            value: 'x' + arr.num
+            label: item.goodsName,
+            value: 'x' + item.num
           });
         });
+
+        // 追加图片
+        let productImg = item.goodsList.map((item) => ({
+          productImg: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+        }));
+
+        // 默认菜单
+        let buttonsMeun = [{
+          style: 'default',
+          text: '查看订单',
+          link: '/bookInfo?act=books&id=' + item.id
+        }, {
+          style: 'primary',
+          text: '删除订单',
+          link: '/books'
+        }];
+
+        // 拼接数据
         arrList.push({
           id: item.id,
           orderNum: item.orderNum,
           totalPrice: item.totalPrice,
-          //productImg: item['goodsList'][0].productImg,
-          productImg: item['goodsList'][0].productImg.indexOf("http") === -1 ? (imgSrc + item['goodsList'][0].productImg) : item['goodsList'][0].productImg,
+          productImg: productImg,
           goodsList: goodsList,
-          buttonsMeun: [{
-            style: 'default',
-            text: '查看订单',
-            link: '/book?src=books&id=' + item.id
-          }, {
-            style: 'primary',
-            text: '删除订单',
-            link: '/books?src=del&id=' + item.id
-          }, {
-            style: 'primary',
-            text: '再次购买',
-            link: '/detail?id=' + item.id
-          }]
+          btnMeun: buttonsMeun
         })
       });
+
       callback(arrList);
     }
   });
 }
 
 /**
- * 017 获取订单详情
+ * 018 获取订单详情
  * @param data
  * @param callback
  */
@@ -451,12 +478,16 @@ function orderFormInfo(data, callback) {
     if (result.data.code === 200) {
       if (typeof result.data.data.goodsList !== undefined) {
         let data = result.data.data.goodsList.map(item => ({
+          "payStatus": result.data.data.payStatus===2 ? '已支付':'未支付',
+          "orderNum": result.data.data.orderNum,
+          "createDate": result.data.data.createDate,
+          "address": result.data.data.address,
           "goodsName": item.goodsName,
-          "num": item.num,
+          "number": item.num,
           "salePrice": item.salePrice,
           "goodsDesc": item.goodsDesc,
           "goodsInfo": item.goodsInfo,
-          "src": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+          "pic": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
         }));
         callback(data);
       }
@@ -465,7 +496,7 @@ function orderFormInfo(data, callback) {
 }
 
 /**
- * 018 删除订单
+ * 019 删除订单
  * @param data
  * @param callback
  */
@@ -474,7 +505,64 @@ function orderFormDelete(data, callback) {
     url: order_delete,
     method: 'post',
     params: {},
-    data: data
+    data: data || {}
+  }).then(result => {
+    callback(result.data);
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 020 再次购买
+ * @param data
+ * @param callback
+ */
+function orderFormReBuy(data, callback) {
+  axios({
+    url: order_buyAgain,
+    method: 'post',
+    params: {},
+    data: data || {}
+  }).then(result => {
+    if (result.data.code === 200) {
+      callback(result.data);//? 没支付、没收货
+
+      let data = result.data.data;
+      let arr = data.filter(item => {
+        return item.goods !== undefined;
+      }).map(item => ({
+        "id": item.goodsId,
+        "title": item.goods.goodsName,
+        "type": "暂无分类",
+        "price": item.goods.salePrice, // 折后金额
+        "num": item.num,
+        "checked": item.checked,
+        "desc": "暂无简介",
+        //"pic": item.goods.productImg,
+        "pic": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
+        "url": {
+          "path": "/car",
+          "replace": false
+        }
+      }));
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
+ * 021 确认收货
+ * @param data
+ * @param callback
+ */
+function orderFormConfirm(data, callback) {
+  axios({
+    url: order_confirm,
+    method: 'post',
+    params: {},
+    data: data || {}
   }).then(result => {
     callback(result.data);
   }).catch(err => {
@@ -488,15 +576,15 @@ function orderFormDelete(data, callback) {
  * @param callback
  * @returns {Promise}
  */
-function axiosDemo(uid = 123, callback) {
+function axiosDemo(uid) {
   return new Promise((resolve, reject) => {
     axios({
       url: 'http://3g.163.com/touch/jsonp/sy/recommend/0-9.html',
       method: 'get',
-      params: {},    // GET
+      params: {uid: uid},    // GET
       data: {},      // POST
-    }).then(res => {
-      resolve(res);
+    }).then(result => {
+      resolve(result);
     }).catch(err => {
       reject(err);
     });
@@ -521,5 +609,8 @@ export {
   orderFormSave,
   orderFormList,
   orderFormInfo,
-  orderFormDelete
+  orderFormDelete,
+  orderFormReBuy,
+  onPayment,
+  orderFormConfirm
 }

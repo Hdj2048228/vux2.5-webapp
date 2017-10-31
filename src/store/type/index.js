@@ -12,6 +12,7 @@ export const Comm_Goods_Count = 'Comm_Goods_Count';
 export const Comm_Goods_Remove = 'Comm_Goods_Remove';
 export const Comm_Goods_Add = 'Comm_Goods_Add';
 export const Conn_Goods_Money = 'Conn_Goods_Money';
+export const Conn_Payment = 'Conn_Payment';
 
 
 /*
@@ -30,6 +31,8 @@ export const Home_Goods_List = 'Home_Goods_List';
  */
 export const Books_Get_List = 'Books_Get_List';
 export const Book_Get_Info = 'Book_Get_Info';
+export const Order_Form_Number = 'Order_Form_Number';
+export const Order_Form_Confirm = 'Order_Form_Confirm';
 
 
 /*

@@ -1,35 +1,33 @@
 <template>
-  <view-box class="book" bodyPaddingBottom="60px" bodyPaddingTop="0">
+  <view-box class="bookInfo" bodyPaddingBottom="60px" bodyPaddingTop="0">
 
     <x-header title="订单详情"
               :left-options="{showBack:true,backText:'返回'}"
               :right-options="{showMore: true}"
               @on-click-more="menusFlag = true">
     </x-header>
-    <group class="status">
-      <cell title="订单状态" value="待提交" :border-intent="false"></cell>
+
+    <group class="status" v-for="(item,index) in common_order_FormInfo" :key="index" v-if="">
+      <cell title="订单状态" :value="item.payStatus" :border-intent="false"></cell>
+      <cell title="订单编号" :value="item.orderNum"></cell>
+      <cell title="订单时间" :value="item.createDate"></cell>
+      <cell title="总金额" :value="item.salePrice | currency"></cell>
     </group>
 
     <group-title>商品清单</group-title>
 
-    <!-- 待支付 -->
-    <grid :cols="3" v-if="!isList">
-      <grid-item :label="item.num+'x'" v-for="(item,index) in common_goods_list" :key="index">
-        <img @click="go('detail',{id:item.id})" slot="icon" :src="item.pic">
+    <!-- 已支付 -->
+    <grid :cols="3">
+      <grid-item :label="'x'+item.number" v-for="(item,index) in common_order_FormInfo" :key="index">
+        <img slot="icon" :src="item.pic">
       </grid-item>
     </grid>
 
-    <!-- 收货地址 -->
-    <group class="dispatch" title="收货地址" v-if="common_address[0].isUsed">
-      <cell v-for="(item,index) in common_address" :key="index"
-            :title="item.name+' '+item.phone"
-            :inline-desc="item.addrName"
-            :link="{path:'/location'}"></cell>
-    </group>
-
-    <!-- 没有默认地址，请选择 -->
-    <group class="dispatch" title="收货地址" v-else>
-      <cell title="选择默认地址" :link="{path:'/location'}"></cell>
+    <!-- 订单中的地址 -->
+    <group class="dispatch" title="收货地址">
+      <cell v-for="(item,index) in common_order_FormInfo" :key="index"
+            :title="item.address.contacts+' '+item.address.phone"
+            :inline-desc="item.address.addrName+' '+item.address.addrDetail"></cell>
     </group>
 
     <group class="dispatch" :title="'配送'">
@@ -56,15 +54,6 @@
       </actionsheet>
     </div>
 
-    <tabbar>
-      <tabbar-item selected>
-        <span slot="label">合计：{{common_goods_money | currency}}</span>
-      </tabbar-item>
-      <tabbar-item @on-item-click="onSubmit">
-        <span slot="label">提交订单</span>
-      </tabbar-item>
-    </tabbar>
-
   </view-box>
 </template>
 
@@ -78,7 +67,7 @@
   } from "vuex";
 
   export default {
-    name: 'book',
+    name: 'bookInfo',
     components: {
       ViewBox, XHeader, XSwitch, FormPreview, Toast, TransferDom, Actionsheet,
       Group, GroupTitle, Cell, CellBox, Grid, GridItem, Tab, TabItem, Tabbar, TabbarItem
@@ -87,18 +76,13 @@
       return {
         totalMoney: 0,      //总金额
         logisticsPrice: 0,  //邮费
-        isList: false,      //是不是查看订单
         showContent001: false
       }
     },
     computed: {
       ...mapState(['menus']),
       ...mapGetters([
-        'common_goods_list',
-        'common_goods_money',
-        'common_order_FormInfo',
-        'common_order_FormNumber',
-        'common_address'
+        'common_order_FormInfo'
       ]),
       menusFlag: {
         get(){
@@ -110,63 +94,34 @@
       }
     },
     created(){
-      if (this.$route.query.act === 'cart') {
-        this.isList = false;
-        this.$store.dispatch('getAddress');      // 默认地址
-        this.$store.dispatch('cartGoodsList');   // 购物车商品列表
+      if (this.$route.query.act === 'books' && typeof this.$route.query.id !== 'undefined') {
+        if (this.$route.query.id.length === 32) {
+          this.$store.dispatch('orderFormInfo', {// 订单详情
+            orderId: this.$route.query.id
+          });
+        }
       }
     },
-    mounted(){},
+    mounted(){
+
+    },
     methods: {
       ...mapMutations(['MenusClose']),
       onSubmit(){
-        if (!this.isList) {
-          let data = {
-            addrId: 0,
-            logisticsPrice: 0,
-            price: 0,
-            totalPrice: 0,
-            orderCartList: []
-          };
-
-          this.common_goods_list.forEach(item => {
-            data.addrId = this.common_address[0].id;
-            data.logisticsPrice = this.logisticsPrice;      // 邮费
-            data.price += item.price * item.num;            // 折后金额
-            data.totalPrice += (item.price * item.num + this.logisticsPrice); // 折后金额+邮费
-            data.orderCartList.push({
-              goodsId: item.id,
-              num: item.num
-            });
-          });
-          if (data.orderCartList.length > 0 && data.totalPrice > 0) {
-            this.$store.dispatch('orderFormSave', data); // 提交到服务器
-            this.$vux.toast.show({
-              text: '提交成功！'
-            });
-
-            setTimeout(() => {
-              this.$vux.toast.hide();
-              this.menusFlag = false;
-              this.$router.push({
-                name: 'payList',
-                query: {
-                  orderNumber: this.common_order_FormNumber
-                }
-              });
-            }, 500);
-          } else {
-            this.$vux.toast.text('请选择商品！');
-            this.$router.push('home');
-          }
-        }
+        let data = {
+          addrId: 0,
+          logisticsPrice: 0,
+          price: 0,
+          totalPrice: 0,
+          orderCartList: []
+        };
       }
     }
   }
 </script>
 
 <style lang="less">
-  .book {
+  .bookInfo {
     .vux-form-preview {
       margin-top: 10px;
     }

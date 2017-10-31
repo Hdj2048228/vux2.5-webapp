@@ -24,8 +24,8 @@
     <div transfer-dom>
       <actionsheet show-cancel
                    v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
+                   :menus="menus"
+                   @on-click-menu="MenusClose"
                    :close-on-clicking-menu="true">
       </actionsheet>
     </div>
@@ -71,15 +71,24 @@
     data () {
       return {
         searchValue: '',
-        focus_index: 0,
-        menusFlag: false
+        focus_index: 0
       }
     },
     computed: {
+      ...mapState([
+        'menus'
+      ]),
       ...mapGetters([
-        'goods_list',
-        'common_menus'
-      ])
+        'goods_list'
+      ]),
+      menusFlag:{
+        get(){
+          return this.$store.state.menusFlag;
+        },
+        set(newValue){
+          return this.$store.state.menusFlag = newValue;
+        }
+      }
     },
     created(){
       this.$store.dispatch('home_goods');
@@ -88,46 +97,7 @@
 
     },
     methods: {
-      /**
-       * 更多菜单
-       **/
-      onMenusClose (key,value) {
-        switch (key) {
-          case "menu1":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'home'
-            });
-            break;
-          case "menu2":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'cart'
-            });
-            break;
-          case "menu3":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'user'
-            });
-            break;
-          case "menu4":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'books',
-              query:{
-                act:'all'
-              }
-            });
-            break;
-          case "menu5":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'location'
-            });
-            break;
-        }
-      },
+      ...mapMutations(['MenusClose']),
       onSubmit () {
         this.$refs.search.setBlur();
         this.$vux.toast.show({

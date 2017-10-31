@@ -64,7 +64,7 @@
     methods: {
       login(){
         if (this.userName) {
-          this.$http.post('http://192.168.50.216:8881/api/v1/user/login', {
+          this.$http.post('http://192.168.50.230:8883/api/v1/user/login', {
             userName: this.userName,
             passwd: this.passwd,
             code: 1234,

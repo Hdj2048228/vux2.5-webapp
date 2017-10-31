@@ -29,12 +29,11 @@
       </div>
       <div class="weui-panel__ft"></div>
     </div>
-
     <div transfer-dom>
       <actionsheet show-cancel
                    v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
+                   :menus="menus"
+                   @on-click-menu="MenusClose"
                    :close-on-clicking-menu="true">
       </actionsheet>
     </div>
@@ -57,45 +56,50 @@
     },
     data () {
       return {
-        menusFlag: false
+        orderNumber: 0,
+        totalMoney: 0,
       }
     },
     computed: {
+      ...mapState(['menus']),
       ...mapGetters([
-        'common_menus'
-      ])
+        'common_order_FormData'
+      ]),
+      menusFlag: {
+        get(){
+          return this.$store.state.menusFlag;
+        },
+        set(newValue){
+          return this.$store.state.menusFlag = newValue;
+        }
+      }
+    },
+    created(){
+      if (typeof this.$route.query.orderNumber !== 'undefined') {
+        if (this.$route.query.orderNumber.length === 13) {
+          this.orderNumber = this.$route.query.orderNumber;
+          this.totalMoney = this.$route.query.totalMoney;
+        }
+      }
     },
     mounted(){
 
     },
     methods: {
-      onMenusClose (key,value) {
-        switch (key) {
-          case "menu1":
-            this.menusFlag = false;
+      ...mapMutations(['MenusClose']),
+      alipay ($event) {
+        if (this.orderNumber.length === 13) {
+          this.$store.dispatch('onPayment', {
+            orderNum: this.orderNumber
+          }).then(result => {
             this.$router.push({
-              name: 'cart'
-            });
-            break;
-          case "menu2":
-            this.menusFlag = false;
-            this.$router.push({
-              name:'books',
-              query:{
-                act:'all'
+              name: 'AliPay',
+              params: {
+                formStr: this.common_order_FormData
               }
             });
-            break;
-          case "menu3":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'location'
-            });
-            break;
+          });
         }
-      },
-      alipay ($event) {
-        console.log($event);
       }
     }
   }

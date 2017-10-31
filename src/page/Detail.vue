@@ -37,8 +37,8 @@
     <div transfer-dom>
       <actionsheet show-cancel
                    v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
+                   :menus="menus"
+                   @on-click-menu="MenusClose"
                    :close-on-clicking-menu="true">
       </actionsheet>
     </div>
@@ -65,15 +65,16 @@
     data () {
       return {
         swiperIndex: 0,
-        testIndex: 0,
-        menusFlag: false
+        testIndex: 0
       }
     },
     computed: {
+      ...mapState([
+        'menus'
+      ]),
       ...mapGetters([
         'detail_swiper',
-        'common_goods_count',
-        'common_menus'
+        'common_goods_count'
       ]),
       swiper_index: {
         get(){
@@ -81,6 +82,14 @@
         },
         set(newValue){
           return this.swiperIndex = newValue;
+        }
+      },
+      menusFlag:{
+        get(){
+          return this.$store.state.menusFlag;
+        },
+        set(newValue){
+          return this.$store.state.menusFlag = newValue;
         }
       }
     },
@@ -100,43 +109,7 @@
 
     },
     methods: {
-      onMenusClose (key, value) {
-        switch (key) {
-          case "menu1":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'home'
-            });
-            break;
-          case "menu2":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'cart'
-            });
-            break;
-          case "menu3":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'user'
-            });
-            break;
-          case "menu4":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'books',
-              query:{
-                act:'all'
-              }
-            });
-            break;
-          case "menu5":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'location'
-            });
-            break;
-        }
-      },
+      ...mapMutations(['MenusClose']),
       swiperChange(){
         console.log("swiperChange");
       },

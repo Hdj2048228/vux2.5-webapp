@@ -14,13 +14,6 @@ import * as types from '../type/';
 
 // 数据源
 const state = {
-  menus: {// books\book\cart\list\
-    menu1: '首页',
-    menu2: '购物车',
-    menu3: '用户中心',
-    menu4: '订单详情',
-    menu5: '收货地址'
-  },
   switchFlag: false,
   address: [{
     id: '1234567890',
@@ -59,7 +52,11 @@ const state = {
     }
   }],
   orderFormList: [],
-  orderFormInfo: {}
+  orderFormInfo: [],
+  orderFormNumber: 0,
+  orderFormConfirm: 0,
+  payment: 0,
+  paymentData: 0,
 };
 
 /**
@@ -67,14 +64,15 @@ const state = {
  * getters比state方便多组件重用
  */
 const getters = {
-  common_menus: state => state.menus,
   common_address: state => state.address,
   common_detail_address: state => state.detailAddress,
   common_goods_list: state => state.goods_list,
   common_goods_count: state => state.goods_count,
   common_goods_money: state => state.goods_money,
   common_order_FormList: state => state.orderFormList,
-  common_order_FormInfo: state => state.orderFormInfo
+  common_order_FormInfo: state => state.orderFormInfo,
+  common_order_FormNumber: state => state.orderFormNumber,
+  common_order_FormData: state => state.paymentData
 };
 
 // 异步获取数据：通过commit传值
@@ -235,13 +233,13 @@ const actions = {
   },
 
   /**
-   * 保存订单
+   * 保存订单&&返回结果
    * @param commit
    * @param data
    */
   orderFormSave({commit}, data){
     api.orderFormSave(data, payload => {
-      commit(types.Comm_Goods_Count, payload);
+      commit(types.Order_Form_Number, payload.orderNum);
     });
   },
 
@@ -267,9 +265,53 @@ const actions = {
     });
   },
 
+  /**
+   * 删除订单
+   * @param commit
+   * @param data
+   */
   orderFormDelete({commit}, data){
     api.orderFormDelete(data, payload => {
-      console.log(333,payload);
+      console.log('orderFormDelete', payload);
+    });
+  },
+
+  /**
+   * 再次购买
+   * @param commit
+   * @param data
+   */
+  orderFormReBuy({commit}, data){
+    api.orderFormReBuy(data, payload => {
+      let money = 0;
+      payload.forEach(item => {
+        if (item.price >= 1 && item.num >= 1) {
+          money += item.price * item.num;
+        }
+      });
+      commit(types.Conn_Goods_Money, money);
+      commit(types.Conn_Goods_List, payload);
+    });
+  },
+
+  /**
+   * 支付
+   */
+  onPayment({commit}, data){
+    return new Promise((resolve, reject) => {
+      api.onPayment(data, payload => {
+        commit(types.Conn_Payment, payload);//?支付回调数据
+        resolve(payload);
+      });
+    });
+  },
+
+  /**
+   * 确认收货
+   */
+  orderFormConfirm({commit}, data){
+    api.orderFormConfirm(data, payload => {
+      commit(types.Order_Form_Confirm,payload);
     });
   }
 };
@@ -345,6 +387,15 @@ const mutations = {
   },
 
   /**
+   * 保存订单&&回调数据
+   * @param state
+   * @param payload
+   */
+    [types.Order_Form_Number](state, payload){
+    state.orderFormNumber = payload;
+  },
+
+  /**
    * 获取订单列表
    */
     [types.Books_Get_List](state, payload){
@@ -359,6 +410,24 @@ const mutations = {
     [types.Book_Get_Info](state, payload){
     state.orderFormInfo = payload;
     console.log('获取订单详情', 'Book_Get_Info', payload);
+  },
+
+  /**
+   * 支付
+   * @param state
+   * @param payload
+   */
+    [types.Conn_Payment](state, payload){
+    state.paymentData = payload;
+  },
+
+  /**
+   * 确认收货
+   * @param state
+   * @param payload
+   */
+  [types.Order_Form_Confirm](state, payload){
+    state.orderFormConfirm = payload;
   }
 };
 

@@ -8,6 +8,7 @@ import  {AlertPlugin, ToastPlugin, LoadingPlugin} from 'vux';
 import App from './App';
 import routes from './routes/';
 import modules  from './store/';
+import state  from './store/state';
 import actions  from './store/actions';
 import mutations  from './store/mutations';
 import * as types from './store/type';
@@ -30,10 +31,7 @@ const router = new VueRouter({
 
 // store
 const store = new Vuex.Store({
-  state: {
-    user: {},
-    vue_token: null
-  },
+  state,
   mutations,
   actions,
   modules

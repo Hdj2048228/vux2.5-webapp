@@ -4,7 +4,10 @@ export default[
   {
     path: '/home',
     name: 'home',
-    component: App.components.Home
+    component: App.components.Home,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/home',
@@ -25,52 +28,90 @@ export default[
   {
     path: '/list',
     name: 'list',
-    component: App.components.List
+    component: App.components.List,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/search',
     name: 'search2',
-    component: App.components.Search
+    component: App.components.Search,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/cart',
     name: 'cart',
-    component: App.components.Cart
+    component: App.components.Cart,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/detail',
     name: 'detail',
-    component: App.components.Detail
+    component: App.components.Detail,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/books',
     name: 'books',
-    component: App.components.OrderBooks
+    component: App.components.OrderBooks,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/bookInfo',
+    name: 'bookInfo',
+    component: App.components.OrderBookInfo,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/book',
     name: 'book',
-    component: App.components.OrderBook
-  },
-  {
-    path: '/bookDel',
-    name: 'bookDel',
-    component: App.components.OrderBookDelete
+    component: App.components.OrderBook,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/payList',
     name: 'payList',
-    component: App.components.PayList
+    component: App.components.PayList,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/AliPay',
+    name: 'AliPay',
+    component: App.components.PayZhifubao,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/location',
     name: 'location',
-    component: App.components.Location
+    component: App.components.Location,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/locationForm',
     name: 'locationForm',
-    component: App.components.LocationForm
+    component: App.components.LocationForm,
+    meta: {
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/signIn',

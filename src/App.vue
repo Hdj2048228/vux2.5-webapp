@@ -18,7 +18,8 @@
   import PayList from '@/page/PayList';
   import OrderBook from '@/page/OrderBook';
   import OrderBooks from '@/page/OrderBooks';
-  import OrderBookDelete from '@/page/OrderBookDelete';
+  import OrderBookInfo from '@/page/OrderBookInfo';
+  import PayZhifubao from '@/page/PayZhifubao';
   import Location from '@/page/Location';
   import LocationForm from '@/page/LocationForm';
   import SignIn from '@/page/signIn';
@@ -36,7 +37,8 @@
       PayList,
       OrderBook,
       OrderBooks,
-      OrderBookDelete,
+      OrderBookInfo,
+      PayZhifubao,
       Location,
       LocationForm,
       SignIn,
@@ -150,6 +152,13 @@
     -webkit-transform: translate(-50%, 0) !important;
     -moz-transform: translate(-50%, 0) !important;
     -ms-transform: translate(-50%, 0) !important;
+    transform: translate(-50%, 0) !important;
+  }
+  // 遮罩
+  .weui-mask{
+    width: 414px !important;
+    left: 50% !important;
+    -webkit-transform: translate(-50%, 0) !important;
     transform: translate(-50%, 0) !important;
   }
 

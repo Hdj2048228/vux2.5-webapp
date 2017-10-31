@@ -12,7 +12,7 @@
           @on-item-click="onItemClick(item.id)"
           :key="index">
       <a href="javascript:;" class="weui-grid" style="width: 50%;">
-        <img class="grid-pic" :src="item.src">
+        <img class="grid-pic" :src="item.pic">
       </a>
       <a href="javascript:;" class="weui-grid" style="width: 50%;">
         <div class="grid-padding">
@@ -29,13 +29,11 @@
     </grid>
 
     <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
-                   :close-on-clicking-menu="true">
+      <actionsheet show-cancel v-model="menusFlag" :menus="menus"
+                   @on-click-menu="MenusClose" :close-on-clicking-menu="true">
       </actionsheet>
     </div>
+
     <div transfer-dom>
       <confirm v-model="confirmFlag" @on-confirm="confirmDel" @on-cancel="cancelDel">
         <p style="text-align:center;">确定删除吗？</p>
@@ -76,69 +74,46 @@
         delIndex: -1,
         item: null,
         itemIndex: 0,
-        confirmFlag: false,
-        menusFlag: false
+        confirmFlag: false
       }
     },
     computed: {
+      ...mapState(['menus']),
       ...mapGetters([
         'common_goods_list',
-        'common_goods_money',
-        'common_menus'
-      ])
+        'common_goods_money'
+      ]),
+      menusFlag: {
+        get(){
+          return this.$store.state.menusFlag;
+        },
+        set(newValue){
+          return this.$store.state.menusFlag = newValue;
+        }
+      }
     },
     created(){
-      this.$store.dispatch('cartGoodsList');
+      if (typeof this.$route.query.act !== 'undefined' && typeof this.$route.query.id !== 'undefined') {
+        if (this.$route.query.act === 'orderNumber' && this.$route.query.orderNumber.length === 13) {
+          console.log(1212,this.$route.query.orderNumber);
+          this.$store.dispatch('orderFormReBuy',{
+            orderId:this.$route.query.orderNumber
+          });
+        }
+      }else{
+        this.$store.dispatch('cartGoodsList');
+      }
     },
     mounted(){
+      
     },
     methods: {
-      /**
-       * 更多菜单
-       **/
-      onMenusClose (key, value) {
-        switch (key){
-          case "menu1":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'home'
-            });
-            break;
-          case "menu2":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'cart'
-            });
-            break;
-          case "menu3":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'user'
-            });
-            break;
-          case "menu4":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'books',
-              query:{
-                act:'all'
-              }
-            });
-            break;
-          case "menu5":
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'location'
-            });
-            break;
-        }
-      },
-
+      ...mapMutations(['MenusClose']),
       /**
        * 提交订单
        */
       onSubmit(){
-        if(this.common_goods_list.length < 1){
+        if (this.common_goods_list.length < 1) {
           this.$vux.toast.text('请选择商品！');
           this.$router.push('home');
           return;
@@ -152,7 +127,7 @@
           this.showMenus = false;
           this.$router.push({
             name: 'book',
-            query: {src: 'cart'}
+            query: {act: 'cart'}
           });
         }, 1000);
       },
@@ -164,18 +139,18 @@
        * @param $event
        */
       addNumber(item, index, $event){
-        if (item.id !== undefined && item.id.length === 32) {
+        if (item.id !== 'undefined' && item.id.length === 32) {
           item.num++;
           this.$store.dispatch('goodsAdd', item.id);
         }
       },
       removeNumber(item, index, $event){
-        if (item.id !== undefined && item.id.length === 32) {
+        if (item.id !== 'undefined' && item.id.length === 32) {
           if (--item.num < 1) {
             this.confirmFlag = true;  // 删除对话框
             this.delIndex = index;    // 删除索引
             this.item = item;         // 删除项
-          }else{
+          } else {
             this.$store.dispatch('goodsRemove', item);
           }
         }
