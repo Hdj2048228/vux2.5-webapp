@@ -74,7 +74,8 @@
         delIndex: -1,
         item: null,
         itemIndex: 0,
-        confirmFlag: false
+        confirmFlag: false,
+        refresh: true
       }
     },
     computed: {
@@ -93,19 +94,19 @@
       }
     },
     created(){
-      if (typeof this.$route.query.act !== 'undefined' && typeof this.$route.query.id !== 'undefined') {
-        if (this.$route.query.act === 'orderNumber' && this.$route.query.orderNumber.length === 13) {
-          console.log(1212,this.$route.query.orderNumber);
-          this.$store.dispatch('orderFormReBuy',{
-            orderId:this.$route.query.orderNumber
+      if (this.$route.query.act !== 'undefined') {
+        if (this.$route.query.act === 'books') {
+          this.$router.replace({
+            name: 'cart',
+            query: {}
           });
+          this.$router.go(0);
         }
-      }else{
-        this.$store.dispatch('cartGoodsList');
       }
+      this.$store.dispatch('cartGoodsList');
     },
     mounted(){
-      
+
     },
     methods: {
       ...mapMutations(['MenusClose']),
@@ -122,14 +123,15 @@
         this.$vux.loading.show({
           text: '生成订单...'
         });
+
         setTimeout(() => {
           this.$vux.loading.hide();
           this.showMenus = false;
           this.$router.push({
-            name: 'book',
+            name: 'cart',
             query: {act: 'cart'}
           });
-        }, 1000);
+        }, 500);
       },
 
       /**

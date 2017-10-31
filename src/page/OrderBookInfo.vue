@@ -7,7 +7,7 @@
               @on-click-more="menusFlag = true">
     </x-header>
 
-    <group class="status" v-for="(item,index) in common_order_FormInfo" :key="index" v-if="">
+    <group class="status" v-for="(item,index) in common_order_FormInfo" :key="index">
       <cell title="订单状态" :value="item.payStatus" :border-intent="false"></cell>
       <cell title="订单编号" :value="item.orderNum"></cell>
       <cell title="订单时间" :value="item.createDate"></cell>
@@ -46,13 +46,19 @@
     </group>
 
     <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="menus"
-                   @on-click-menu="MenusClose"
-                   :close-on-clicking-menu="true">
+      <actionsheet show-cancel v-model="menusFlag" :menus="menus"
+                   @on-click-menu="MenusClose" :close-on-clicking-menu="true">
       </actionsheet>
     </div>
+
+    <tabbar v-for="(item,index) in common_order_FormInfo" :key="index" v-if="item.payStatus==='待支付'">
+      <tabbar-item selected>
+        <span slot="label">合计：{{item.salePrice | currency}}</span>
+      </tabbar-item>
+      <tabbar-item @on-item-click="onSubmit">
+        <span slot="label">提交订单</span>
+      </tabbar-item>
+    </tabbar>
 
   </view-box>
 </template>
@@ -82,7 +88,10 @@
     computed: {
       ...mapState(['menus']),
       ...mapGetters([
-        'common_order_FormInfo'
+        'common_order_FormInfo',
+        'common_order_FormNumber'
+//        'common_goods_money'
+
       ]),
       menusFlag: {
         get(){
@@ -115,6 +124,40 @@
           totalPrice: 0,
           orderCartList: []
         };
+
+        this.common_order_FormInfo.forEach(item => {
+          data.addrId = item.addrId;
+          data.logisticsPrice = this.logisticsPrice;
+          data.price = item.salePrice;
+          data.totalPrice = item.salePrice;
+          data.orderCartList.push({
+            goodsId: item.id,
+            num: item.number
+          });
+        });
+
+        if (data.orderCartList.length > 0 && data.totalPrice > 0) {
+
+          this.$store.dispatch('orderFormSave', data); // 提交到服务器
+
+          this.$vux.toast.show({
+            text: '提交成功！'
+          });
+
+          setTimeout(() => {
+            this.$vux.toast.hide();
+            this.menusFlag = false;
+            this.$router.push({
+              name: 'payList',
+              query: {
+                orderId: this.common_order_FormNumber
+              }
+            });
+          }, 500);
+        } else {
+          this.$vux.toast.text('请选择商品！');
+          this.$router.push('home');
+        }
       }
     }
   }

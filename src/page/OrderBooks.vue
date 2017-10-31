@@ -14,17 +14,17 @@
       <tab-item @on-item-click="onTab('finish')" :selected="isAct==='finish'">已完成</tab-item>
     </tab>
 
-    <div class="formWrap" v-for="(item,index) in common_order_FormList">
+    <div class="formWrap" v-for="(item,index) in common_order_FormList" :key="index">
       <form-preview :header-value="item.totalPrice | currency"
                     :header-label="'付款金额'"
                     :body-items="item.goodsList">
       </form-preview>
 
       <Tab :line-width="1">
-        <TabItem v-if="isAct==='all'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')">{{ el.text }}</TabItem>
-        <TabItem v-if="isAct==='pay'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')">{{ el.text }}</TabItem>
-        <TabItem v-if="isAct==='wait'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')">{{ el.text }}</TabItem>
-        <TabItem v-if="isAct==='finish'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')">{{ el.text }}</TabItem>
+        <TabItem v-if="isAct==='all'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')" :key="index">{{ el.text }}</TabItem>
+        <TabItem v-if="isAct==='pay'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')" :key="index">{{ el.text }}</TabItem>
+        <TabItem v-if="isAct==='wait'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')" :key="index">{{ el.text }}</TabItem>
+        <TabItem v-if="isAct==='finish'" v-for="(el,index) in item.btnMeun" @on-item-click="onNav(item,el,'del')" :key="index">{{ el.text }}</TabItem>
 
         <TabItem v-if="isAct==='pay'" @on-item-click="onNav(item,{link:'/payList'},'payment')">去支付</TabItem>
         <TabItem v-if="isAct==='wait'" @on-item-click="onNav(item,{link:'/books'},'getGoods')">确认收货</TabItem>
@@ -234,10 +234,15 @@
 
         } else if(el.link ==='/cart' && flag === 'reBuy'){
           // 再次购买
+
+          this.$store.dispatch('orderFormReBuy',{
+            orderId:item.id
+          });
+
           this.$router.push({
             name: 'cart',
             query: {
-              orderNumber: 'RY17101201492',
+              act: 'books',
             }
           });
 

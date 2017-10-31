@@ -55,6 +55,7 @@ const state = {
   orderFormInfo: [],
   orderFormNumber: 0,
   orderFormConfirm: 0,
+  orderFormReBuy: 0,
   payment: 0,
   paymentData: 0,
 };
@@ -283,14 +284,7 @@ const actions = {
    */
   orderFormReBuy({commit}, data){
     api.orderFormReBuy(data, payload => {
-      let money = 0;
-      payload.forEach(item => {
-        if (item.price >= 1 && item.num >= 1) {
-          money += item.price * item.num;
-        }
-      });
-      commit(types.Conn_Goods_Money, money);
-      commit(types.Conn_Goods_List, payload);
+      commit(types.Conn_Goods_ReBuy, payload);
     });
   },
 
@@ -409,7 +403,15 @@ const mutations = {
    */
     [types.Book_Get_Info](state, payload){
     state.orderFormInfo = payload;
-    console.log('获取订单详情', 'Book_Get_Info', payload);
+  },
+
+  /**
+   * 再次购买
+   * @param state
+   * @param payload
+   */
+  [types.Conn_Goods_ReBuy](state, payload){
+    state.orderFormReBuy = payload;
   },
 
   /**

@@ -110,13 +110,16 @@
       }
     },
     created(){
-      if (this.$route.query.act === 'cart') {
-        this.isList = false;
-        this.$store.dispatch('getAddress');      // 默认地址
-        this.$store.dispatch('cartGoodsList');   // 购物车商品列表
+      if (typeof this.$route.query.act !== 'undefined') {
+        if (this.$route.query.act === 'cart') {
+          this.isList = false;
+          this.$store.dispatch('getAddress');      // 默认地址
+          this.$store.dispatch('cartGoodsList');   // 购物车商品列表
+        }
       }
     },
-    mounted(){},
+    mounted(){
+    },
     methods: {
       ...mapMutations(['MenusClose']),
       onSubmit(){

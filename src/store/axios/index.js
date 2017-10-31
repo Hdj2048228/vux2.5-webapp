@@ -478,10 +478,12 @@ function orderFormInfo(data, callback) {
     if (result.data.code === 200) {
       if (typeof result.data.data.goodsList !== undefined) {
         let data = result.data.data.goodsList.map(item => ({
-          "payStatus": result.data.data.payStatus===2 ? '已支付':'未支付',
+          "payStatus": result.data.data.payStatus===2 ? '已支付':'待支付',
           "orderNum": result.data.data.orderNum,
           "createDate": result.data.data.createDate,
           "address": result.data.data.address,
+          "addrId": result.data.data.addrId,
+          "id": result.data.data.id,
           "goodsName": item.goodsName,
           "number": item.num,
           "salePrice": item.salePrice,
@@ -526,26 +528,7 @@ function orderFormReBuy(data, callback) {
     data: data || {}
   }).then(result => {
     if (result.data.code === 200) {
-      callback(result.data);//? 没支付、没收货
-
-      let data = result.data.data;
-      let arr = data.filter(item => {
-        return item.goods !== undefined;
-      }).map(item => ({
-        "id": item.goodsId,
-        "title": item.goods.goodsName,
-        "type": "暂无分类",
-        "price": item.goods.salePrice, // 折后金额
-        "num": item.num,
-        "checked": item.checked,
-        "desc": "暂无简介",
-        //"pic": item.goods.productImg,
-        "pic": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
-        "url": {
-          "path": "/car",
-          "replace": false
-        }
-      }));
+      callback(result.data);//用订单ID生成购物车数量
     }
   }).catch(err => {
     console.log(err);

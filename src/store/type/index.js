@@ -8,6 +8,7 @@
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const Conn_Goods_List = 'Conn_Goods_List';
+export const Conn_Goods_ReBuy = 'Conn_Goods_ReBuy';
 export const Comm_Goods_Count = 'Comm_Goods_Count';
 export const Comm_Goods_Remove = 'Comm_Goods_Remove';
 export const Comm_Goods_Add = 'Comm_Goods_Add';

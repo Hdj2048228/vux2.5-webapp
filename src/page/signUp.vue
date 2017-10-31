@@ -7,17 +7,10 @@
     </x-header>
 
     <group label-width="4.5em" label-margin-right="2em" label-align="right">
-      <x-input type="tel"
-               title="手机号 :"
-               v-model="userName"
-               required
-               is-type="china-mobile"
-               placeholder="请输入手机号..."></x-input>
-      <x-input type="password"
-               title="密<i class='vux-blank-half'></i><i class='vux-blank-half'></i>码 :"
-               v-model="passwd"
-               required
-               placeholder="请输入密码(6位以上)">
+      <x-input type="tel" v-model="userName" required title="手机号 :"
+               is-type="china-mobile" placeholder="请输入手机号..."></x-input>
+      <x-input type="password" title="密<i class='vux-blank-half'></i><i class='vux-blank-half'></i>码 :"
+               v-model="passwd" required placeholder="请输入密码(6位以上)">
       </x-input>
     </group>
 

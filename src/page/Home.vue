@@ -25,12 +25,12 @@
       <group-title>
         <span>商品列表</span>
       </group-title>
-      <grid-item v-for="(item,index) in goods_list" @on-item-click="go('detail',{id:item.id})" :key="index">
+      <grid-item v-for="(item,index) in goods_list" :key="index" @on-item-click="go('detail',{id:item.id})">
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
           <p>价格：{{item.price | currency}}</p>
-          <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
+          <p v-for="(item,i) in goods_list.params" :key="i">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>
     </grid>
