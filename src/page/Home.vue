@@ -1,7 +1,7 @@
 <template>
   <view-box class="home" :bodyPaddingTop="0" bodyPaddingBottom="60px">
 
-    <div class="top-header">
+    <div class="top-header" ref="topHeader">
       <div class="logo">
         <img src="/static/img/logo.png" alt="logo">
       </div>
@@ -12,9 +12,9 @@
         @on-submit="onSubmit"
         ref="search">
       </search>
-      <div class="btn-search" @click="onLogin">登录</div>
+      <div class="btn-search" @click="onLogin" v-if="!$store.state.vue_token">登录</div>
+      <div class="btn-search" @click="onLogout" v-if="$store.state.vue_token">退出</div>
     </div>
-
     <swiper loop auto :list="focus_list" v-model="focus_index" @on-index-change="swiperChange"></swiper>
 
     <marquee :interval="3000">
@@ -98,7 +98,13 @@
           name: 'signUp'
         });
       },
-      onSubmit (params) {
+      onLogout(){
+        this.$store.commit('LOGOUT');
+        this.$router.replace({
+          path: 'signUp'
+        });
+      },
+      onSubmit (key) {
         this.$refs.search.setBlur();
 
         this.$vux.toast.show({
@@ -110,16 +116,14 @@
         this.$router.push({
           name: 'search2',
           query: {
-            params: params
+            key: key
           }
         });
       },
       onFocus () {
-        this.PaddingTop = '44px';
         console.log('on focus')
       },
       onCancel () {
-        this.PaddingTop = '0px';
         console.log('on cancel')
       },
       setFocus(){
@@ -136,6 +140,7 @@
 <style lang="less">
   .home {
     .top-header {
+      height: 44px;
       padding: 0 40px;
       position: relative;
       .logo,

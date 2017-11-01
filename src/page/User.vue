@@ -3,7 +3,7 @@
 
     <x-header title="个人中心">
       <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;"></x-icon>
-      <x-icon slot="right" @click="logout()" type="log-out" style="fill:#fff;"></x-icon>
+      <x-icon slot="right" @click="onLogout()" type="log-out" style="fill:#fff;"></x-icon>
     </x-header>
 
     <card :header="{title:'我的订单'}">
@@ -34,7 +34,7 @@
           <p>积分</p>
         </div>
         <div @click="go('cart')">
-          <span>12</span>
+          <span>{{goods_count}}</span>
           <p>购物车</p>
         </div>
       </div>
@@ -53,10 +53,10 @@
         is-link
         :title="'支付配送'"
         :border-intent="false"
-        :arrow-direction="showContent001 ? 'up' : 'down'"
-        @click.native="showContent001 = !showContent001"></cell>
+        :arrow-direction="showCell ? 'up' : 'down'"
+        @click.native="showCell = !showCell"></cell>
 
-      <template v-if="showContent001">
+      <template v-if="showCell">
         <cell :title="'支付方式'" :value="'在线支付'" :border-intent="false"></cell>
         <cell :title="'快递公司'" :value="'随机'"></cell>
       </template>
@@ -99,20 +99,34 @@
     },
     data () {
       return {
-        showContent001: false
+        showCell: false
       }
     },
     computed: {
       ...mapGetters([
         'common_menus'
-      ])
+      ]),
+      goods_count(){
+        let goodsNumber = 0;
+        this.$store.getters.common_goods_list.forEach(item => {
+          goodsNumber += item.num;
+        });
+        return goodsNumber;
+      }
+    },
+    created(){
+      this.$store.dispatch('cartGoodsList');
     },
     mounted(){
+
     },
     methods: {
-      logout(){
-
-      }
+      onLogout(){
+        this.$store.commit('LOGOUT');
+        this.$router.replace({
+          path: 'signUp'
+        });
+      },
     }
   }
 </script>

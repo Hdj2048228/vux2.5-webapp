@@ -9,29 +9,30 @@ Vue.use(vueJsonp);
 
 // 接口服务器地址
 // const baseUrl = 'http://192.168.50.230:8883/api';
-const baseUrl = 'http://192.168.50.155:8881/api';
-// const baseUrl = 'http://i.0t.com.cn';
+// const baseUrl = 'http://192.168.50.155:8881/api';
+const baseUrl = 'http://i.0t.com.cn';
 
 // 图片服务器地址
-const imgSrc = 'http://192.168.50.216/';
-// const imgSrc = 'http://183.134.74.90/';
+// const imgSrc = 'http://192.168.50.216/';
+const imgSrc = 'http://183.134.74.90/';
 
 /***********************登录相关********************************/
-const getCodeApi = baseUrl + '/v1/sys/';
-const signUp_api = baseUrl + '/v1/user/login';
-const signIn_api = baseUrl + '/v1/mall/user/register';
+const getCodeApi = baseUrl + '/v1/sys/'; // 验证码
+const signUp_api = baseUrl + '/v1/user/login'; // 登录
+const signIn_api = baseUrl + '/v1/mall/user/register'; // 注册
 
 /***********************获取产品列表********************************/
-const home_get_goods = baseUrl + '/a/shop/goods/list';
-const home_get_carouse = baseUrl + '/a/shop/carousel/getCarouselList';
-const get_detail = baseUrl + '/a/shop/goods/getInfo';
+const home_get_goods = baseUrl + '/a/shop/goods/list'; //
+const home_get_carouse = baseUrl + '/a/shop/carousel/getCarouselList'; // 焦点图
+const get_detail = baseUrl + '/a/shop/goods/getInfo'; // 商品详情
+const get_search = baseUrl + '/a/shop/goods/searchList'; // 搜索
 
 /***********************购物车********************************/
 const goods_get_number = baseUrl + '/a/shop/cart/getCartNum'; // 获取购物车总数量
 const cart_goods_list = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
 const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
 const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
-const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked';
+const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked'; // 多选
 
 /***********************收货地址********************************/
 const address_list = baseUrl + '/a/shop/receive/address/list'; // 收货地址列表
@@ -59,15 +60,11 @@ const payment_api = baseUrl + '/1/WAP/pay';
 function getHomeFocus(callback) {
   axios.get(home_get_carouse).then(res => {
     if (res.data.code === 200) {
-      let data = res.data.data.filter(item => {
-        // return item.addata === null && item.picInfo[0];
-        return item;
-      }).map(item => {
+      let data = res.data.data.map(item => {
         return {
           title: item.name,
-          url: 'detail?id=' + item.id,
-          // img: this.imgSrc + item.pathInfo,
-          img: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'//??上线改掉
+          url: 'detail?id=' + item.url,
+          img: item.pathInfo.indexOf("http") === -1 ? (imgSrc + item.pathInfo) : item.pathInfo
         }
       });
       callback(data);
@@ -102,16 +99,12 @@ function getHomeMarquee() {
 function getHomeGoods(callback) {
   axios.get(home_get_goods).then(res => {
     if (res.data.code === 200) {
-      let data = res.data.data.filter(item => {
-        // return item.addata === null && item.picInfo[0];
-        return item;
-      }).map(item => {
+      let data = res.data.data.map(item => {
         return {
           id: item.id,
           title: item.goodsName,
           price: item.salePrice,
-          // pic: item.productImg,
-          pic: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'//??上线改掉
+          pic: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
         }
       });
       callback(data);
@@ -134,14 +127,16 @@ function getDetailGoods(id, callback) {
   }).then(res => {
     if (res.data.code === 200) {
       let item = res.data.data;
-      callback({
+      let data = {
         title: item.goodsName,
         desc: item.goodsDesc !== undefined ? item.goodsDesc : '暂无简介',
         info: item.goodsInfo,
         price: item.salePrice,
-        pics: [{url: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'}, {url: 'http://183.134.74.90/group1/M00/00/04/wKgBCVljaDyAbZdsAAITmoNI0yE716.png'}]
-        //pics: item.imgList.map(item => item.url.indexOf('http') < 1 ? (imgSrc + item.url) : item.url ) /*补全http*/
-      });
+        pics: item.imgList.map(el => ({
+          url: el.url.indexOf('http') === -1 ? (imgSrc + el.url) : el.url
+        }))
+      };
+      callback(data);
     }
   }).catch(err => {
     console.log(err);
@@ -226,6 +221,7 @@ function goodsAdd(id, callback) {
 
 /**
  * 008 减少商品
+ * @param item
  * @param callback
  */
 function goodsRemove(item, callback) {
@@ -376,13 +372,18 @@ function deleteAddress(id, callback) {
  * @param callback
  */
 function orderFormSave(data, callback) {
-  axios({
-    url: orderForm_save,
-    method: 'post',
-    params: {},
-    data: data || {}
-  }).then(result => {
-    callback(result.data.data);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: orderForm_save,
+      method: 'post',
+      params: {},
+      data: data || {}
+    }).then(result => {
+      resolve(result.data.data);
+      callback(result.data.data);
+    }).catch(err=>{
+      reject(err);
+    });
   });
 }
 
@@ -478,7 +479,7 @@ function orderFormInfo(data, callback) {
     if (result.data.code === 200) {
       if (typeof result.data.data.goodsList !== undefined) {
         let data = result.data.data.goodsList.map(item => ({
-          "payStatus": result.data.data.payStatus===2 ? '已支付':'待支付',
+          "payStatus": result.data.data.payStatus === 2 ? '已支付' : '待支付',
           "orderNum": result.data.data.orderNum,
           "createDate": result.data.data.createDate,
           "address": result.data.data.address,
@@ -554,9 +555,35 @@ function orderFormConfirm(data, callback) {
 }
 
 /**
+ * 022 搜索
+ * @param data
+ * @param callback
+ */
+function getSearch(data, callback) {
+  axios({
+    url: get_search,
+    method: 'post',
+    params: {},
+    data: data || {}
+  }).then(result => {
+    if (result.data.code === 200) {
+      let data = result.data.data.map(item => ({
+        id: item.id,
+        title: item.goodsName,
+        pic: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg,
+        price: item.salePrice,
+        params: []
+      }));
+      callback(data);
+    }
+  }).catch(err => {
+    console.log(err);
+  });
+}
+
+/**
  * 样板函数
  * @param uid
- * @param callback
  * @returns {Promise}
  */
 function axiosDemo(uid) {
@@ -595,5 +622,6 @@ export {
   orderFormDelete,
   orderFormReBuy,
   onPayment,
-  orderFormConfirm
+  orderFormConfirm,
+  getSearch
 }

@@ -8,9 +8,9 @@ import * as types from '../type/';
 // 数据源
 const state = {
   swiper_data: {
-    title: '',
-    desc: '暂无简介',
-    info: '暂无简介',
+    /*title: '',
+    desc: '',
+    info: '',
     price: 0,
     params: [{
       label: '',
@@ -18,7 +18,7 @@ const state = {
     }],
     pics: [{
       url: 'https://static.vux.li/demo/1.jpg'
-    }]
+    }]*/
   }
 };
 

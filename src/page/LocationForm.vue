@@ -5,6 +5,7 @@
               @on-click-more="menusFlag = true">
     </x-header>
 
+    <!--添加地址-->
     <group class="vux-group" label-width="4.5em" label-margin-right="2em" label-align="right" v-if="!this.addressId">
       <x-input title="收货人" v-model="address.name" placeholder="请输入姓名"></x-input>
       <x-input title="手机号" v-model="address.phone" placeholder="请输入手机号"></x-input>
@@ -15,30 +16,35 @@
                   placeholder="街道/门牌号"></x-textarea>
     </group>
 
+    <!--修改地址-->
     <group class="vux-group" label-width="4.5em" label-margin-right="2em" label-align="right" v-else>
+
       <x-input title="收货人" v-model="common_detail_address.name" placeholder="请输入姓名"></x-input>
+
       <x-input title="手机号" v-model="common_detail_address.phone" placeholder="请输入手机号"></x-input>
 
       <x-address title="省市区" v-model="common_detail_address.addrName" :list="addressData" raw-value
                  value-text-align="left"></x-address>
+
       <x-textarea title="详细地址" v-model="common_detail_address.addrDetail" :show-counter="false" :rows="3"
                   placeholder="街道/门牌号"></x-textarea>
     </group>
 
     <box gap="10px 10px">
-      <x-button plain action-type="button" style="background: #fff;border-color:#ccc" @click.native="onSave">修改
-      </x-button>
+      <x-button plain action-type="button" style="background: #fff;border-color:#ccc"
+                @click.native="onSave" v-if="gTitle==='修改地址'">修改</x-button>
+
+      <x-button plain action-type="button" style="background: #fff;border-color:#ccc"
+                @click.native="onSave" v-if="gTitle==='添加地址'">添加</x-button>
+
       <x-button plain action-type="button" style="background: #fff;border-color:#ccc" v-if="gTitle==='修改地址'"
                 @click.native="deleteAddress">删除
       </x-button>
     </box>
 
     <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="common_menus"
-                   @on-click-menu="onMenusClose"
-                   :close-on-clicking-menu="true">
+      <actionsheet show-cancel v-model="menusFlag" :menus="menus"
+                   @on-click-menu="MenusClose" :close-on-clicking-menu="true">
       </actionsheet>
     </div>
 
@@ -74,9 +80,11 @@
       }
     },
     computed: {
+      ...mapState([
+        'menus'
+      ]),
       ...mapGetters([
-        'common_detail_address',
-        'common_menus',
+        'common_detail_address'
       ])
     },
     created(){
@@ -97,16 +105,17 @@
       }
     },
     methods: {
+      ...mapMutations(['MenusClose']),
       onSave(){
         if (this.gTitle === "添加地址") {
-          console.log('添加地址');
-          this.$store.dispatch('setAddress', {
+          console.log('添加地址',Value2nameFilter(this.address.addrName, ChinaAddressData).split(' ').join('/'));
+          /*this.$store.dispatch('setAddress', {
             contacts: this.address.name,
             phone: this.address.phone,
-            addrName: Value2nameFilter(this.address.addrName, ChinaAddressData),//? 编号对应城市
+            addrName: Value2nameFilter(this.address.addrName, ChinaAddressData).split(' ').join('/'),//? 编号对应城市
             addrDetail: this.address.addrDetail
           });
-
+*/
           this.$vux.toast.show({
             text: '保存成功！'
           });

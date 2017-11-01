@@ -3,7 +3,7 @@
 
     <div class="top-header">
       <div class="logo" @click="go('home')">
-        <img src="static/img/logo.png" alt="logo">
+        <img src="/static/img/logo.png" alt="logo">
       </div>
       <search
         v-model="searchValue"
@@ -13,19 +13,20 @@
         ref="search">
         <!--一直报错?页面name不能为search-->
       </search>
-      <div class="btn-search" @click="onLogin">登录</div>
+      <div class="btn-search" @click="onLogin" v-if="!$store.state.vue_token">登录</div>
+      <div class="btn-search" @click="onLogout" v-if="$store.state.vue_token">退出</div>
     </div>
 
     <grid :rows="2">
       <group-title>
         <span>搜索结果</span>
       </group-title>
-      <grid-item v-for="(item,index) in goods_list" @on-item-click="go('detail',{id:item.id})" :key="index">
+      <grid-item v-for="(item,index) in searchData" @on-item-click="go('detail',{id:item.id})" :key="index">
         <img class="grid-pic" :src="item.pic">
         <div class="grid-padding">
           <p>{{item.title}}</p>
           <p>价格：{{item.price}}</p>
-          <p v-for="item in goods_list.params">{{item.label}} {{item.value}}</p>
+          <p v-for="item in searchData.params">{{item.label}} {{item.value}}</p>
         </div>
       </grid-item>
     </grid>
@@ -52,13 +53,29 @@
       }
     },
     computed: {
-      ...mapGetters([
-        'goods_list',
-        'common_menus'
-      ])
+      searchData(){
+        return this.$store.state.Search.searchData;
+      }
+    },
+    watch:{
+      '$route':function (to,from) {
+        if (typeof this.$route.query.key !== 'undefined') {
+          if (this.$route.query.key.length > 0) {
+            this.$store.dispatch('getSearch',{
+              goodsName:this.$route.query.key.trim()
+            });
+          }
+        }
+      }
     },
     created(){
-      this.$store.dispatch('home_goods');
+      if (typeof this.$route.query.key !== 'undefined') {
+        if (this.$route.query.key.length > 0) {
+          this.$store.dispatch('getSearch',{
+            goodsName:this.$route.query.key.trim()
+          });
+        }
+      }
     },
     mounted(){
 
@@ -69,7 +86,13 @@
           name: 'signUp'
         });
       },
-      onSubmit (params) {
+      onLogout(){
+        this.$store.commit('LOGOUT');
+        this.$router.replace({
+          path: 'signUp'
+        });
+      },
+      onSubmit (key) {
         this.$refs.search.setBlur();
 
         this.$vux.toast.show({
@@ -81,11 +104,9 @@
         this.$router.push({
           name: 'search2',
           query: {
-            params: params
+            key: key
           }
         });
-
-        console.log('search', params);
       },
       onFocus () {
         this.PaddingTop = '44px';

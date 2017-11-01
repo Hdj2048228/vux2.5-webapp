@@ -4,6 +4,7 @@
  */
 
 /*
+
  Vuex 并不限制你的代码结构。但是，它规定了一些需要遵守的规则：
 
  1.应用层级的状态应该集中到单个 store 对象中。
@@ -17,18 +18,18 @@
 
  */
 
-import Common from './modules/common';
 import Home from './modules/home';
-import Cart from './modules/cart';
+import Search from './modules/search';
 import Detail from './modules/detail';
-import Sort from './modules/sort';
-import User from './modules/user';
+import Cart from './modules/cart';
+import OrderForm from './modules/orderForm';
+import Location from './modules/location';
 
 export default {
-  Common,
   Home,
-  Cart,
+  Search,
   Detail,
-  Sort,
-  User
+  Cart,
+  Location,
+  OrderForm
 };

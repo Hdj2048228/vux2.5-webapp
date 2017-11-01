@@ -100,7 +100,7 @@
             name: 'cart',
             query: {}
           });
-          this.$router.go(0);
+          window.location.reload();
         }
       }
       this.$store.dispatch('cartGoodsList');
@@ -126,12 +126,11 @@
 
         setTimeout(() => {
           this.$vux.loading.hide();
-          this.showMenus = false;
           this.$router.push({
-            name: 'cart',
+            name: 'book',
             query: {act: 'cart'}
           });
-        }, 500);
+        }, 800);
       },
 
       /**

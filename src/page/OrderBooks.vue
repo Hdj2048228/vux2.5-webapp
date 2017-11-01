@@ -187,10 +187,10 @@
         this.$router.replace({
           name: 'books',
           query: {
-            act: this.isAct
+            act: this.isAct,
+            flag:'del'
           }
         });
-        this.$router.go(0);
       },
       cancelDel(){// 取消删除
         this.$router.replace({
@@ -234,7 +234,6 @@
 
         } else if(el.link ==='/cart' && flag === 'reBuy'){
           // 再次购买
-
           this.$store.dispatch('orderFormReBuy',{
             orderId:item.id
           });
@@ -242,7 +241,7 @@
           this.$router.push({
             name: 'cart',
             query: {
-              act: 'books',
+              act: 'books'
             }
           });
 
@@ -260,10 +259,10 @@
         this.$router.replace({
           name: 'books',
           query: {
-            act: this.isAct
+            act: this.isAct,
+            flag: 'getGoods'
           }
         });
-        //this.$router.go(0);
       },
       cancelGet(){  // 取消确认收货
         this.$router.replace({

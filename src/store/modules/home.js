@@ -7,24 +7,28 @@ import * as types from '../type/';
 
 // 数据源
 const state = {
-  focus_list: [{
-    title: '智能商城',
-    url: 'javascript:;',
-    img: 'https://static.vux.li/demo/1.jpg'
-  }],
+  focus_list: [
+    /*{
+      title: '',
+      url: 'javascript:;',
+      img: 'https://static.vux.li/demo/1.jpg'
+    }*/
+  ],
   marquee_list: [
     '智能商城'
   ],
-  goods_list: [{
-    title: '智能商城',
-    desc: '暂无简介',
-    src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
-    params: [],
-    url: {
-      path: '/car',
-      replace: false
-    }
-  }]
+  goods_list: [
+    /*{
+      title: '',
+      desc: '',
+      src: 'http://placeholder.qiniudn.com/60x60/3cc51f/ffffff',
+      params: [],
+      url: {
+        path: '/car',
+        replace: false
+      }
+    }*/
+  ]
 };
 
 const getters = {

@@ -1,10 +1,8 @@
 <template>
   <view-box class="PayList" bodyPaddingBottom="0" bodyPaddingTop="0">
 
-    <x-header title="支付方式"
-              :left-options="{showBack:true,backText:'返回'}"
-              :right-options="{showMore: true}"
-              @on-click-more="menusFlag = true">
+    <x-header title="支付方式" :left-options="{showBack:true,backText:'返回'}"
+              :right-options="{showMore: true}" @on-click-more="menusFlag = true">
     </x-header>
 
     <panel :list="[]" :type="'1'"></panel>
@@ -30,11 +28,8 @@
       <div class="weui-panel__ft"></div>
     </div>
     <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="menus"
-                   @on-click-menu="MenusClose"
-                   :close-on-clicking-menu="true">
+      <actionsheet show-cancel v-model="menusFlag" :menus="menus"
+                   @on-click-menu="MenusClose" :close-on-clicking-menu="true">
       </actionsheet>
     </div>
 
@@ -56,7 +51,7 @@
     },
     data () {
       return {
-        orderNumber: 0,
+        orderId: 0,
         totalMoney: 0,
       }
     },
@@ -75,9 +70,9 @@
       }
     },
     created(){
-      if (typeof this.$route.query.orderNumber !== 'undefined') {
-        if (this.$route.query.orderNumber.length === 13) {
-          this.orderNumber = this.$route.query.orderNumber;
+      if (typeof this.$route.query.orderId !== 'undefined') {
+        if (this.$route.query.orderId.length === 13) {
+          this.orderId = this.$route.query.orderId;
           this.totalMoney = this.$route.query.totalMoney;
         }
       }
@@ -88,9 +83,9 @@
     methods: {
       ...mapMutations(['MenusClose']),
       alipay ($event) {
-        if (this.orderNumber.length === 13) {
+        if (this.orderId.length === 13) {
           this.$store.dispatch('onPayment', {
-            orderNum: this.orderNumber
+            orderNum: this.orderId
           }).then(result => {
             this.$router.push({
               name: 'AliPay',

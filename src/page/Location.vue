@@ -2,7 +2,7 @@
   <view-box class="location" bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <x-header title="设置地址" :left-options="{showBack:true,backText:'返回'}">
-      <x-icon slot="right" @click="go('locationForm',{act:'add'})" type="plus" style="fill:#fff;"></x-icon>
+      <x-icon slot="right" @click="createAddress" type="plus" style="fill:#fff;"></x-icon>
     </x-header>
 
     <group v-for="(item,index) in common_address" :key="index" v-if="item.phone">
@@ -59,6 +59,12 @@
          item.isUsed = !item.isUsed;
          }, 1000);
          */
+      },
+      createAddress(){
+        this.$router.replace({
+          name:'locationForm',
+          query:{act:'add'}
+        })
       }
     }
   }

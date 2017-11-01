@@ -2,7 +2,6 @@
   <view-box class="signIn" bodyPaddingBottom="50px" bodyPaddingTop="0">
 
     <x-header title="个人中心">
-      <!--<div slot="overwrite-left" class="left-arrow" @click="go('user')"></div>-->
       <x-icon slot="right" @click="go('signUp')" type="log-in" style="fill:#fff;"></x-icon>
     </x-header>
 
@@ -27,51 +26,69 @@
 
 <script>
   import {
-    ViewBox,XHeader,Box,XInput,XButton,Grid,GridItem,GroupTitle,Group,Confirm,
-    TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
+    ViewBox, XHeader, Box, XInput, XButton, Group
   } from 'vux';
   import {
-    mapState,mapMutations,mapGetters,mapActions
+    mapState, mapMutations, mapGetters, mapActions
   } from "vuex";
 
   export default {
     name: 'signIn',
     components: {
-      ViewBox,XHeader,Box,XInput,XButton,Grid,GridItem,GroupTitle,Group,Confirm,
-      TransferDom,Actionsheet,InlineXNumber,Tabbar,TabbarItem
+      ViewBox, XHeader, Box, XInput, XButton, Group
     },
     data(){
-      return{
-        mobile:'13811901660',
-        password:'123456',
-        userName:'高峰',
-        code:'12345',
-        menusFlag: false
+      return {
+        userName: '',
+        mobile: '',
+        password: '',
+        code: ''
       }
-    },
-    computed:{
-
-    },
-    created(){
-
-    },
-    mounted(){
-
     },
     methods: {
       register(){
-        if (this.userName) {
+        if (this.userName === "") {
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'用户名<br>不能为空！'
+          });
+          return;
+        }
+        if (this.mobile === "") {
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'手机号<br>不能为空！'
+          });
+          return;
+        }
+        if (this.password === "") {
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'密码<br>不能为空！'
+          });
+          return;
+        }
           this.$http.post('http://192.168.50.230:8883/api/v1/mall/user/register', {
-            userName:this.userName,
-            password:this.password,
-            mobile:this.mobile
-          }).then(res => {
-            if (res.data.code === 200) {
-              let data = JSON.parse(res.data.data);
-              console.log(121212,res.data);
+            userName: this.userName,
+            password: this.password,
+            mobile: this.mobile
+          }).then(result => {
+            if (result.data.code === 200) {
+              this.$vux.toast.show({
+                text:'注册成功！' //'登录账号：<br>'+result.data.data.mobile
+              });
+            }else if(result.data.code === 505){
+              this.$vux.toast.show({
+                type:'cancel',
+                text:result.data.data.password
+              });
+            }else if(result.data.code === 500){
+              this.$vux.toast.show({
+                type:'cancel',
+                text:result.data.message
+              });
             }
           });
-        }
       }
     }
   }
@@ -80,7 +97,7 @@
 <style lang="less">
   .signIn {
     .weui-input,
-    .weui-label{
+    .weui-label {
       font-size: 14px;
     }
   }

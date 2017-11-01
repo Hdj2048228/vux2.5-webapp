@@ -1,25 +1,24 @@
 <template>
   <view-box class="detail" bodyPaddingBottom="60px" bodyPaddingTop="0">
 
-    <x-header title="订单详情"
-              :left-options="{showBack:true,backText:'返回'}"
-              :right-options="{showMore: true}"
-              @on-click-more="menusFlag = true">
+    <x-header title="订单详情" :left-options="{showBack:true,backText:'返回'}"
+              :right-options="{showMore: true}" @on-click-more="menusFlag = true">
     </x-header>
 
-    <swiper :aspect-ratio="272/375" v-model="swiper_index" @on-index-change="swiperChange">
+    <swiper v-model="swiper_index" v-if="typeof detail_swiper.pics!=='undefined'"
+            :aspect-ratio="272/375" @on-index-change="swiperChange">
       <swiper-item class="swiper-img" v-for="(item, index) in detail_swiper.pics" :key="index">
         <img :src="item.url">
       </swiper-item>
     </swiper>
 
-    <group class="vux-group">
+    <group class="vux-group" v-if="typeof detail_swiper.title!=='undefined'">
       <cell :title="detail_swiper.title" :inlineDesc="detail_swiper.desc | subString(22)"
             :value="detail_swiper.price | currency"></cell>
       <cell-form-preview :list="detail_swiper.params"></cell-form-preview>
     </group>
 
-    <card :header="{title:'商品详情'}">
+    <card :header="{title:'商品详情'}" v-if="typeof detail_swiper.info!=='undefined'">
       <div slot="content" class="card-padding" v-html="detail_swiper.info"></div>
     </card>
 
@@ -35,11 +34,8 @@
     </tabbar>
 
     <div transfer-dom>
-      <actionsheet show-cancel
-                   v-model="menusFlag"
-                   :menus="menus"
-                   @on-click-menu="MenusClose"
-                   :close-on-clicking-menu="true">
+      <actionsheet show-cancel v-model="menusFlag" :menus="menus"
+                   @on-click-menu="MenusClose" :close-on-clicking-menu="true">
       </actionsheet>
     </div>
 
