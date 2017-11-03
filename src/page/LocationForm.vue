@@ -108,21 +108,23 @@
       ...mapMutations(['MenusClose']),
       onSave(){
         if (this.gTitle === "添加地址") {
-          console.log('添加地址',Value2nameFilter(this.address.addrName, ChinaAddressData).split(' ').join('/'));
-          /*this.$store.dispatch('setAddress', {
+          console.log('添加地址');
+          this.$store.dispatch('setAddress', {
             contacts: this.address.name,
             phone: this.address.phone,
             addrName: Value2nameFilter(this.address.addrName, ChinaAddressData).split(' ').join('/'),//? 编号对应城市
             addrDetail: this.address.addrDetail
+          }).then( res =>{
+            if(res.code === 200){
+              this.$vux.toast.show({
+                text: res.data
+              });
+              setTimeout(() => {
+                this.$vux.toast.hide();
+                this.go('location');
+              }, 500);
+            }
           });
-*/
-          this.$vux.toast.show({
-            text: '保存成功！'
-          });
-          setTimeout(() => {
-            this.$vux.toast.hide();
-            this.go('location');
-          }, 500);
         }
 
         if (this.gTitle === "修改地址") {
@@ -134,19 +136,35 @@
             phone: this.common_detail_address.phone,
             addrName: addrName.split(' ').join('/'),
             addrDetail: this.common_detail_address.addrDetail
+          }).then( res =>{
+            if(res.code === 200){
+              this.$vux.toast.show({
+                text: res.data
+              });
+              setTimeout(() => {
+                this.$vux.toast.hide();
+                this.go('location');
+              }, 500);
+              this.$router.replace({
+                name:'location',
+                query:{flag:'modify'}
+              });
+            }
           });
-
-          this.$vux.toast.show({
-            text: '保存成功！'
-          });
-          setTimeout(() => {
-            this.$vux.toast.hide();
-            this.go('location');
-          }, 500);
         }
       },
       deleteAddress(){
-        this.$store.dispatch('deleteAddress', this.addressId);
+        this.$store.dispatch('deleteAddress', this.addressId).then( res =>{
+          if(res.code === 200){
+            this.$vux.toast.show({
+              text: res.data
+            });
+            this.$router.replace({
+              name:'location',
+              query:{flag:'del'}
+            });
+          }
+        });
       },
       onMenusClose (key,value) {
         /*this.$vux.loading.show({

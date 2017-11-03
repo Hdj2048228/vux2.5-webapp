@@ -58,8 +58,14 @@ const actions = {
    * @param params
    */
   setAddress({commit}, params){
-    api.setAddress(params, result => {
-      console.log('setAddress', result);
+    return new Promise((resolve, reject) => {
+      api.setAddress(params, result => {
+        //console.log('setAddress', result);
+      }).then(data=>{
+        resolve(data);
+      }).catch(err=>{
+        result(err);
+      });
     });
   },
 
@@ -69,8 +75,14 @@ const actions = {
    * @param id
    */
   selectAddress({commit}, id){
-    api.selectAddress(id, result => {
-      console.log('selectAddress', result);
+    return new Promise((resolve, reject) => {
+      api.selectAddress(id, result => {
+        //console.log('selectAddress', result);
+      }).then(res =>{
+        resolve(res);
+      }).catch(err =>{
+        reject(err);
+      })
     });
   },
 
@@ -80,8 +92,14 @@ const actions = {
    * @param data
    */
   updateAddress({commit}, data){
-    api.updateAddress(data, result => {
-      commit(types.User_Update_Address, result);
+    return new Promise((resolve, reject) => {
+      api.updateAddress(data, result => {
+        commit(types.User_Update_Address, result);
+      }).then( data =>{
+        resolve(data);
+      }).catch( err =>{
+        reject(err);
+      });
     });
   },
 
@@ -93,7 +111,7 @@ const actions = {
   detailAddress({commit}, id){
     api.detailAddress(id, result => {
       commit(types.User_Detail_Address, result);
-      console.log('detailAddress', result);
+      //console.log('detailAddress', result);
     });
   },
 
@@ -103,8 +121,14 @@ const actions = {
    * @param id
    */
   deleteAddress({commit}, id){
-    api.deleteAddress(id, result => {
-      console.log('deleteAddress', result);
+    return new Promise((resolve, reject) => {
+      api.deleteAddress(id, result => {
+        //console.log('deleteAddress', result);
+      }).then(data=>{
+        resolve(data);
+      }).catch(err=>{
+        reject(err);
+      });
     });
   },
 };

@@ -183,12 +183,15 @@
       confirmDel(){// 确认删除
         this.$store.dispatch('orderFormDelete', { // 删除订单动作
           orderId: this.$route.query.id
-        });
-        this.$router.replace({
-          name: 'books',
-          query: {
-            act: this.isAct,
-            flag:'del'
+        }).then(data=>{
+          if(data.code===200){
+            this.$router.replace({
+              name: 'books',
+              query: {
+                act: this.isAct,
+                flag:'del'
+              }
+            });
           }
         });
       },
@@ -217,7 +220,7 @@
           this.$router.push({
             name: 'payList',
             query: {
-              orderNumber: item.orderNum,
+              orderId: item.orderNum,
             }
           });
 
@@ -236,6 +239,8 @@
           // 再次购买
           this.$store.dispatch('orderFormReBuy',{
             orderId:item.id
+          }).then(data=>{
+            console.log(11,data);
           });
 
           this.$router.push({

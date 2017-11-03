@@ -4,6 +4,7 @@
 + vux：2.5.6
 + vuex：2.3.1
 + vue-router：2.7.0
++ axios：0.15.3
 
 #### 解决痛点(vux)
 

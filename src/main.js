@@ -111,18 +111,18 @@ Vue.filter('toString', value => {
  * 字符串截取
  */
 Vue.filter('subString', (str, num) => {
-  if(str){
+  if (str) {
     let newStr = str.split('');
     let number = num || 20;
     if (newStr.length < number) {
       return newStr.join('') + '...';
+    } else {
+      let res = '';
+      for (let i = 0; i < number; i++) {
+        res += newStr[i];
+      }
+      return res + '...';
     }
-
-    let res = '';
-    newStr.forEach(item=>{
-      res+=item;
-    });
-    return res + '...';
   }
 });
 

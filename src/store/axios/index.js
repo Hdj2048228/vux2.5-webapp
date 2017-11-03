@@ -10,11 +10,14 @@ Vue.use(vueJsonp);
 // 接口服务器地址
 // const baseUrl = 'http://192.168.50.230:8883/api';
 // const baseUrl = 'http://192.168.50.155:8881/api';
+
 const baseUrl = 'http://i.0t.com.cn';
 
 // 图片服务器地址
 // const imgSrc = 'http://192.168.50.216/';
 const imgSrc = 'http://183.134.74.90/';
+
+//init
 
 /***********************登录相关********************************/
 const getCodeApi = baseUrl + '/v1/sys/'; // 验证码
@@ -129,7 +132,7 @@ function getDetailGoods(id, callback) {
       let item = res.data.data;
       let data = {
         title: item.goodsName,
-        desc: item.goodsDesc !== undefined ? item.goodsDesc : '暂无简介',
+        desc: item.goodsDesc != 'undefined' ? item.goodsDesc : '暂无简介',
         info: item.goodsInfo,
         price: item.salePrice,
         pics: item.imgList.map(el => ({
@@ -176,7 +179,7 @@ function cartGoodsList(callback) {
     if (res.data.code === 200) {
       let data = res.data.data;
       let arr = data.filter(item => {
-        return item.goods !== undefined;
+        return item.goods != 'undefined';
       }).map(item => ({
         "id": item.goodsId,
         "title": item.goods.goodsName,
@@ -252,7 +255,7 @@ function getAddress(callback) {
     method: 'post',
   }).then(res => {
     let arr = res.data.data.filter(item => {
-      return item.contacts !== undefined && item.phone.length === 11;
+      return item.contacts != 'undefined' && item.phone.length === 11;
     }).map(item => ({
       id: item.id,
       isUsed: item.isUsed == 2,
@@ -272,18 +275,21 @@ function getAddress(callback) {
  * @param callback
  */
 function setAddress(address, callback) {
-  axios({
-    url: address_save,
-    method: 'post',
-    data: address,
-    headers: {
-      //'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }).then(res => {
-    let data = res.data.success;
-    callback(data);
-  }).catch(err => {
-    console.log(err);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: address_save,
+      method: 'post',
+      data: address,
+      headers: {
+        //'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(res => {
+      callback(res.data);
+      resolve(res.data);
+    }).catch(err => {
+      console.log(err);
+      reject(err);
+    });
   });
 }
 
@@ -293,19 +299,22 @@ function setAddress(address, callback) {
  * @param callback
  */
 function selectAddress(id, callback) {
-  axios({
-    url: address_update,
-    method: 'get',
-    params: {id: id},
-    data: {},
-    headers: {
-      //'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }).then(result => {
-    let data = result.data.success;
-    callback(data);
-  }).catch(err => {
-    console.log(err);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: address_update,
+      method: 'get',
+      params: {id: id},
+      data: {},
+      headers: {
+        //'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    }).then(result => {
+      callback(result.data);
+      resolve(result.data);
+    }).catch(err => {
+      console.log(err);
+      reject(err);
+    });
   });
 }
 
@@ -315,13 +324,18 @@ function selectAddress(id, callback) {
  * @param callback
  */
 function updateAddress(data, callback) {
-  axios({
-    url: address_save,
-    method: 'post',
-    params: {id: data.id},
-    data: data
-  }).then(result => {
-    callback(result.data.data);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: address_save,
+      method: 'post',
+      params: {id: data.id},
+      data: data
+    }).then(result => {
+      callback(result.data);
+      resolve(result.data);
+    }).catch( err =>{
+      reject(err);
+    });
   });
 }
 
@@ -356,13 +370,18 @@ function detailAddress(id, callback) {
  * @param callback
  */
 function deleteAddress(id, callback) {
-  axios({
-    url: address_remove,
-    method: 'get',
-    params: {id: id},
-    data: {}
-  }).then(result => {
-    callback(result.data.data);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: address_remove,
+      method: 'get',
+      params: {id: id},
+      data: {}
+    }).then(result => {
+      callback(result.data);
+      resolve(result.data);
+    }).catch(err=>{
+      reject(err);
+    });
   });
 }
 
@@ -433,9 +452,13 @@ function orderFormList(data, callback) {
         });
 
         // 追加图片
-        let productImg = item.goodsList.map((item) => ({
-          productImg: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
-        }));
+        let productImg = item.goodsList.filter(item=>{
+          return item.productImg;
+        }).map(item => {
+          return{
+            productImg: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+          }
+        });
 
         // 默认菜单
         let buttonsMeun = [{
@@ -477,22 +500,23 @@ function orderFormInfo(data, callback) {
     data: data || {}
   }).then(result => {
     if (result.data.code === 200) {
-      if (typeof result.data.data.goodsList !== undefined) {
-        let data = result.data.data.goodsList.map(item => ({
-          "payStatus": result.data.data.payStatus === 2 ? '已支付' : '待支付',
-          "orderNum": result.data.data.orderNum,
-          "createDate": result.data.data.createDate,
-          "address": result.data.data.address,
-          "addrId": result.data.data.addrId,
-          "id": result.data.data.id,
+      if (typeof result.data.data.goodsList !== 'undefined') {
+        let data = result.data.data;
+        let res = data.goodsList.map(item => ({
+          "payStatus": data.payStatus === 2 ? '已支付' : '待支付',
+          "orderNum": data.orderNum,
+          "createDate": data.createDate,
+          "address": data.address,
+          "addrId": data.addrId,
+          "totalPrice": data.totalPrice,
+          "id": data.id,
           "goodsName": item.goodsName,
           "number": item.num,
-          "salePrice": item.salePrice,
           "goodsDesc": item.goodsDesc,
           "goodsInfo": item.goodsInfo,
           "pic": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
         }));
-        callback(data);
+        callback(res);
       }
     }
   })
@@ -504,15 +528,19 @@ function orderFormInfo(data, callback) {
  * @param callback
  */
 function orderFormDelete(data, callback) {
-  axios({
-    url: order_delete,
-    method: 'post',
-    params: {},
-    data: data || {}
-  }).then(result => {
-    callback(result.data);
-  }).catch(err => {
-    console.log(err);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: order_delete,
+      method: 'post',
+      params: {},
+      data: data || {}
+    }).then(result => {
+      callback(result.data);
+      resolve(result.data);
+    }).catch(err => {
+      console.log(err);
+      reject(err);
+    });
   });
 }
 
@@ -522,17 +550,21 @@ function orderFormDelete(data, callback) {
  * @param callback
  */
 function orderFormReBuy(data, callback) {
-  axios({
-    url: order_buyAgain,
-    method: 'post',
-    params: {},
-    data: data || {}
-  }).then(result => {
-    if (result.data.code === 200) {
-      callback(result.data);//用订单ID生成购物车数量
-    }
-  }).catch(err => {
-    console.log(err);
+  return new Promise((resolve, reject) => {
+    axios({
+      url: order_buyAgain,
+      method: 'post',
+      params: {},
+      data: data || {}
+    }).then(result => {
+      if (result.data.code === 200) {
+        callback(result.data);//用订单ID生成购物车数量
+        resolve(result.data);
+      }
+    }).catch(err => {
+      console.log(err);
+      reject(err);
+    });
   });
 }
 

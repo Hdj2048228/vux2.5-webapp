@@ -10,7 +10,6 @@
 
 <script>
   import Home from '@/page/Home';
-  import List from '@/page/List';
   import Search from '@/page/Search';
   import User from '@/page/User';
   import Cart from '@/page/Cart';
@@ -29,7 +28,6 @@
     name: 'app',
     components: {
       Home,
-      List,
       Search,
       User,
       Cart,

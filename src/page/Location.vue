@@ -42,23 +42,39 @@
     },
     methods: {
       changeSwitch (item, newVal, oldVal) {
-        if (item.id !== undefined && item.id.length === 32) {
+        if (item.id !== 'undefined' && item.id.length === 32) {
+          // 清除所有
           this.common_address.forEach((item, index) => {
             item.isUsed = false;
           });
-          item.isUsed = true;
-          this.$store.dispatch('selectAddress', item.id);
-        }
 
-        /*
-         this.$vux.loading.show({
-         text: '设置成功！'
-         });
-         setTimeout(() => {
-         this.$vux.loading.hide();
-         item.isUsed = !item.isUsed;
-         }, 1000);
-         */
+          // 设置当前
+          item.isUsed = true;
+
+          this.$store.dispatch('selectAddress', item.id).then( res=>{
+            if(res.code === 200){
+
+              // 清除所有
+              this.common_address.forEach((item, index) => {
+                item.isUsed = false;
+              });
+
+              // 设置当前
+              item.isUsed = !item.isUsed;
+
+              this.$vux.loading.show({
+                text: res.data
+              });
+              setTimeout(() => {
+                this.$vux.loading.hide();
+              }, 1000);
+              this.$router.replace({
+                name:'location',
+                query:{flag:'select'}
+              });
+            }
+          });
+        }
       },
       createAddress(){
         this.$router.replace({

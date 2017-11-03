@@ -11,7 +11,7 @@
       <cell title="订单状态" :value="item.payStatus" :border-intent="false"></cell>
       <cell title="订单编号" :value="item.orderNum"></cell>
       <cell title="订单时间" :value="item.createDate"></cell>
-      <cell title="总金额" :value="item.salePrice | currency"></cell>
+      <cell title="总金额" :value="item.totalPrice | currency"></cell>
     </group>
 
     <group-title>商品清单</group-title>
@@ -53,10 +53,10 @@
 
     <tabbar v-for="(item,index) in common_order_FormInfo" :key="index" v-if="item.payStatus==='待支付'">
       <tabbar-item selected>
-        <span slot="label">合计：{{item.salePrice | currency}}</span>
+        <span slot="label">合计：{{item.totalPrice | currency}}</span>
       </tabbar-item>
       <tabbar-item @on-item-click="onSubmit">
-        <span slot="label">提交订单</span>
+        <span slot="label">去支付</span>
       </tabbar-item>
     </tabbar>
 
@@ -90,7 +90,7 @@
       ...mapGetters([
         'common_order_FormInfo',
         'common_order_FormNumber'
-//        'common_goods_money'
+        //'common_goods_money'
 
       ]),
       menusFlag: {
@@ -117,6 +117,14 @@
     methods: {
       ...mapMutations(['MenusClose']),
       onSubmit(){
+        this.$router.push({
+          name: 'payList',
+          query: {
+            orderId: this.common_order_FormInfo[0].orderNum
+          }
+        });
+
+        /*
         let data = {
           addrId: 0,
           logisticsPrice: 0,
@@ -128,36 +136,14 @@
         this.common_order_FormInfo.forEach(item => {
           data.addrId = item.addrId;
           data.logisticsPrice = this.logisticsPrice;
-          data.price = item.salePrice;
-          data.totalPrice = item.salePrice;
+          data.price = item.totalPrice;
+          data.totalPrice = item.totalPrice;
           data.orderCartList.push({
             goodsId: item.id,
             num: item.number
           });
         });
-
-        if (data.orderCartList.length > 0 && data.totalPrice > 0) {
-
-          this.$store.dispatch('orderFormSave', data); // 提交到服务器
-
-          this.$vux.toast.show({
-            text: '提交成功！'
-          });
-
-          setTimeout(() => {
-            this.$vux.toast.hide();
-            this.menusFlag = false;
-            this.$router.push({
-              name: 'payList',
-              query: {
-                orderId: this.common_order_FormNumber
-              }
-            });
-          }, 500);
-        } else {
-          this.$vux.toast.text('请选择商品！');
-          this.$router.push('home');
-        }
+        */
       }
     }
   }

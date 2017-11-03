@@ -14,6 +14,7 @@
           <div class="weui-media-box__bd"><h4 class="weui-media-box__title">支付宝支付</h4>
             <p class="weui-media-box__desc">支付宝、支付托</p></div>
         </a>
+        <!--
         <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
           <div class="weui-media-box__hd"><img src="static/img/wechat.png" alt="" class="weui-media-box__thumb"></div>
           <div class="weui-media-box__bd"><h4 class="weui-media-box__title">微信支付</h4>
@@ -24,6 +25,7 @@
           <div class="weui-media-box__bd"><h4 class="weui-media-box__title">信用卡</h4>
             <p class="weui-media-box__desc">即将开通</p></div>
         </a>
+        -->
       </div>
       <div class="weui-panel__ft"></div>
     </div>

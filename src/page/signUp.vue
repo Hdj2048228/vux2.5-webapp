@@ -1,5 +1,5 @@
 <template>
-  <view-box class="signUp" bodyPaddingBottom="50px" bodyPaddingTop="0">
+  <view-box class="signUp gaofeng" bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <x-header title="个人中心">
       <div slot="overwrite-left" class="left-arrow" @click="go('home')"></div>
@@ -39,8 +39,8 @@
     },
     data(){
       return {
-        userName: '13811901660',
-        passwd: '123456'
+        userName: '',
+        passwd: ''
       }
     },
     computed: {
@@ -48,16 +48,13 @@
         'cart_goods_list'
       ])
     },
-    created(){
-      console.log('cart created....');
-    },
-    mounted(){
-
-    },
+    created(){},
+    mounted(){},
     methods: {
       login(){
         if (this.userName) {
-          this.$http.post('http://192.168.50.230:8883/api/v1/user/login', {
+          //this.$http.post('http://192.168.50.155:8881/api/v1/user/login', {
+          this.$http.post('http://i.0t.com.cn/v1/user/login', {
             userName: this.userName,
             passwd: this.passwd,
             code: 1234,

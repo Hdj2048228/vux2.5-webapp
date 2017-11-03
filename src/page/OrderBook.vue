@@ -119,16 +119,29 @@
         }
       }
     },
-    mounted(){
-    },
+    mounted(){},
     methods: {
       ...mapMutations(['MenusClose']),
       onSubmit(){
-
-        // 数据为空不提交
         if(typeof this.common_goods_list[0] ==='undefined'){
           this.$vux.toast.text('请选择商品！');
           this.$router.push('home');
+          return;
+        }
+        if(typeof this.common_address[0] === 'undefined'){
+          this.$vux.toast.text('请添加地址！');
+          this.$router.replace({
+            name:'locationForm',
+            query:{act:'add'}
+          });
+          return;
+        }
+        if(!this.addDefault){
+          this.$vux.toast.text('请选择地址！');
+          this.$router.replace({
+            name:'location'
+          });
+          return;
         }
 
         let data = {
@@ -150,27 +163,25 @@
           });
         });
 
-        if (data.orderCartList.length > 0 && data.totalPrice > 0) {
+        if (data.orderCartList.length > 0 && data.totalPrice > 0 && this.addDefault) {
 
           // 提交到服务器
           this.$store.dispatch('orderFormSave', data).then( data => {
-            // console.log('book -> orderFormSave',data);
-          });
+            this.$vux.toast.show({
+              text: '提交成功！'
+            });
 
-          this.$vux.toast.show({
-            text: '提交成功！'
-          });
+            setTimeout(()=>{
+              this.$vux.toast.hide();
+            },500);
 
-          setTimeout(() => {
-            this.$vux.toast.hide();
-            this.menusFlag = false;
             this.$router.push({
               name: 'payList',
               query: {
-                orderNumber: this.common_order_FormNumber
+                orderId: this.common_order_FormNumber
               }
             });
-          }, 500);
+          });
         } else {
           this.$vux.toast.text('请选择商品！');
           this.$router.push('home');

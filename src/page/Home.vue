@@ -1,5 +1,5 @@
 <template>
-  <view-box class="home" :bodyPaddingTop="0" bodyPaddingBottom="60px">
+  <view-box class="home" :bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <div class="top-header" ref="topHeader">
       <div class="logo">
@@ -17,9 +17,9 @@
     </div>
     <swiper loop auto :list="focus_list" v-model="focus_index" @on-index-change="swiperChange"></swiper>
 
-    <marquee :interval="3000">
+    <!--<marquee :interval="3000">
       <marquee-item v-for="(item,index) in marquee_list" :key="index">{{item.title}}</marquee-item>
-    </marquee>
+    </marquee>-->
 
     <grid :rows="2">
       <group-title>
@@ -35,32 +35,12 @@
       </grid-item>
     </grid>
 
-    <tabbar>
-      <tabbar-item link="/home" selected>
-        <x-icon slot="icon" type="android-home" size="27" style="fill:#32beff;"></x-icon>
-        <span slot="label">首页</span>
-      </tabbar-item>
-      <tabbar-item link="/list">
-        <x-icon slot="icon" type="navicon" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">列表</span>
-      </tabbar-item>
-      <tabbar-item link="/cart">
-        <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">购物车</span>
-      </tabbar-item>
-      <tabbar-item link="/user">
-        <x-icon slot="icon" type="person" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">我的</span>
-      </tabbar-item>
-    </tabbar>
-
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,
-    Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
+    ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell, Grid, GridItem, Group, GroupTitle
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -69,8 +49,7 @@
   export default {
     name: 'home',
     components: {
-      ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,
-      Tabbar, TabbarItem, Grid, GridItem, Group, GroupTitle
+      ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,Grid, GridItem, Group, GroupTitle
     },
     data () {
       return {
@@ -81,7 +60,7 @@
     computed: {
       ...mapGetters([
         'focus_list',
-        'marquee_list',
+        //'marquee_list',
         'goods_list'
       ])
     },

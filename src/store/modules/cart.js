@@ -44,7 +44,7 @@ const actions = {
     api.cartGoodsList(payload => {
       let money = 0;
       payload.forEach(item => {
-        if (item.price >= 1 && item.num >= 1) {
+        if (item.price >= 0 && item.num >= 1) {
           money += item.price * item.num;
         }
       });
@@ -61,7 +61,7 @@ const actions = {
     api.cartGoodsList(payload => {
       let money = 0;
       payload.forEach(item => {
-        if (item.price >= 1 && item.num >= 1) {
+        if (item.price >= 0 && item.num >= 1) {
           money += item.price * item.num;
         }
       });

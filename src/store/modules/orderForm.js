@@ -67,8 +67,14 @@ const actions = {
    * @param data
    */
   orderFormDelete({commit}, data){
-    api.orderFormDelete(data, payload => {
-      console.log('orderFormDelete', payload);
+    return new Promise((resolve, reject) => {
+      api.orderFormDelete(data, payload => {
+        //console.log('orderFormDelete', payload);
+      }).then(data=>{
+        resolve(data);
+      }).catch(err=>{
+        reject(err);
+      });
     });
   },
 
@@ -78,8 +84,14 @@ const actions = {
    * @param data
    */
   orderFormReBuy({commit}, data){
-    api.orderFormReBuy(data, payload => {
-      commit(types.Comm_Goods_ReBuy, payload);
+    return new Promise((resolve, reject) => {
+      api.orderFormReBuy(data, payload => {
+        commit(types.Comm_Goods_ReBuy, payload);
+      }).then(data=>{
+        resolve(data);
+      }).catch(err=>{
+        reject(err);
+      });
     });
   },
 

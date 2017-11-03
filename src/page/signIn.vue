@@ -1,5 +1,5 @@
 <template>
-  <view-box class="signIn" bodyPaddingBottom="50px" bodyPaddingTop="0">
+  <view-box class="signIn" bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <x-header title="个人中心">
       <x-icon slot="right" @click="go('signUp')" type="log-in" style="fill:#fff;"></x-icon>
@@ -68,7 +68,8 @@
           });
           return;
         }
-          this.$http.post('http://192.168.50.230:8883/api/v1/mall/user/register', {
+          //this.$http.post('http://192.168.50.155:8881/api/v1/mall/user/register', {
+        this.$http.post('http://i.0t.com.cn/v1/mall/user/register', {
             userName: this.userName,
             password: this.password,
             mobile: this.mobile
@@ -76,6 +77,9 @@
             if (result.data.code === 200) {
               this.$vux.toast.show({
                 text:'注册成功！' //'登录账号：<br>'+result.data.data.mobile
+              });
+              this.$router.replace({
+                name:'signUp'
               });
             }else if(result.data.code === 505){
               this.$vux.toast.show({

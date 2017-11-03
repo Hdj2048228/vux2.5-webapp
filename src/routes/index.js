@@ -26,14 +26,6 @@ export default[
     }
   },
   {
-    path: '/list',
-    name: 'list',
-    component: App.components.List,
-    meta: {
-      requireAuth: true,  // true表示需要登录
-    }
-  },
-  {
     path: '/search',
     name: 'search2',
     component: App.components.Search,

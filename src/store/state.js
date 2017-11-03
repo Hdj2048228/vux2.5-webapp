@@ -5,7 +5,7 @@
 const state = {
   vue_token: null,
   menusFlag: false,
-  menus: {// list\detail\books\book\cart\PayList
+  menus: {// detail\books\book\cart\PayList
     menu1: '首页',
     menu2: '购物车',
     menu3: '用户中心',

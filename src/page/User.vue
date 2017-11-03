@@ -1,5 +1,5 @@
 <template>
-  <view-box class="user" bodyPaddingBottom="60px" bodyPaddingTop="0">
+  <view-box class="user" bodyPaddingTop="0" bodyPaddingBottom="0">
 
     <x-header title="个人中心">
       <x-icon slot="overwrite-left" @click="go('home')" type="android-home" size="24" style="fill:#fff;"></x-icon>
@@ -62,31 +62,12 @@
       </template>
     </group>
 
-    <tabbar>
-      <tabbar-item link="/home">
-        <x-icon slot="icon" type="android-home" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">首页</span>
-      </tabbar-item>
-      <tabbar-item link="/list">
-        <x-icon slot="icon" type="navicon" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">列表</span>
-      </tabbar-item>
-      <tabbar-item link="/cart">
-        <x-icon slot="icon" type="ios-cart" size="27" style="fill:#999;"></x-icon>
-        <span slot="label">购物车</span>
-      </tabbar-item>
-      <tabbar-item link="/user" selected>
-        <x-icon slot="icon" type="person" size="27" style="fill:#32beff;"></x-icon>
-        <span slot="label">我的</span>
-      </tabbar-item>
-    </tabbar>
-
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+    ViewBox, XHeader, Card, GroupTitle, Group, Cell, CellBox
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -95,7 +76,7 @@
   export default {
     name: 'user',
     components: {
-      ViewBox, XHeader, Card, Tabbar, TabbarItem, GroupTitle, Group, Cell, CellBox
+      ViewBox, XHeader, Card, GroupTitle, Group, Cell, CellBox
     },
     data () {
       return {
