@@ -18,6 +18,10 @@
 
  */
 
+import Vue from 'vue';
+import Vuex from 'vuex';
+import * as types from './type';
+
 import Home from './modules/home';
 import Search from './modules/search';
 import Detail from './modules/detail';
@@ -25,11 +29,79 @@ import Cart from './modules/cart';
 import OrderForm from './modules/orderForm';
 import Location from './modules/location';
 
-export default {
-  Home,
-  Search,
-  Detail,
-  Cart,
-  Location,
-  OrderForm
-};
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  state: {
+    vue_token: null,
+    menusFlag: false,
+    menus: {// detail\books\book\cart\PayList
+      menu1: '首页',
+      menu2: '购物车',
+      menu3: '用户中心',
+      menu4: '订单详情',
+      menu5: '收货地址'
+    }
+  },
+  mutations: {
+    [types.LOGIN]: (state, data) => {
+      window.localStorage.setItem('vue_token', data);
+      state.vue_token = data;
+    },
+    [types.LOGOUT]: (state) => {
+      window.localStorage.removeItem('vue_token');
+      state.vue_token = null
+    },
+    MenusClose (state, menus) {
+      //console.log('onMenusClose', state, menus);
+      switch (menus) {
+        case "menu1":
+          state.menusFlag = false;
+          app.$router.push({
+            name: 'home'
+          });
+          break;
+        case "menu2":
+          state.menusFlag = false;
+          app.$router.push({
+            name: 'cart'
+          });
+          break;
+        case "menu3":
+          state.menusFlag = false;
+          app.$router.push({
+            name: 'user'
+          });
+          break;
+        case "menu4":
+          state.menusFlag = false;
+          app.$router.push({
+            name: 'books',
+            query: {
+              act: 'all'
+            }
+          });
+          break;
+        case "menu5":
+          state.menusFlag = false;
+          app.$router.push({
+            name: 'location'
+          });
+          break;
+      }
+    }
+  },
+  actions: {
+
+  },
+  modules: {
+    Home,
+    Search,
+    Detail,
+    Cart,
+    Location,
+    OrderForm
+  }
+});
+
+export default store;

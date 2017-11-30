@@ -2,58 +2,11 @@
  * Created by saturn on 2017/8/8.
  */
 
+import * as api from './api';
 import axios from 'axios';
 import Vue from 'vue';
 import vueJsonp from 'vue-jsonp'
 Vue.use(vueJsonp);
-
-// 接口服务器地址
-// const baseUrl = 'http://192.168.50.230:8883/api';
-// const baseUrl = 'http://192.168.50.155:8881/api';
-
-const baseUrl = 'http://i.0t.com.cn';
-
-// 图片服务器地址
-// const imgSrc = 'http://192.168.50.216/';
-const imgSrc = 'http://183.134.74.90/';
-
-//init
-
-/***********************登录相关********************************/
-const getCodeApi = baseUrl + '/v1/sys/'; // 验证码
-const signUp_api = baseUrl + '/v1/user/login'; // 登录
-const signIn_api = baseUrl + '/v1/mall/user/register'; // 注册
-
-/***********************获取产品列表********************************/
-const home_get_goods = baseUrl + '/a/shop/goods/list'; //
-const home_get_carouse = baseUrl + '/a/shop/carousel/getCarouselList'; // 焦点图
-const get_detail = baseUrl + '/a/shop/goods/getInfo'; // 商品详情
-const get_search = baseUrl + '/a/shop/goods/searchList'; // 搜索
-
-/***********************购物车********************************/
-const goods_get_number = baseUrl + '/a/shop/cart/getCartNum'; // 获取购物车总数量
-const cart_goods_list = baseUrl + '/a/shop/cart/getList'; // 获取购物车列表
-const goods_remove = baseUrl + '/a/shop/cart/remove'; // 删除购物车产品
-const goods_add = baseUrl + '/a/shop/cart/add'; // 加入购物车
-const detail_changeChecked = baseUrl + '/a/shop/cart/changeChecked'; // 多选
-
-/***********************收货地址********************************/
-const address_list = baseUrl + '/a/shop/receive/address/list'; // 收货地址列表
-const address_save = baseUrl + '/a/shop/receive/address/save'; // 保存收货地址
-const address_update = baseUrl + '/a/shop/receive/address/update'; // 选择收货地址
-const address_remove = baseUrl + '/a/shop/receive/address/remove'; // 删除收货地址
-const address_getDetail = baseUrl + '/a/shop/receive/address/getDetail'; // 修改收货地址详细
-
-/***********************订单********************************/
-const orderForm_save = baseUrl + '/a/shop/order/saveOrder'; // 订单保存
-const order_list = baseUrl + '/a/shop/order/getOrderList'; // 获取订单列表
-const order_info = baseUrl + '/a/shop/order/getOrderDetail'; // 获取订单信息
-const order_delete = baseUrl + '/a/shop/order/delete'; // 删除订单
-const order_confirm = baseUrl + '/a/shop/order/receipt'; // 确认收货
-const order_buyAgain = baseUrl + '/a/shop/order/buyAgain'; // 再次购买
-
-/***********************在线支付接口********************************/
-const payment_api = baseUrl + '/1/WAP/pay';
 
 /**
  * 001 首页焦点图
@@ -61,7 +14,7 @@ const payment_api = baseUrl + '/1/WAP/pay';
  * @returns null
  */
 function getHomeFocus(callback) {
-  axios.get(home_get_carouse).then(res => {
+  axios.get(api.home_get_carouse).then(res => {
     if (res.data.code === 200) {
       let data = res.data.data.map(item => {
         return {
@@ -100,7 +53,7 @@ function getHomeMarquee() {
  * @returns null
  */
 function getHomeGoods(callback) {
-  axios.get(home_get_goods).then(res => {
+  axios.get(api.home_get_goods).then(res => {
     if (res.data.code === 200) {
       let data = res.data.data.map(item => {
         return {
@@ -122,7 +75,7 @@ function getHomeGoods(callback) {
  */
 function getDetailGoods(id, callback) {
   axios({
-    url: get_detail,
+    url: api.get_detail,
     // url: '/static/get_goods_detail.json',
     method: 'post',
     params: {},
@@ -153,7 +106,7 @@ function getDetailGoods(id, callback) {
  */
 function goodsGetNumber(id, callback) {
   axios({
-    url: goods_get_number,
+    url: api.goods_get_number,
     method: 'post',
     params: {},
     data: {goodsId: id}
@@ -171,7 +124,7 @@ function goodsGetNumber(id, callback) {
  */
 function cartGoodsList(callback) {
   axios({
-    url: cart_goods_list,
+    url: api.cart_goods_list,
     method: 'post',
     params: {},
     data: {}
@@ -209,7 +162,7 @@ function cartGoodsList(callback) {
  */
 function goodsAdd(id, callback) {
   axios({
-    url: goods_add,
+    url: api.goods_add,
     method: 'post',
     params: {},
     data: {goodsId: id}
@@ -229,7 +182,7 @@ function goodsAdd(id, callback) {
  */
 function goodsRemove(item, callback) {
   axios({
-    url: goods_remove,
+    url: api.goods_remove,
     method: 'post',
     params: {},
     data: {
@@ -251,7 +204,7 @@ function goodsRemove(item, callback) {
  */
 function getAddress(callback) {
   axios({
-    url: address_list,
+    url: api.address_list,
     method: 'post',
   }).then(res => {
     let arr = res.data.data.filter(item => {
@@ -277,7 +230,7 @@ function getAddress(callback) {
 function setAddress(address, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: address_save,
+      url: api.address_save,
       method: 'post',
       data: address,
       headers: {
@@ -301,7 +254,7 @@ function setAddress(address, callback) {
 function selectAddress(id, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: address_update,
+      url: api.address_update,
       method: 'get',
       params: {id: id},
       data: {},
@@ -326,7 +279,7 @@ function selectAddress(id, callback) {
 function updateAddress(data, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: address_save,
+      url: api.address_save,
       method: 'post',
       params: {id: data.id},
       data: data
@@ -346,7 +299,7 @@ function updateAddress(data, callback) {
  */
 function detailAddress(id, callback) {
   axios({
-    url: address_getDetail,
+    url: api.address_getDetail,
     method: 'get',
     params: {id: id},
     data: {}
@@ -372,7 +325,7 @@ function detailAddress(id, callback) {
 function deleteAddress(id, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: address_remove,
+      url: api.address_remove,
       method: 'get',
       params: {id: id},
       data: {}
@@ -393,7 +346,7 @@ function deleteAddress(id, callback) {
 function orderFormSave(data, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: orderForm_save,
+      url: api.orderForm_save,
       method: 'post',
       params: {},
       data: data || {}
@@ -413,7 +366,7 @@ function orderFormSave(data, callback) {
  */
 function onPayment(data, callback) {
   axios({
-    url: payment_api,
+    url: api.payment_api,
     method: 'post',
     params: {},
     data: data || {}
@@ -430,7 +383,7 @@ function onPayment(data, callback) {
  */
 function orderFormList(data, callback) {
   axios({
-    url: order_list,
+    url: api.order_list,
     method: 'post',
     params: {},
     data: data
@@ -494,7 +447,7 @@ function orderFormList(data, callback) {
  */
 function orderFormInfo(data, callback) {
   axios({
-    url: order_info,
+    url: api.order_info,
     method: 'post',
     params: {},
     data: data || {}
@@ -506,6 +459,8 @@ function orderFormInfo(data, callback) {
           "payStatus": data.payStatus === 2 ? '已支付' : '待支付',
           "orderNum": data.orderNum,
           "createDate": data.createDate,
+          "express": data.express,
+          "logisticsNum": data.logisticsNum,
           "address": data.address,
           "addrId": data.addrId,
           "totalPrice": data.totalPrice,
@@ -516,6 +471,8 @@ function orderFormInfo(data, callback) {
           "goodsInfo": item.goodsInfo,
           "pic": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
         }));
+        console.log(13,data.express);
+        console.log(13,data.logisticsNum);
         callback(res);
       }
     }
@@ -530,7 +487,7 @@ function orderFormInfo(data, callback) {
 function orderFormDelete(data, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: order_delete,
+      url: api.order_delete,
       method: 'post',
       params: {},
       data: data || {}
@@ -552,7 +509,7 @@ function orderFormDelete(data, callback) {
 function orderFormReBuy(data, callback) {
   return new Promise((resolve, reject) => {
     axios({
-      url: order_buyAgain,
+      url: api.order_buyAgain,
       method: 'post',
       params: {},
       data: data || {}
@@ -575,7 +532,7 @@ function orderFormReBuy(data, callback) {
  */
 function orderFormConfirm(data, callback) {
   axios({
-    url: order_confirm,
+    url: api.order_confirm,
     method: 'post',
     params: {},
     data: data || {}
@@ -593,7 +550,7 @@ function orderFormConfirm(data, callback) {
  */
 function getSearch(data, callback) {
   axios({
-    url: get_search,
+    url: api.get_search,
     method: 'post',
     params: {},
     data: data || {}

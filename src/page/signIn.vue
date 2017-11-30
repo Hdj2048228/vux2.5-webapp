@@ -13,13 +13,13 @@
       <x-input v-model="password" type="tel" title="密<i class='vux-blank-half'></i><i class='vux-blank-half'></i>码:"
                required placeholder="请输入密码(6位以上)..."></x-input>
       <x-input v-model="code" type="tel" title="验证码:"
-               required placeholder="请输入手机验证码..."></x-input>
+               required placeholder="请输入验证码..."></x-input>
+      <span class="ui-code" @click="getCode()">{{ codeVal }}</span>
     </group>
 
     <box gap="10px 10px">
       <x-button plain style="background: #fff;border-color:#ccc" @click.native="register">注册</x-button>
     </box>
-
 
   </view-box>
 </template>
@@ -31,6 +31,7 @@
   import {
     mapState, mapMutations, mapGetters, mapActions
   } from "vuex";
+  import * as api from '../store/axios/api';
 
   export default {
     name: 'signIn',
@@ -42,7 +43,10 @@
         userName: '',
         mobile: '',
         password: '',
-        code: ''
+        code: '',
+        codeVal: '获取验证码',
+        codeFlog: false,
+        wait: 60,
       }
     },
     methods: {
@@ -68,11 +72,11 @@
           });
           return;
         }
-          //this.$http.post('http://192.168.50.155:8881/api/v1/mall/user/register', {
-        this.$http.post('http://i.0t.com.cn/v1/mall/user/register', {
+          this.$http.post(api.signIn_api, {
             userName: this.userName,
             password: this.password,
-            mobile: this.mobile
+            mobile: this.mobile,
+            verifyCode: this.code
           }).then(result => {
             if (result.data.code === 200) {
               this.$vux.toast.show({
@@ -93,6 +97,41 @@
               });
             }
           });
+      },
+      getCode(){
+        if (this.codeFlog)return;
+        if(this.mobile !=="" && this.mobile.length===11){
+          this.$http.post(api.getCode_api + this.mobile + '/1/sms').then(res => {
+            if (res.data.code === 200) {
+              this.time();
+            }
+            if(res.data.code === 500){
+              this.$vux.toast.show({
+                type:'cancel',
+                text:res.data.message
+              });
+            }
+          });
+        }else{
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'手机号有误'
+          });
+        }
+      },
+      time() {
+        if (this.wait === 0) {
+          this.codeFlog = false;
+          this.codeVal = "获取验证码";
+          this.wait = 60;
+        } else {
+          this.codeFlog = true;
+          this.codeVal = "重新发送(" + this.wait + ")";
+          this.wait--;
+          setTimeout( () =>{
+            this.time()
+          }, 1000);
+        }
       }
     }
   }
@@ -103,6 +142,17 @@
     .weui-input,
     .weui-label {
       font-size: 14px;
+    }
+    .ui-code{
+      line-height: 25px;
+      font-size: 12px;
+      border:1px solid #ccc;
+      padding: 0 5px;
+      border-radius: 4px;
+      position: absolute;
+      right: 45px;
+      bottom: 8px;
+      z-index: 10;
     }
   }
 </style>

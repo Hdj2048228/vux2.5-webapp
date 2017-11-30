@@ -7,11 +7,13 @@
     </x-header>
 
     <group label-width="4.5em" label-margin-right="2em" label-align="right">
-      <x-input type="tel" v-model="userName" required title="手机号 :"
-               is-type="china-mobile" placeholder="请输入手机号..."></x-input>
+      <x-input type="tel" required title="手机号 :" is-type="china-mobile"
+               v-model="mobile" placeholder="请输入手机号..."></x-input>
       <x-input type="password" title="密<i class='vux-blank-half'></i><i class='vux-blank-half'></i>码 :"
-               v-model="passwd" required placeholder="请输入密码(6位以上)">
-      </x-input>
+               v-model="passwd" required placeholder="请输入密码(6位以上)"></x-input>
+      <x-input v-model="code" type="tel" title="验证码:"
+               required placeholder="请输入验证码..."></x-input>
+      <span class="ui-code" @click="getCode()">{{ codeVal }}</span>
     </group>
 
     <box gap="10px 10px">
@@ -29,6 +31,7 @@
   import {
     mapState, mapMutations, mapGetters, mapActions
   } from "vuex";
+  import * as api from '../store/axios/api';
   import * as types  from '../store/type';
 
   export default {
@@ -39,8 +42,12 @@
     },
     data(){
       return {
-        userName: '',
-        passwd: ''
+        mobile: '',
+        passwd: '',
+        code: '',
+        codeVal: '获取验证码',
+        codeFlog: false,
+        wait: 60,
       }
     },
     computed: {
@@ -52,12 +59,16 @@
     mounted(){},
     methods: {
       login(){
-        if (this.userName) {
-          //this.$http.post('http://192.168.50.155:8881/api/v1/user/login', {
-          this.$http.post('http://i.0t.com.cn/v1/user/login', {
-            userName: this.userName,
-            passwd: this.passwd,
-            code: 1234,
+        if (this.mobile!=="" && this.mobile.length ===11) {
+          this.$http({
+            url:api.signUp_api,
+            method:'post',
+            data:{
+              mobile: this.mobile,
+              passwd: this.passwd,
+              verifyCode: this.code
+            },
+            params:{}
           }).then(res => {
             if (res.data.code === 200) {
               let data = JSON.parse(res.data.data);
@@ -68,7 +79,54 @@
                 path: redirect
               });
             }
+          }).catch(err=>{
+            console.log(err);
           });
+        }else{
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'手机号有误'
+          });
+        }
+      },
+      getCode(){
+        if (this.codeFlog)return;
+        if(this.mobile !=="" && this.mobile.length===11){
+          this.$http({
+            url:api.getCode_api + this.mobile + '/1/sms',
+            method:'post',
+            data:{},
+            params:{}
+          }).then(res => {
+            if (res.data.code === 200) {
+              this.time();
+            }
+            if(res.data.code === 500){
+              this.$vux.toast.show({
+                type:'cancel',
+                text:res.data.message
+              });
+            }
+          });
+        }else{
+          this.$vux.toast.show({
+            type:'cancel',
+            text:'手机号有误'
+          });
+        }
+      },
+      time() {
+        if (this.wait === 0) {
+          this.codeFlog = false;
+          this.codeVal = "获取验证码";
+          this.wait = 60;
+        } else {
+          this.codeFlog = true;
+          this.codeVal = "重新发送(" + this.wait + ")";
+          this.wait--;
+          setTimeout( () =>{
+            this.time()
+          }, 1000);
         }
       }
     }
@@ -80,6 +138,17 @@
     .weui-input,
     .weui-label {
       font-size: 14px;
+    }
+    .ui-code{
+      line-height: 25px;
+      font-size: 12px;
+      border:1px solid #ccc;
+      padding: 0 5px;
+      border-radius: 4px;
+      position: absolute;
+      right: 45px;
+      bottom: 8px;
+      z-index: 10;
     }
   }
 </style>

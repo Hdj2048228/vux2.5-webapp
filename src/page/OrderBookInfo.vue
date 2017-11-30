@@ -11,6 +11,8 @@
       <cell title="订单状态" :value="item.payStatus" :border-intent="false"></cell>
       <cell title="订单编号" :value="item.orderNum"></cell>
       <cell title="订单时间" :value="item.createDate"></cell>
+      <cell title="快递公司" :value="item.express" v-if="item.express"></cell>
+      <cell title="物流单号" :value="item.logisticsNum" v-if="item.logisticsNum"></cell>
       <cell title="总金额" :value="item.totalPrice | currency"></cell>
     </group>
 

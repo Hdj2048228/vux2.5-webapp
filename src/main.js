@@ -1,20 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
-import VueRouter from 'vue-router';
 import VueJsonp from 'vue-jsonp';
 import VueScroller from 'vue-scroller';
 import  {AlertPlugin, ToastPlugin, LoadingPlugin} from 'vux';
 import App from './App';
-import routes from './routes/';
-import modules  from './store/';
-import state  from './store/state';
-import actions  from './store/actions';
-import mutations  from './store/mutations';
-import * as types from './store/type';
+import router from './router/';
+import store from './store';
 
 Vue.use(Vuex);
-Vue.use(VueRouter);
 Vue.use(VueJsonp);
 Vue.use(VueScroller);
 Vue.use(AlertPlugin);
@@ -22,75 +16,6 @@ Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
-
-// router
-const router = new VueRouter({
-  // mode: 'history',
-  routes
-});
-
-// store
-const store = new Vuex.Store({
-  state,
-  mutations,
-  actions,
-  modules
-});
-
-// 页面刷新时，重新赋值vue_token
-if (window.localStorage.getItem('vue_token')) {
-  store.commit(types.LOGIN, window.localStorage.getItem('vue_token'));
-}
-
-/**
- * 利用钩子函数beforeEach()对路由进行判断
- */
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(r => r.meta.requireAuth)) {
-    if (store.state.vue_token) {
-      next();
-    } else {
-      next({
-        path: '/signUp',
-        query: {redirect: to.name}
-      });
-    }
-  } else {
-    next();
-  }
-});
-
-/**
- * http request 拦截器
- */
-axios.interceptors.request.use(config => {
-  if (store.state.vue_token) {
-    config.headers.Authorization = `Bearer ${store.state.vue_token}`;
-  }
-  return config;
-}, err => {
-  return Promise.reject(err);
-});
-
-/**
- * http response 拦截器
- */
-axios.interceptors.response.use(response => {
-  return response;
-}, error => {
-  if (error.response) {
-    switch (error.response.status) {
-      case 401: // 401 清除vue_token信息并跳转到登录页面
-        store.commit(types.LOGOUT);
-        router.replace({
-          path: 'signUp',
-          query: {redirect: router.currentRoute.fullPath}
-        });
-    }
-  }
-  // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
-  return Promise.reject(error.response.data)
-});
 
 
 /**
@@ -125,7 +50,6 @@ Vue.filter('subString', (str, num) => {
     }
   }
 });
-
 
 window.app = new Vue({
   axios,
