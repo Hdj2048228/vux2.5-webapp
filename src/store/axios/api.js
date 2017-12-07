@@ -3,13 +3,13 @@
  */
 
 /***********************API服务器地址********************************/
-// export const baseUrl = 'http://i.0t.com.cn';
-export const baseUrl = 'http://192.168.50.155:8881/api';
+export const baseUrl = 'http://i.0t.com.cn';
+// export const baseUrl = 'http://192.168.50.155:8881/api';
 // export const baseUrl = 'http://192.168.50.230:8883/api';
 
 // 图片服务器地址
-export const imgSrc = 'http://192.168.50.216/';
-// export const imgSrc = 'http://183.134.74.90/';
+// export const imgSrc = 'http://192.168.50.216/';
+export const imgSrc = 'http://183.134.74.90/';
 
 /***********************登录相关********************************/
 export const getCode_api = baseUrl + '/v1/sys/'; // 验证码

@@ -58,6 +58,11 @@ window.app = new Vue({
   render: h => h(App)
 }).$mount('#app');
 
+// android && ios 同步嵌入登录
+window.setToken = function (token) {
+  window.localStorage.setItem('vue_token',token);
+};
+
 /**
  * 全局URL跳转
  * @param name

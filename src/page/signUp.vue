@@ -11,9 +11,11 @@
                v-model="mobile" placeholder="请输入手机号..."></x-input>
       <x-input type="password" title="密<i class='vux-blank-half'></i><i class='vux-blank-half'></i>码 :"
                v-model="passwd" required placeholder="请输入密码(6位以上)"></x-input>
+<!--
       <x-input v-model="code" type="tel" title="验证码:"
                required placeholder="请输入验证码..."></x-input>
       <span class="ui-code" @click="getCode()">{{ codeVal }}</span>
+      -->
     </group>
 
     <box gap="10px 10px">
@@ -64,9 +66,9 @@
             url:api.signUp_api,
             method:'post',
             data:{
-              mobile: this.mobile,
-              passwd: this.passwd,
-              verifyCode: this.code
+              /*verifyCode: this.code,*/
+              userName: this.mobile,
+              passwd: this.passwd
             },
             params:{}
           }).then(res => {
@@ -93,7 +95,7 @@
         if (this.codeFlog)return;
         if(this.mobile !=="" && this.mobile.length===11){
           this.$http({
-            url:api.getCode_api + this.mobile + '/1/sms',
+            url:api.getCode_api + this.mobile + '/2/sms',
             method:'post',
             data:{},
             params:{}

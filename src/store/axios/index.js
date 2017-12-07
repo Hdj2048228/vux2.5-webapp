@@ -20,7 +20,7 @@ function getHomeFocus(callback) {
         return {
           title: item.name,
           url: 'detail?id=' + item.url,
-          img: item.pathInfo.indexOf("http") === -1 ? (imgSrc + item.pathInfo) : item.pathInfo
+          img: item.pathInfo.indexOf("http") === -1 ? (api.imgSrc + item.pathInfo) : item.pathInfo
         }
       });
       callback(data);
@@ -60,7 +60,7 @@ function getHomeGoods(callback) {
           id: item.id,
           title: item.goodsName,
           price: item.salePrice,
-          pic: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+          pic: item.productImg.indexOf("http") === -1 ? (api.imgSrc + item.productImg) : item.productImg
         }
       });
       callback(data);
@@ -89,7 +89,7 @@ function getDetailGoods(id, callback) {
         info: item.goodsInfo,
         price: item.salePrice,
         pics: item.imgList.map(el => ({
-          url: el.url.indexOf('http') === -1 ? (imgSrc + el.url) : el.url
+          url: el.url.indexOf('http') === -1 ? (api.imgSrc + el.url) : el.url
         }))
       };
       callback(data);
@@ -142,7 +142,7 @@ function cartGoodsList(callback) {
         "checked": item.checked,
         "desc": "暂无简介",
         //"pic": item.goods.productImg,
-        "pic": item.goods.productImg.indexOf("http") === -1 ? (imgSrc + item.goods.productImg) : item.goods.productImg,
+        "pic": item.goods.productImg.indexOf("http") === -1 ? (api.imgSrc + item.goods.productImg) : item.goods.productImg,
         "url": {
           "path": "/car",
           "replace": false
@@ -409,7 +409,7 @@ function orderFormList(data, callback) {
           return item.productImg;
         }).map(item => {
           return{
-            productImg: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+            productImg: item.productImg.indexOf("http") === -1 ? (api.imgSrc + item.productImg) : item.productImg
           }
         });
 
@@ -469,7 +469,7 @@ function orderFormInfo(data, callback) {
           "number": item.num,
           "goodsDesc": item.goodsDesc,
           "goodsInfo": item.goodsInfo,
-          "pic": item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg
+          "pic": item.productImg.indexOf("http") === -1 ? (api.imgSrc + item.productImg) : item.productImg
         }));
         console.log(13,data.express);
         console.log(13,data.logisticsNum);
@@ -559,7 +559,7 @@ function getSearch(data, callback) {
       let data = result.data.data.map(item => ({
         id: item.id,
         title: item.goodsName,
-        pic: item.productImg.indexOf("http") === -1 ? (imgSrc + item.productImg) : item.productImg,
+        pic: item.productImg.indexOf("http") === -1 ? (api.imgSrc + item.productImg) : item.productImg,
         price: item.salePrice,
         params: []
       }));

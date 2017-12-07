@@ -74,8 +74,8 @@
         }
           this.$http.post(api.signIn_api, {
             userName: this.userName,
-            password: this.password,
             mobile: this.mobile,
+            password: this.password,
             verifyCode: this.code
           }).then(result => {
             if (result.data.code === 200) {
