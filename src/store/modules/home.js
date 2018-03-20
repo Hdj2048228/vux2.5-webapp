@@ -7,6 +7,68 @@ import * as types from '../type/';
 
 // 数据源
 const state = {
+  homeList: [
+    {
+      title: 'homeHeader', contents: [
+        {
+          title: '扫一扫提货',icon: '../assets/icon-buy.png',
+        }, {
+          title: '发货配送',icon: '../assets/icon-buy.png',
+        }, {
+          title: '订单查询',icon: '../assets/icon-buy.png',
+        }
+      ]
+    },{
+      title: '商铺配置', contents: [
+        {
+          title: '人员配置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '商品设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '分类设置',icon: '../assets/icon-buy.png',
+        },{
+          title: '库存设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '结算统计',icon: '../assets/icon-buy.png',
+        }, {
+          title: '商铺设置',icon: '../assets/icon-buy.png',
+        }
+      ]
+    },{
+      title: '发现配置', contents: [
+        {
+          title: '团购设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '主题设置',icon: '../assets/icon-buy.png',
+        }
+      ]
+    },{
+      title: '商城配置', contents: [
+        {
+          title: 'Banner设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '推荐商品设置',icon: '../assets/icon-buy.png', link: '/recommendProduct'
+        }, {
+          title: '热门商品设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '推荐业态设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '热门商铺设置',icon: '../assets/icon-buy.png',
+        }, {
+          title: '主题设置',icon: '../assets/icon-buy.png',
+        }
+      ]
+    },
+    {
+      title: '基础数据设置', contents: [
+        {
+          title: '业态设置', icon: '../assets/icon-buy.png', link: '/yetai'
+        }, {
+          title: '分类设置',icon: '../assets/icon-buy.png', link: '/category'
+        }
+      ]
+    }
+  ],
   focus_list: [
     /*{
       title: '',
@@ -32,6 +94,7 @@ const state = {
 };
 
 const getters = {
+  homeList: state => state.homeList,
   focus_list: state => state.focus_list,
   marquee_list: state => state.marquee_list,
   goods_list: state => state.goods_list

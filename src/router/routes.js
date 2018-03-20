@@ -6,14 +6,61 @@ export default[
     name: 'home',
     component: App.components.Home,
     meta: {
+      title:'首页',
       requireAuth: true,  // true表示需要登录
     }
   },
   {
-    path: '/home',
-    name: 'home',
-    component: App.components.Home,
+    path: '/yetai',
+    name: 'yetai',
+    component: App.components.Yetai,
     meta: {
+      title:'业态',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/yetaiEdit',
+    name: 'yetaiEdit',
+    component: App.components.YetaiEdit,
+    meta: {
+      title:'业态设置',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/category',
+    name: 'category',
+    component: App.components.Category,
+    meta: {
+      title:'分类',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/categoryEdit',
+    name: 'categoryEdit',
+    component: App.components.CategoryEdit,
+    meta: {
+      title:'分类设置',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/recommendProduct',
+    name: 'recommendProduct',
+    component: App.components.RecommendProduct,
+    meta: {
+      title:'推荐商品',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/RecommendProductEdit',
+    name: 'RecommendProductEdit',
+    component: App.components.RecommendProductEdit,
+    meta: {
+      title:'推荐商品设置',
       requireAuth: true,  // true表示需要登录
     }
   },
@@ -113,7 +160,10 @@ export default[
   {
     path: '/signUp',
     name: 'signUp',
-    component: App.components.SignUp
+    component: App.components.SignUp,
+    meta: {
+      title:'登录'
+    }
   },
   {
     path: '*',

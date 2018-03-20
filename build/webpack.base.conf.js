@@ -49,6 +49,10 @@ module.exports = {
         }
       },
       {
+        test: /\.sass$/,
+        loaders: ['style', 'css', 'sass']
+      },
+      {
         test: /\.glsl$/,
         loader: 'raw-loader'
       },

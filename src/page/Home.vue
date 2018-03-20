@@ -1,46 +1,29 @@
 <template>
   <view-box class="home" :bodyPaddingTop="0" bodyPaddingBottom="0">
-
-    <div class="top-header" ref="topHeader">
-      <div class="logo">
-        <img src="/static/img/logo.png" alt="logo">
+    <card class="home-header" >
+      <div slot="content">
+        <grid :cols="3"  style="padding-top: 0px;" class="header-bg">
+          <grid-item :label="obj.title" v-for="(obj,i) in homeList[0].contents" :key="i" style="color: white">
+            <img slot="icon" src="../assets/icon-buy.png" v-if="obj.title">
+            <label slot="label"style="color: white">{{obj.title}}</label>
+          </grid-item>
+        </grid>
       </div>
-      <search
-        v-model="searchValue"
-        @on-focus="onFocus"
-        @on-cancel="onCancel"
-        @on-submit="onSubmit"
-        ref="search">
-      </search>
-      <div class="btn-search" @click="onLogin" v-if="!$store.state.vue_token">登录</div>
-      <div class="btn-search" @click="onLogout" v-if="$store.state.vue_token">退出</div>
+    </card>
+    <div v-for="(item,index) in homeList" :key="item.title" v-if="index > 0">
+      <group-title >{{item.title}}</group-title>
+      <grid :cols="3"  style="padding-top: 0px;">
+        <grid-item :label="obj.title" :link="obj.link" v-for="(obj,i) in item.contents" :key="i">
+          <img slot="icon" src="../assets/icon-buy.png" v-if="obj.title">
+        </grid-item>
+      </grid>
     </div>
-    <swiper loop auto :list="focus_list" v-model="focus_index" @on-index-change="swiperChange"></swiper>
-
-    <!--<marquee :interval="3000">
-      <marquee-item v-for="(item,index) in marquee_list" :key="index">{{item.title}}</marquee-item>
-    </marquee>-->
-
-    <grid :rows="2">
-      <group-title>
-        <span>商品列表</span>
-      </group-title>
-      <grid-item v-for="(item,index) in goods_list" :key="index" @on-item-click="go('detail',{id:item.id})">
-        <img class="grid-pic" :src="item.pic">
-        <div class="grid-padding">
-          <p>{{item.title}}</p>
-          <p>价格：{{item.price | currency}}</p>
-          <p v-for="(item,i) in goods_list.params" :key="i">{{item.label}} {{item.value}}</p>
-        </div>
-      </grid-item>
-    </grid>
-
   </view-box>
 </template>
 
 <script>
   import {
-    ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell, Grid, GridItem, Group, GroupTitle
+    ViewBox, Card, Grid, GridItem, Group, GroupTitle
   } from 'vux';
   import {
     mapState, mapMutations, mapGetters, mapActions
@@ -49,25 +32,26 @@
   export default {
     name: 'home',
     components: {
-      ViewBox, Search, Swiper, Marquee, MarqueeItem, Cell,Grid, GridItem, Group, GroupTitle
+      ViewBox, Card, Grid, GridItem, Group, GroupTitle
     },
     data () {
       return {
-        searchValue: '',
+        searchValue: 'ss',
         focus_index: 0
       }
     },
     computed: {
       ...mapGetters([
+        'homeList',
         'focus_list',
         //'marquee_list',
         'goods_list'
       ])
     },
     created(){
-      this.$store.dispatch('home_focus');
-      this.$store.dispatch('home_marquee');
-      this.$store.dispatch('home_goods');
+      // this.$store.dispatch('home_focus');
+      // this.$store.dispatch('home_marquee');
+      // this.$store.dispatch('home_goods');
     },
     mounted(){
     },
@@ -116,85 +100,24 @@
   }
 </script>
 
-<style lang="less">
-  .home {
-    .top-header {
-      height: 44px;
-      padding: 0 40px;
-      position: relative;
-      .logo,
-      .btn-search {
-        text-align: center;
-        position: absolute;
-      }
-      .logo {
-        width: 24px;
-        height: 24px;
-        top: 10px;
-        left: 10px;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .btn-search {
-        width: 40px;
-        height: 28px;
-        line-height: 28px;
-        top: 8px;
-        right: 5px;
-        font-size: 13px;
-      }
-    }
-    .vux-marquee-box {
-      li {
-        font-size: 14px;
-      }
-    }
-    .weui-cells__title {
-      margin: 0;
-      padding: 10px;
-      position: relative;
-      span {
-        padding-left: 10px;
-        border-left: 3px solid #32beff;
-      }
-      &::after {
-        content: " ";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 1px;
-        border-bottom: 1px solid #D9D9D9;
-        color: #D9D9D9;
-        -webkit-transform-origin: 0 100%;
-        transform-origin: 0 100%;
-        -webkit-transform: scaleY(0.5);
-        transform: scaleY(0.5);
-      }
-    }
-    .weui-grid {
-      .grid-pic {
-        width: 100%;
-        display: block;
-      }
-      .grid-padding {
-        padding: 10px;
-      }
-      p {
-        line-height: 20px;
-        font-size: 12px;
-        color: #999;
-      }
-    }
+<style lang="less" scoped>
+  /*@import '~vux/src/styles/1px.less';*/
+  .home-header > .weui-grids {
+    border-top: 0px;
+    height: 100px!important;
   }
-
-  .vux-marquee {
-    li {
-      height: 40px;
-      line-height: 40px;
-      text-indent: 10px;
-    }
+  .header-bg{
+    color: white;
+    background-color: rgb(88,91,101);
+  }
+  .header-bg > .weui-grid__label{
+    color: white !important;
+  }
+  .weui-cells__title{
+    color: black !important;
+    background-color: white;
+    margin-bottom: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 </style>

@@ -26,14 +26,14 @@ if (window.localStorage.getItem('vue_token')) {
  */
 router.beforeEach((to, from, next) => {
   if (to.matched.some(r => r.meta.requireAuth)) {
-    if (store.state.vue_token) {
+    // if (store.state.vue_token) {
       next();
-    } else {
-      next({
-        path: '/signUp',
-        query: {redirect: to.name}
-      });
-    }
+    // } else {
+    //   next({
+    //     path: '/signUp',
+    //     query: {redirect: to.name}
+    //   });
+    // }
   } else {
     next();
   }

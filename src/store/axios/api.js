@@ -7,7 +7,7 @@
 export const baseUrl = 'http://192.168.50.230:8883/api';
 
 // 图片服务器地址
-// export const imgSrc = 'http://192.168.50.216/';
+export const imgSrc = 'http://192.168.50.216/';
 
 /***********************登录相关********************************/
 export const getCode_api = baseUrl + '/v1/sys/'; // 验证码

@@ -7,6 +7,7 @@ import  {AlertPlugin, ToastPlugin, LoadingPlugin} from 'vux';
 import App from './App';
 import router from './router/';
 import store from './store';
+import { sync } from 'vuex-router-sync'
 
 Vue.use(Vuex);
 Vue.use(VueJsonp);
@@ -17,7 +18,8 @@ Vue.use(LoadingPlugin);
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 
-
+// const FastClick = require('fastclick')
+// FastClick.attach(document.body)
 /**
  * 追加钱币符
  */
@@ -51,6 +53,8 @@ Vue.filter('subString', (str, num) => {
   }
 });
 
+sync(store, router)
+
 window.app = new Vue({
   axios,
   store,
@@ -69,10 +73,14 @@ window.setToken = function (token) {
  * @param json
  */
 Vue.prototype.go = function (name, json) {
-  json = json || {};
-  app.$router.push({
-    name: name,
-    query: json
-  });
+  if(name === '-1'){
+    app.$router.go(-1);
+  }else{
+    json = json || {};
+    app.$router.push({
+      name: name,
+      query: json
+    });
+  }
   console.log(app.$route);
 };

@@ -1,12 +1,24 @@
 <template>
   <div id="app">
-    <transition :name="transitionName" mode="in-out">
-        <router-view class="app-view"></router-view>
-    </transition>
+    <view-box ref="viewBox">
+      <x-header :title="title()" v-if="!isWeiXin()">
+        <div slot="overwrite-left" class="left-arrow" @click="go('-1')"></div>
+        <x-icon slot="right" @click="go('signIn')" type="person-add" style="fill:#fff;"></x-icon>
+      </x-header>
+      <div>
+        <transition :name="transitionName" mode="in-out">
+          <router-view class="app-view"></router-view>
+        </transition>
+      </div>
+    </view-box>
   </div>
 </template>
 
 <script>
+  import {
+    XHeader,
+    ViewBox
+  } from 'vux';
   import Home from '@/page/Home';
   import Search from '@/page/Search';
   import User from '@/page/User';
@@ -21,11 +33,27 @@
   import LocationForm from '@/page/LocationForm';
   import SignIn from '@/page/signIn';
   import SignUp from '@/page/signUp';
+  import Yetai from '@/page/Yetai';
+  import YetaiEdit from '@/page/YetaiEdit';
+  import Category from '@/page/Category';
+  import CategoryEdit from '@/page/CategoryEdit';
+  import RecommendProduct from '@/page/RecommendProduct';
+  import RecommendProductEdit from '@/page/RecommendProductEdit';
+
+  import {mapState, mapActions} from 'vuex'
 
   export default {
     name: 'app',
     components: {
       Home,
+      ViewBox,
+      Yetai,
+      YetaiEdit,
+      Category,
+      CategoryEdit,
+      RecommendProduct,
+      RecommendProductEdit,
+      XHeader,
       Search,
       User,
       Cart,
@@ -40,24 +68,51 @@
       SignIn,
       SignUp
     },
-    data(){
+    data() {
       return {
-        transitionName: 'slide-left'
+        transitionName: 'vux-pop-out-enter'
       }
     },
+    created() {
+
+    },
+    computed: {
+      ...mapState({
+        route: state => state.route,
+        path: state => state.route.path,
+        // deviceready: state => state.app.deviceready,
+        // demoTop: state => state.vux.demoScrollTop,
+        // isLoading: state => state.vux.isLoading,
+        // direction: state => state.vux.direction
+      })
+    },
     watch: {
-      '$route' (to, from) {
+      '$route'(to, from) {
         const toDepth = to.path.split('/');
+        console.log(toDepth + 'toDepth')
+
         const fromDepth = from.path.split('/');
-        if(fromDepth[1]==="book" || fromDepth[1]==="books" || fromDepth[1]==="payList" || fromDepth[1]==="detail" || fromDepth[1]==="list" || fromDepth[1]==="location" || fromDepth[1]==="locationForm"){
-          this.transitionName = 'slide-right';
-        }else{
-          this.transitionName = 'slide-left';
+        if (fromDepth[1] === "book" || fromDepth[1] === "books" || fromDepth[1] === "payList" || fromDepth[1] === "detail" || fromDepth[1] === "list" || fromDepth[1] === "location" || fromDepth[1] === "locationForm") {
+          this.transitionName =  'vux-pop-in-enter' // 'slide-right';
+        } else {
+          this.transitionName = 'vux-pop-out-enter';
         }
       }
     },
     methods: {
-
+      isWeiXin() {
+        const ua = window.navigator.userAgent.toLowerCase();
+        // console.log(ua);//mozilla/5.0 (iphone; cpu iphone os 9_1 like mac os x) applewebkit/601.1.46 (khtml, like gecko)version/9.0 mobile/13b143 safari/601.1
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+          return true;
+        } else {
+          return false;
+        }
+      },
+      title() {
+        console.log(JSON.stringify(this.route.meta.title))
+        return this.route.meta.title || this.route.name
+      }
     }
   }
 </script>
@@ -67,7 +122,7 @@
 
   html, body {
     height: 100%;
-    max-width: 414px;
+    /*max-width: 414px;*/
     margin: 0 auto;
     background-color: #EFEFF4;
   }
@@ -84,8 +139,8 @@
     position: relative;
   }
 
-  .vux-search-fixed{
-    position: absolute!important;
+  .vux-search-fixed {
+    position: absolute !important;
   }
 
   .weui-tab {
@@ -99,7 +154,7 @@
 
     }
     .vux-header {
-      background-color: #32beff !important;
+      background-color: rgb(88, 91, 101) !important;
       .vux-header-more,
       .vux-header-back,
       .vux-header-left,
@@ -143,16 +198,17 @@
 
   // 遮罩
   .weui-mask_transparent {
-    width: 414px !important;
+    /*width: 414px !important;*/
     left: 50% !important;
     -webkit-transform: translate(-50%, 0) !important;
     -moz-transform: translate(-50%, 0) !important;
     -ms-transform: translate(-50%, 0) !important;
     transform: translate(-50%, 0) !important;
   }
+
   // 遮罩
-  .weui-mask{
-    width: 414px !important;
+  .weui-mask {
+    /*width: 414px !important;*/
     left: 50% !important;
     -webkit-transform: translate(-50%, 0) !important;
     transform: translate(-50%, 0) !important;
@@ -176,17 +232,31 @@
     transform: translate(-50%, 0) !important;
   }
 
-
   // transform
-  .app-view {
-    position: absolute !important;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 999;
+  /*.app-view {*/
+  /*position: absolute !important;*/
+  /*top: 0;*/
+  /*bottom: 0;*/
+  /*left: 0;*/
+  /*right: 0;*/
+  /*z-index: 999;*/
+  /*}*/
+  .vux-pop-out-enter {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
   }
-
+  .vux-pop-out-leave-active {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  .vux-pop-in-enter {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  .vux-pop-in-leave-active {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
   .slide-left-enter-active {
     -webkit-animation: slide-in .3s;
     animation: slide-in .3s;
