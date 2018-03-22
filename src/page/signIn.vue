@@ -1,9 +1,9 @@
 <template>
   <view-box class="signIn" bodyPaddingTop="0" bodyPaddingBottom="0">
 
-    <x-header title="个人中心">
-      <x-icon slot="right" @click="go('signUp')" type="log-in" style="fill:#fff;"></x-icon>
-    </x-header>
+    <!--<x-header title="个人中心">-->
+      <!--<x-icon slot="right" @click="go('signUp')" type="log-in" style="fill:#fff;"></x-icon>-->
+    <!--</x-header>-->
 
     <group label-width="4.5em" label-margin-right="2em" label-align="right">
       <x-input v-model="userName" title="收货人:" is-type="china-name"
