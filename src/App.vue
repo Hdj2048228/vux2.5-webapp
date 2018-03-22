@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <view-box ref="viewBox">
-      <x-header :title="title()" v-if="!isWeiXin()">
+      <x-header :title="title()" v-show="!isWeiXin()">
         <div slot="overwrite-left" class="left-arrow" @click="go('-1')"></div>
         <x-icon slot="right" @click="go('signIn')" type="person-add" style="fill:#fff;"></x-icon>
       </x-header>
@@ -35,10 +35,14 @@
   import SignUp from '@/page/signUp';
   import Yetai from '@/page/Yetai';
   import YetaiEdit from '@/page/YetaiEdit';
+  import Banner from '@/page/Banner';
+  import BannerEdit from '@/page/BannerEdit';
+  import ChooseProduct from '@/page/ChooseProduct';
   import Category from '@/page/Category';
   import CategoryEdit from '@/page/CategoryEdit';
   import RecommendProduct from '@/page/RecommendProduct';
   import RecommendProductEdit from '@/page/RecommendProductEdit';
+
 
   import {mapState, mapActions} from 'vuex'
 
@@ -49,8 +53,11 @@
       ViewBox,
       Yetai,
       YetaiEdit,
+      Banner,
+      BannerEdit,
       Category,
       CategoryEdit,
+      ChooseProduct,
       RecommendProduct,
       RecommendProductEdit,
       XHeader,
@@ -110,8 +117,22 @@
         }
       },
       title() {
-        console.log(JSON.stringify(this.route.meta.title))
-        return this.route.meta.title || this.route.name
+        const title = this.route.meta.title || this.route.name
+        this.setWeixinTitle(title)
+        return title
+      },
+      setWeixinTitle(t){
+        document.title = t;
+        var i = document.createElement('iframe');
+        i.src = '//m.baidu.com/favicon.ico';
+        i.style.display = 'none';
+        i.onload = function () {
+          setTimeout(function () {
+            i.remove();
+          }, 9)
+        }
+        document.body.appendChild(i);
+
       }
     }
   }

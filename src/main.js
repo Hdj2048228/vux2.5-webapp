@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 import VueJsonp from 'vue-jsonp';
 import VueScroller from 'vue-scroller';
-import  {AlertPlugin, ToastPlugin, LoadingPlugin} from 'vux';
+import  {AlertPlugin, ToastPlugin, LoadingPlugin, DatetimePlugin} from 'vux';
 import App from './App';
 import router from './router/';
 import store from './store';
@@ -15,6 +15,8 @@ Vue.use(VueScroller);
 Vue.use(AlertPlugin);
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
+Vue.use(DatetimePlugin);
+
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
 

@@ -41,7 +41,8 @@ const store = new Vuex.Store({
       menu3: '用户中心',
       menu4: '订单详情',
       menu5: '收货地址'
-    }
+    },
+    direction: 'forward'
   },
   mutations: {
     [types.LOGIN]: (state, data) => {
@@ -89,10 +90,21 @@ const store = new Vuex.Store({
           });
           break;
       }
+    },
+    updateDirection (state, payload) {
+      state.direction = payload.direction
+    },
+    updateDemoPosition (state, payload) {
+      state.demoScrollTop = payload.top
+    },
+    updateLoadingStatus (state, payload) {
+      state.isLoading = payload.isLoading
     }
   },
   actions: {
-
+    updateDemoPosition ({commit}, top) {
+      commit({type: 'updateDemoPosition', top: top})
+    }
   },
   modules: {
     Home,

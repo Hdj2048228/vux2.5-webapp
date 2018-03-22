@@ -27,6 +27,31 @@ export default[
       title:'业态设置',
       requireAuth: true,  // true表示需要登录
     }
+  },{
+    path: '/banner',
+    name: 'banner',
+    component: App.components.Banner,
+    meta: {
+      title:'Banner设置',
+      requireAuth: true,  // true表示需要登录
+    }
+  },
+  {
+    path: '/bannerEdit',
+    name: 'bannerEdit',
+    component: App.components.BannerEdit,
+    meta: {
+      title:'Banner设置',
+      requireAuth: true,  // true表示需要登录
+    }
+  },{
+    path: '/chooseProduct',
+    name: 'chooseProduct',
+    component: App.components.ChooseProduct,
+    meta: {
+      title:'选择商品',
+      requireAuth: true,  // true表示需要登录
+    }
   },
   {
     path: '/category',
