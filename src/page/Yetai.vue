@@ -18,7 +18,6 @@
   </div>
 
 </template>
-
 <script>
   import {Cell, Group, GroupTitle, Swipeout, SwipeoutItem, SwipeoutButton, XButton} from 'vux'
 
