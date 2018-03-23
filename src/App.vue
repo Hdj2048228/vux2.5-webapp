@@ -19,29 +19,29 @@
     XHeader,
     ViewBox
   } from 'vux';
-  import Home from '@/page/Home';
-  import Search from '@/page/Search';
-  import User from '@/page/User';
-  import Cart from '@/page/Cart';
-  import Detail from '@/page/Detail';
-  import PayList from '@/page/PayList';
-  import OrderBook from '@/page/OrderBook';
-  import OrderBooks from '@/page/OrderBooks';
-  import OrderBookInfo from '@/page/OrderBookInfo';
-  import PayZhifubao from '@/page/PayZhifubao';
-  import Location from '@/page/Location';
-  import LocationForm from '@/page/LocationForm';
-  import SignIn from '@/page/signIn';
-  import SignUp from '@/page/signUp';
-  import Yetai from '@/page/Yetai';
-  import YetaiEdit from '@/page/YetaiEdit';
-  import Banner from '@/page/Banner';
-  import BannerEdit from '@/page/BannerEdit';
-  import ChooseProduct from '@/page/ChooseProduct';
-  import Category from '@/page/Category';
-  import CategoryEdit from '@/page/CategoryEdit';
-  import RecommendProduct from '@/page/RecommendProduct';
-  import RecommendProductEdit from '@/page/RecommendProductEdit';
+  // import Home from '@/page/Home';
+  // import Search from '@/page/Search';
+  // import User from '@/page/User';
+  // import Cart from '@/page/Cart';
+  // import Detail from '@/page/Detail';
+  // import PayList from '@/page/PayList';
+  // import OrderBook from '@/page/OrderBook';
+  // import OrderBooks from '@/page/OrderBooks';
+  // import OrderBookInfo from '@/page/OrderBookInfo';
+  // import PayZhifubao from '@/page/PayZhifubao';
+  // import Location from '@/page/Location';
+  // import LocationForm from '@/page/LocationForm';
+  // import SignIn from '@/page/signIn';
+  // import SignUp from '@/page/signUp';
+  // import Yetai from '@/page/Yetai';
+  // import YetaiEdit from '@/page/YetaiEdit';
+  // import Banner from '@/page/Banner';
+  // import BannerEdit from '@/page/BannerEdit';
+  // import ChooseProduct from '@/page/ChooseProduct';
+  // import Category from '@/page/Category';
+  // import CategoryEdit from '@/page/CategoryEdit';
+  // import RecommendProduct from '@/page/RecommendProduct';
+  // import RecommendProductEdit from '@/page/RecommendProductEdit';
 
 
   import {mapState, mapActions} from 'vuex'
@@ -49,31 +49,31 @@
   export default {
     name: 'app',
     components: {
-      Home,
+      // Home,
       ViewBox,
-      Yetai,
-      YetaiEdit,
-      Banner,
-      BannerEdit,
-      Category,
-      CategoryEdit,
-      ChooseProduct,
-      RecommendProduct,
-      RecommendProductEdit,
+      // Yetai,
+      // YetaiEdit,
+      // Banner,
+      // BannerEdit,
+      // Category,
+      // CategoryEdit,
+      // ChooseProduct,
+      // RecommendProduct,
+      // RecommendProductEdit,
       XHeader,
-      Search,
-      User,
-      Cart,
-      Detail,
-      PayList,
-      OrderBook,
-      OrderBooks,
-      OrderBookInfo,
-      PayZhifubao,
-      Location,
-      LocationForm,
-      SignIn,
-      SignUp
+      // Search,
+      // User,
+      // Cart,
+      // Detail,
+      // PayList,
+      // OrderBook,
+      // OrderBooks,
+      // OrderBookInfo,
+      // PayZhifubao,
+      // Location,
+      // LocationForm,
+      // SignIn,
+      // SignUp
     },
     data() {
       return {
